@@ -131,7 +131,7 @@ class actions_commands(commands.Cog):
 
     @acts_1.command(guild_ids=CONFIG["g_ids"], name="держать_за_руку", description="Взять другого пользователя за руку.")
     async def handhold(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("bite", 1)
+        result = await nekosbest_client.get_image("handhold", 1)
         embed = discord.Embed(
             title="Действие",
             description=f"{ctx.author.mention} держится за руки с {'самим собой' if other == ctx.author else str(other.mention) if other != self.bot.user else 'ботом'}!",

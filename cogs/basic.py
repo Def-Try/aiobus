@@ -14,6 +14,7 @@ class basic(commands.Cog):
         await ctx.respond("о это же я!")
 
     @commands.slash_command(guild_ids=CONFIG["g_ids"])
+    @commands.is_owner()
     async def reload_cogs(self, ctx: discord.ApplicationContext):
         msg = await ctx.respond("Перезагружаю...")
         failed_to_reload, ok_reload, timings = self.bot.reload_cogs(self.bot)

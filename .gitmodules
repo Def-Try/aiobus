@@ -1,0 +1,3 @@
+[submodule "MnLEsolang"]
+	path = MnLEsolang
+	url = https://github.com/Def-Try/MnLEsolang
