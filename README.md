@@ -4,7 +4,7 @@
 </div>
 some bot that i made because i was bored.
 
-use installed venv - i needed to break nekosbest aiohttp dependency because it was failing to install.
+**installing nekosbest api involves some fuckery! downgrade aiohttp to the first installable version that satisfies nekosbest's dependencies, then install nekosbest, then upgrade aiohttp to latest version.**
 
 this bot uses cog system to load and use commands
 
