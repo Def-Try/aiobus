@@ -1,4 +1,3 @@
-token.txt   # no token for github
-__pycache__ # pycache
-.idea       # jetbrains ide metadata
-*~          # nano backup files
+token.txt
+__pycache__
+.idea
