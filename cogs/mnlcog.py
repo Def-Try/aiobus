@@ -49,22 +49,23 @@ class template(commands.Cog):
         if not ctx.author.id in self.engines.keys():
             await ctx.respond("⚠️МнЛ движок не готов!")
             return
+        await ctx.response.defer()
         engine = self.engines[ctx.author.id]
         try:
             await engine.run_nonblocking(code, 1)
         except BaseError as e:
             output = engine.fio.read_output()
-            await ctx.respond(f"⚠️Ошибка во время выполнения: `{e}`" + (f"\nВывод:\n```\n{output}\n```" if output else ""))
+            await ctx.followup.send(f"⚠️Ошибка во время выполнения: `{e}`" + (f"\nВывод:\n```\n{output}\n```" if output else ""))
             return
         except TimeoutError as e:
             output = engine.fio.read_output()
             await ctx.followup.send(f"⚠️Время ожидания выполнения истекло." + (f"\nВывод:\n```\n{output}\n```" if output else ""))
             return
         except Exception as e:
-            await ctx.respond(f"❌Критическая ошибка во время выполнения: `{e}`")
+            await ctx.followup.send(f"❌Критическая ошибка во время выполнения: `{e}`")
             return
         output = engine.fio.read_output()
-        await ctx.respond(f"✅Выполнение завершено!" + (f"\nВывод:\n```\n{output}\n```" if output else ""))
+        await ctx.followup.send(f"✅Выполнение завершено!" + (f"\nВывод:\n```\n{output}\n```" if output else ""))
 
 
 def setup(bot):
