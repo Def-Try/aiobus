@@ -67,14 +67,15 @@ def reload_cogs(bot):
 
     return unload_fails+load_fails, bot._cogs, timings
 
-bot.reload_cogs = reload_cogs
+if __name__ == "__main__":
+    bot.reload_cogs = reload_cogs
 
-@bot.event
-async def on_ready():
-    bot.logger.info(f"We have logged in as {bot.user}")
-#    await reload_cogs()
+    @bot.event
+    async def on_ready():
+        bot.logger.info(f"We have logged in as {bot.user}")
+    #    await reload_cogs()
 
-bot._cogs = []
-_, _, _ = bot.reload_cogs(bot)
+    bot._cogs = []
+    _, _, _ = bot.reload_cogs(bot)
 
-bot.run(token)
+    bot.run(token)

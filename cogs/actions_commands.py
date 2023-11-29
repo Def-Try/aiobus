@@ -15,8 +15,10 @@ class actions_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    acts_1 = discord.SlashCommandGroup("действие_1", "РП и не очень действия. Первая группа, из-за ограничений дискорда")
-    acts_2 = discord.SlashCommandGroup("действие_2", "РП и не очень действия. Вторая группа, из-за ограничений дискорда")
+    acts_1 = discord.SlashCommandGroup("действие_1", "РП и не очень действия.",
+        name_localizations={"ru": "действие"})
+    acts_2 = discord.SlashCommandGroup("действие_2", "РП и не очень действия.",
+        name_localizations={"ru": "действие"})
 
     def parse_action_answer(self, ctx, other):
         return 'сам себя' if other == ctx.author else str(other.mention) if other != self.bot.user else 'меня'
