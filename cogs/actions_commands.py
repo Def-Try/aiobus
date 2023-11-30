@@ -7,6 +7,21 @@ import json
 with open("config.cfg", 'r') as f:
     CONFIG = json.loads(f.read())
 
+LOCALISATIONS = {}
+
+with open("localisation/en-US.locale", 'r') as f:
+    locale = json.loads(f.read())
+    def prepare_locale(locale, lang):
+        for k, v in locale.items():
+            if type(v) == str:
+                locale[k] = {lang: v}
+                continue
+            prepare_locale(v, lang)
+    prepare_locale(locale, "ru")
+    LOCALISATIONS = locale
+
+print(LOCALISATIONS)
+
 nekosbest_client = Client()
 
 portals_awaiting = {}
@@ -15,189 +30,128 @@ class actions_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    acts_1 = discord.SlashCommandGroup("действие_1", "РП и не очень действия.",
-        name_localizations={"ru": "действие"})
-    acts_2 = discord.SlashCommandGroup("действие_2", "РП и не очень действия.",
-        name_localizations={"ru": "действие"})
-
-    def parse_action_answer(self, ctx, other):
-        return 'сам себя' if other == ctx.author else str(other.mention) if other != self.bot.user else 'меня'
-
-    def parse_action_answer_of(self, ctx, other):
-        return 'себе '+item if other == ctx.author else item+" "+str(other.mention) if other != self.bot.user else 'мою '+item
-
-    def parse_action_answer_to(self, ctx, other):
-        return 'к себе... как?' if other == ctx.author else "к "+str(other.mention) if other != self.bot.user else 'ко мне'
+    acts_1 = discord.SlashCommandGroup("actions_1", "",
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["command_group"]["name"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["command_group"]["desc"])
+    acts_2 = discord.SlashCommandGroup("actions_2", "",
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["command_group"]["name"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["command_group"]["desc"])
 
     # регион ПЕРВАЯ ГРУППА
     #  регион ОБЫЧНЫЕ ДЕЙСТВИЯ
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="погладить", description="Погладить другого пользователя.")
+    async def act_req_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+        result = await nekosbest_client.get_image(action, 1)
+        locale = ctx.interaction.locale
+        localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
+        embed = discord.Embed(
+            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"][locale],
+            description=localis_act['self'][locale].replace("{member}", ctx.author.mention) 
+                    if other == ctx.author else 
+                localis_act['bot'][locale].replace("{member}", ctx.author.mention) 
+                    if other == self.bot.user else
+                localis_act["other"][locale].replace("{member}", ctx.author.mention).replace("{other}", other.mention),
+            color=discord.Colour.blurple(),
+        )
+        embed.set_image(url=result.url)
+        await ctx.respond(embed=embed)
+
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["pat"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def pat(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("pat", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} гладит {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("pat", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="обнять", description="Обнять другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["hug"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def hug(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("hug", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} обнимает {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("hug", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="прижаться", description="Прижаться к другому пользователю.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["cuddle"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def cuddle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("cuddle", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} прижимается {self.parse_action_answer_to(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("cuddle", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="пожать_руку", description="Пожать руку другому пользователю.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["handshake"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def handshake(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("handshake", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} пожимает {self.parse_action_answer_of(ctx, other, 'руку')}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("handshake", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="укусить", description="Укусить другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["bite"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def bite(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("bite", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} кусает {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("bite", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="дать_пять", description="Дать пять другому пользователю.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["highfive"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def highfive(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("highfive", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} даёт пять {'себе' if other == ctx.author else str(other.mention) if other != self.bot.user else 'мне'}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("highfive", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="поцеловать", description="Поцеловать другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["kiss"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def kiss(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("kiss", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} целует {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("kiss", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="тыкать", description="Тыкать в другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["poke"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
+    async def poke(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+        await self.act_req_other("poke", ctx, other)
+
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["slap"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def slap(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("slap", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} тыкает в {'самого себя' if other == ctx.author else str(other.mention) if other != self.bot.user else 'меня'}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("slap", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="шлепнуть", description="Шлёпнуть другого пользователя.")
-    async def slap(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("slap", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} шлёпает {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
-
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="держать_за_руку", description="Взять другого пользователя за руку.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["handhold"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def handhold(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("handhold", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} держится за руки с {'самим собой' if other == ctx.author else str(other.mention) if other != self.bot.user else 'ботом'}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("handhold", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="пнуть", description="Пнуть другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["kick"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def kick(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("kick", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} пинает {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("kick", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="ударить", description="Ударить другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["punch"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def punch(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("punch", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} ударяет {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("punch", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="щекотать", description="Пощекотать другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["tickle"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def tickle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("tickle", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} щекочет {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("tickle", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="кормить", description="Покормить другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["feed"],
+        description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def feed(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
-        result = await nekosbest_client.get_image("feed", 1)
-        embed = discord.Embed(
-            title="Действие",
-            description=f"{ctx.author.mention} кормит {self.parse_action_answer(ctx, other)}!",
-            color=discord.Colour.blurple(),
-        )
-        embed.set_image(url=result.url)
-        await ctx.respond(embed=embed)
+        await self.act_req_other("feed", ctx, other)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="смотреть", description="Смотреть на что-то или на другого пользователя.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="смотреть", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def stare(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
         result = await nekosbest_client.get_image("stare", 1)
         embed = discord.Embed(
             title="Действие",
-            description=f"{ctx.author.mention} смотрит на {'что-то' if other is None else self.parse_action_answer(ctx, other)}!",
+#            description=f"{ctx.author.mention} смотрит {LOCALISATIONS["cog"]["actions_commands"]["answers"]["at_something"][locale] if other is None else LOCALISATIONS["cog"]["actions_commands"]["answers"]["at_"][locale]+self.parse_action_answer(ctx, other)}!",
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="махать_рукой", description="Махать рукой просто так или другому пользователю.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="махать_рукой", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def wave(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
         result = await nekosbest_client.get_image("wave", 1)
         embed = discord.Embed(
@@ -208,7 +162,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="плакать", description="Плакать.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="плакать", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def cry(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("cry", 1)
         embed = discord.Embed(
@@ -219,7 +173,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="покраснеть", description="Покраснеть.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="покраснеть", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def blush(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("blush", 1)
         embed = discord.Embed(
@@ -230,7 +184,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="танец", description="Танцевать.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="танец", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def dance(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("dance", 1)
         embed = discord.Embed(
@@ -241,7 +195,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="радоваться", description="Радоваться.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="радоваться", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def happy(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("happy", 1)
         embed = discord.Embed(
@@ -252,7 +206,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="смеяться", description="Смеяться.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="смеяться", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def laugh(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("laugh", 1)
         embed = discord.Embed(
@@ -263,7 +217,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="пожать_плечами", description="Пожать плечами.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="пожать_плечами", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def shrug(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("shrug", 1)
         embed = discord.Embed(
@@ -274,7 +228,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="спать", description="Спать.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="спать",description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def sleep(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("sleep", 1)
         embed = discord.Embed(
@@ -285,7 +239,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="улыбнуться", description="Улыбнуться.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="улыбнуться", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def smile(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("smile", 1)
         embed = discord.Embed(
@@ -296,7 +250,7 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    @acts_1.command(guild_ids=CONFIG["g_ids"], name="думать", description="Думать.")
+    @acts_1.command(guild_ids=CONFIG["g_ids"], name="думать", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def think(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("think", 1)
         embed = discord.Embed(
@@ -313,7 +267,7 @@ class actions_commands(commands.Cog):
     # регион ВТОРАЯ ГРУППА
     #  регион ОБЫЧНЫЕ ДЕЙСТВИЯ
 
-    @acts_2.command(guild_ids=CONFIG["g_ids"], name="кивнуть", description="Кивнуть.")
+    @acts_2.command(guild_ids=CONFIG["g_ids"], name="кивнуть", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["action"]["desc"])
     async def nod(self, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image("nod", 1)
         embed = discord.Embed(
@@ -327,7 +281,7 @@ class actions_commands(commands.Cog):
     #  конец региона ОБЫЧНЫЕ ДЕЙСТВИЯ
     #  регион ИНТЕРАКТИВНЫЕ ДЕЙСТВИЯ
 
-    @acts_2.command(guild_ids=CONFIG["g_ids"], name="открыть_портал", description="Начать открытие портала.")
+    @acts_2.command(guild_ids=CONFIG["g_ids"], name="открыть_портал", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["portal"]["desc"])
     async def portal(self, ctx: discord.ApplicationContext):
         if ctx.author.id in portals_awaiting.keys():
 
@@ -349,7 +303,7 @@ class actions_commands(commands.Cog):
             return
         portals_awaiting[ctx.author.id] = ctx
         await ctx.respond("Отлично! Теперь напишите эту же команду в канале, куда вы хотите открыть портал.", ephemeral=True)
-    @acts_2.command(guild_ids=CONFIG["g_ids"], name="отменить_портал", description="Отменить открытие портала.")
+    @acts_2.command(guild_ids=CONFIG["g_ids"], name="отменить_портал", description_localisations=LOCALISATIONS["cog"]["actions_commands"]["commands"]["portal_cancel"]["desc"])
     async def portal_cancel(self, ctx: discord.ApplicationContext):
         del portals_awaiting[ctx.author.id]
         await ctx.respond("Открытие портала отменено.", ephemeral=True)
