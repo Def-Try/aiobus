@@ -118,6 +118,48 @@
 						"other": "{member} feeds {other}",
 						"self": "{member} feeds themselves",
 						"bot": "{member} feeds me"
+					},
+					"stare": {
+						"other": "{member} stares at {other}",
+						"self": "{member} stares at themselves",
+						"bot": "{member} stares at me",
+						"none": "{member} stares at something"
+					},
+					"wave": {
+						"other": "{member} waves to {other}",
+						"self": "{member} waves to themselves",
+						"bot": "{member} waves me",
+						"none": "{member} waves"
+					},
+					"cry": {
+						"self": "{member} cries"
+					},
+					"blush": {
+						"self": "{member} blushes"
+					},
+					"dance": {
+						"self": "{member} dances"
+					},
+					"happy": {
+						"self": "{member} is just happy"
+					},
+					"laugh": {
+						"self": "{member} laughes"
+					},
+					"shrug": {
+						"self": "{member} shrugs"
+					},
+					"sleep": {
+						"self": "{member} sleeps"
+					},
+					"smile": {
+						"self": "{member} smiles"
+					},
+					"think": {
+						"self": "{member} think"
+					},
+					"nod": {
+						"self": "{member} nods"
 					}
 				}
 			}
