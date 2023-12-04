@@ -1,26 +1,11 @@
 import discord
 from discord.ext import commands
-
 from nekosbest import Client, Result
-
 import json
+from localisation import LOCALISATIONS
+
 with open("config.cfg", 'r') as f:
     CONFIG = json.loads(f.read())
-
-LOCALISATIONS = {}
-
-with open("localisation/en-US.locale", 'r') as f:
-    locale = json.loads(f.read())
-    def prepare_locale(locale, lang):
-        for k, v in locale.items():
-            if type(v) == str:
-                locale[k] = {lang: v}
-                continue
-            prepare_locale(v, lang)
-    prepare_locale(locale, "ru")
-    LOCALISATIONS = locale
-
-print(LOCALISATIONS)
 
 nekosbest_client = Client()
 
