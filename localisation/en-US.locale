@@ -216,20 +216,20 @@
 				"run": {
 					"ok": {
 						"no_output": "Running complete!",
-						"with_output": "Running complete!\nOutput:\n```\n{output}\n```",
+						"with_output": "Running complete!\nOutput:\n```\n{output}\n```"
 					},
 					"mnl_error": {
 						"no_output": "There was an error while running your code: {error}.",
-						"with_output": "There was an error while running your code: {error}.\nOutput:\n```\n{output}\n```",
+						"with_output": "There was an error while running your code: {error}.\nOutput:\n```\n{output}\n```"
 					},
 					"fatal_error": {
 						"no_output": "Fatal core error while running: {error}.",
-						"with_output": "Fatal core error while running: {error}.\nOutput:\n```\n{output}\n```",
+						"with_output": "Fatal core error while running: {error}.\nOutput:\n```\n{output}\n```"
 					},
 					"timed_out": {
 						"no_output": "Running has taken more than {timeout} seconds.",
-						"with_output": "Running has taken more than {timeout} seconds.\nOutput:\n```\n{output}\n```",
-					},
+						"with_output": "Running has taken more than {timeout} seconds.\nOutput:\n```\n{output}\n```"
+					}
 				}
 			}
 		}
