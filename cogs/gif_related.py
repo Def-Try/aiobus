@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
-
 from nekosbest import Client, Result
+
+from localisation import LOCALISATIONS
 
 import json
 with open("config.cfg", 'r') as f:
@@ -23,7 +24,11 @@ class gif_related(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(guild_ids=CONFIG["g_ids"],
+    gif_cmds = discord.SlashCommandGroup("gif", "",
+        name_localizations=LOCALISATIONS["cog"]["gif_related"]["command_group"]["name"],
+        description_localisations=LOCALISATIONS["cog"]["gif_related"]["command_group"]["desc"])
+
+    @gif_cmds.slash_command(guild_ids=CONFIG["g_ids"],
         name_localizations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["name"],
         description_localisations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["desc"])
     async def findgif(self, ctx: discord.ApplicationContext, category: discord.Option(str)):

@@ -46,7 +46,7 @@
 					"desc": "Cancel opening of a portal."
 				}
 			},
-			"strings": {
+			"answers": {
 				"action": {
 					"name": "Action",
 					"pat": {

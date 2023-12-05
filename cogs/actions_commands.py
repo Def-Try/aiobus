@@ -28,9 +28,9 @@ class actions_commands(commands.Cog):
     async def act(self, action: str, ctx: discord.ApplicationContext):
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
-        localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
+        localis_act = LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            title=LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
             description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention),
             color=discord.Colour.blurple(),
         )
@@ -40,9 +40,9 @@ class actions_commands(commands.Cog):
     async def act_req_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
-        localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
+        localis_act = LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            title=LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
             description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == ctx.author else 
                 localis_act['bot'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
@@ -56,9 +56,9 @@ class actions_commands(commands.Cog):
     async def act_with_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
-        localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
+        localis_act = LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            title=LOCALISATIONS["cog"]["actions_commands"]["answers"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
             description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == ctx.author else 
                 localis_act['bot'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
