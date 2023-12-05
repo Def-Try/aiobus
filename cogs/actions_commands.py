@@ -30,8 +30,8 @@ class actions_commands(commands.Cog):
         locale = ctx.interaction.locale
         localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"][locale],
-            description=localis_act['self'][locale].replace("{member}", ctx.author.mention),
+            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)
@@ -42,12 +42,12 @@ class actions_commands(commands.Cog):
         locale = ctx.interaction.locale
         localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"][locale],
-            description=localis_act['self'][locale].replace("{member}", ctx.author.mention) 
+            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == ctx.author else 
-                localis_act['bot'][locale].replace("{member}", ctx.author.mention) 
+                localis_act['bot'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == self.bot.user else
-                localis_act["other"][locale].replace("{member}", ctx.author.mention).replace("{other}", other.mention),
+                localis_act["other"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention).replace("{other}", other.mention),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)
@@ -58,14 +58,14 @@ class actions_commands(commands.Cog):
         locale = ctx.interaction.locale
         localis_act = LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"][action]
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"][locale],
-            description=localis_act['self'][locale].replace("{member}", ctx.author.mention) 
+            title=LOCALISATIONS["cog"]["actions_commands"]["strings"]["action"]["name"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            description=localis_act['self'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == ctx.author else 
-                localis_act['bot'][locale].replace("{member}", ctx.author.mention) 
+                localis_act['bot'].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention) 
                     if other == self.bot.user else
-                localis_act["other"][locale].replace("{member}", ctx.author.mention).replace("{other}", other.mention)
+                localis_act["other"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention).replace("{other}", other.mention)
                     if other else
-                localis_act["none"][locale].replace("{member}", ctx.author.mention),
+                localis_act["none"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{member}", ctx.author.mention),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)

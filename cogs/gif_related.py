@@ -23,15 +23,17 @@ class gif_related(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(guild_ids=CONFIG["g_ids"], name="гифка", description="Найти гифку по одной из нескольких категорий." + \
-                                                                                 "Работает с помощью nekos.best API.")
-    async def find_gif(self, ctx: discord.ApplicationContext, category: discord.Option(str)):
+    @commands.slash_command(guild_ids=CONFIG["g_ids"],
+        name_localizations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["name"],
+        description_localisations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["desc"])
+    async def findgif(self, ctx: discord.ApplicationContext, category: discord.Option(str)):
+        locale = ctx.interaction.locale
         if category not in categories:
-            await ctx.respond(f"Неверная категория: должна быть одной из следующих: {', '.join(categories)}")
+            await ctx.respond(LOCALISATIONS["cog"]["gif_related"]["answers"]["findgif"]["invalid_category"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{categories}", ", ".join(categories)))
             return
         result = await nekosbest_client.get_image(category, 1)
         embed = discord.Embed(
-            title="Гифка",
+            title=LOCALISATIONS["cog"]["gif_related"]["answers"]["findgif"]["title"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)

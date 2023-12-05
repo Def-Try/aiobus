@@ -163,6 +163,24 @@
 					}
 				}
 			}
+		},
+		"gif_related": {
+			"command_group": {
+				"name": "gif",
+				"desc": "Slash-commands that are related to gifs in any way."
+			},
+			"commands": {
+				"findgif": {
+					"name": "find_gif",
+					"desc": "Find gif by one of categories. Powered by nekos.best API."
+				}
+			},
+			"answers": {
+				"findgif": {
+					"invalid_category": "Wrong category: should be one of next: {categories}",
+					"title": "Gif"
+				}
+			}
 		}
 	}
 }
