@@ -1,12 +1,10 @@
 import discord
 from discord.ext import commands
 from nekosbest import Client, Result
-
+from config import CONFIG
 from localisation import LOCALISATIONS
 
 import json
-with open("config.cfg", 'r') as f:
-    CONFIG = json.loads(f.read())
 
 nekosbest_client = Client()
 

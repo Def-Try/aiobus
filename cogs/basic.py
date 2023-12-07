@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
-
+from config import CONFIG
 import json
-with open("config.cfg", 'r') as f:
-    CONFIG = json.loads(f.read())
 
 class basic(commands.Cog):
     def __init__(self, bot):

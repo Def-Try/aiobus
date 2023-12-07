@@ -7,6 +7,8 @@ import termcolor
 import json
 import time
 
+from config import CONFIG, TOKEN
+
 colorama.just_fix_windows_console()
 
 FORMAT = termcolor.colored('[%(asctime)s]', "white", "on_cyan")+' '+\
@@ -16,13 +18,7 @@ logging.basicConfig(format=FORMAT)
 logger = logging.getLogger('root')
 logger.setLevel(logging.INFO)
 
-with open("config.cfg", 'r') as f:
-    CONFIG = json.loads(f.read())
-
 pingers = {}
-
-with open("token.txt", 'r') as f:
-    token = f.readlines()[0]
 
 bot = discord.Bot()
 
@@ -78,4 +74,4 @@ if __name__ == "__main__":
     bot._cogs = []
     _, _, _ = bot.reload_cogs(bot)
 
-    bot.run(token)
+    bot.run(TOKEN)

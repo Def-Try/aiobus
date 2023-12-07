@@ -3,9 +3,7 @@ from discord.ext import commands
 from nekosbest import Client, Result
 import json
 from localisation import LOCALISATIONS
-
-with open("config.cfg", 'r') as f:
-    CONFIG = json.loads(f.read())
+from config import CONFIG
 
 nekosbest_client = Client()
 

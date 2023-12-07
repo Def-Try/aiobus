@@ -11,9 +11,7 @@ except ImportError:
     from MnLEsolang.mnlcore.libs import FakeIO
 import json
 from localisation import LOCALISATIONS
-with open("config.cfg", 'r') as f:
-    CONFIG = json.loads(f.read())
-
+from config import CONFIG
 class template(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
