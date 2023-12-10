@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from config import CONFIG
+from localisation import LOCALISATIONS
 import json
 
 class template(commands.Cog):
