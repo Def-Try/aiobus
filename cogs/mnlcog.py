@@ -12,7 +12,8 @@ except ImportError:
 import json
 from localisation import LOCALISATIONS
 from config import CONFIG
-class template(commands.Cog):
+
+class MnLCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.engines = {}
@@ -78,4 +79,4 @@ class template(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(template(bot))
+    bot.add_cog(MnLCog(bot))
