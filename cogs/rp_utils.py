@@ -8,7 +8,7 @@ from config import CONFIG
 import re
 
 OFFTOPIC_PREFIXES = ["//", "(("]
-ACTION_INDICATORS = [r"\*\*", r"\*"]
+ACTION_INDICATORS = [r"\*\*\*", r"\*\*", r"\*"]
 AWAY_KEYWORDS     = ["ушёл", "ушел", "телепортировался", "пропал"
                      "went away", "teleports", "teleported", "disappeared",
                       "fissled away"]
@@ -76,14 +76,28 @@ class rp_utils(commands.Cog):
                 ch = await self.bot.fetch_channel(channel["id"])
             except AttributeError: # bot isn't started yet, ignore
                 continue
-            for message in reversed(await ch.history(limit=10).flatten()):
+            for message in reversed(await ch.history(limit=100).flatten()):
                 if any([message.content.startswith(offtopic_start) for offtopic_start in OFFTOPIC_PREFIXES]): continue
+                if message.author == self.bot.user:
+                    for person in in_channel:
+                        if message.content == LOCALISATIONS["cog"]["rp_utils"]["answers"]["user_afk"][CONFIG["locale"]].format(user=f"<@{person}>"):
+                            went_away.append(message.mentions[0].id)
+                            continue
+                    continue
                 if not message.author.id in in_channel: in_channel.append(message.author.id)
+                if datetime.datetime.now(message.created_at.tzinfo) - message.created_at <= datetime.timedelta(minutes=5):
+                    went_away.append(message.author.id)
+                    continue
                 if any([away_act in ";".join(parse_actions(message.content)) for away_act in AWAY_KEYWORDS]):
                     went_away.append(message.author.id)
                     continue
                 if message.author.id in went_away:
-                    went_away.pop(went_away.index(message.author.id))
+                    while message.author.id in went_away:
+                        went_away.pop(went_away.index(message.author.id))
+            if sorted(in_channel) == sorted(went_away): continue
+            for person in in_channel:
+                if person in went_away: continue
+                await ch.send(LOCALISATIONS["cog"]["rp_utils"]["answers"]["user_afk"][CONFIG["locale"]].format(user=f"<@{person}>"))
 
 
 def setup(bot):
