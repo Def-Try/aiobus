@@ -23,3 +23,17 @@ for l in LOCALES:
 	            prepare_locale(v, lang)
 	    prepare_locale(locale, l)
 	    merge(LOCALISATIONS, locale)
+
+def localise(string, locale=None):
+	localstring = string.split(".")
+	localisations = LOCALISATIONS
+	for i in localstring:
+		localisations = localisations.get(i, None)
+		if localisations is None: break
+	if localisations is None and locale is None:
+		return LOCALISATIONS["error"]["locale_string_unknown"]
+	if localisations is None and locale is not None:
+		return LOCALISATIONS["error"]["locale_string_unknown"].get(locale, "error.locale_string_unknown."+locale)
+	if locale is None:
+		return localisations
+	return localisations.get(locale, string+"."+locale)
