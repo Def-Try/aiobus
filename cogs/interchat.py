@@ -219,8 +219,8 @@ class interchat(commands.Cog):
             await ctx.respond("Unable to open interchat tunnel to the same channel you are in.", ephemeral=True)
         await ctx.response.defer(ephemeral=True)
         if await self.start_interserver(ctx.channel, channel):
-            await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name} - {ctx.channel.name}")
-            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - `{self.get_address(channel)}` requested connection.\n{channel.guild.name} - {channel.name}")
+            await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else "DM"} - {ctx.channel.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else ctx.channel.recipient.name}")
+            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - `{self.get_address(channel)}` requested connection.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) else "DM"} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) else channel.recipient.name}")
             await ctx.followup.send("OK", ephemeral=True)
         else:
             await ctx.followup.send("Tunnel failed to open - there is already online connection using that address.", ephemeral=True)
@@ -274,10 +274,10 @@ class interchat(commands.Cog):
             return
         await ctx.respond(localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale).format(
             started=f"<t:{this_tunnel['started']}:R>",
-            channel_out=f"{tunnel['out'].guild.name}, {tunnel['out'].name}",
+            channel_out=f"{tunnel[out].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else "DM"}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
             address_out=self.get_address(tunnel["out"]),
             out_here=("(here)" if ctx.channel == tunnel["out"] else ""),
-            channel_in=f"{tunnel['in'].guild.name}, {tunnel['in'].name}",
+            channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else "DM"}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
             address_in=self.get_address(tunnel["in"]),
             in_here=("(here)" if ctx.channel == tunnel["in"] else ""),
             permanent=("Yes" if tunnel["permanent"] else "No")
