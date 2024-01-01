@@ -274,10 +274,10 @@ class interchat(commands.Cog):
             return
         await ctx.respond(localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale).format(
             started=f"<t:{this_tunnel['started']}:R>",
-            channel_out=f"{tunnel[out].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else "DM"}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
+            channel_out=f"{tunnel[out].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
             address_out=self.get_address(tunnel["out"]),
             out_here=("(here)" if ctx.channel == tunnel["out"] else ""),
-            channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else "DM"}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
+            channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
             address_in=self.get_address(tunnel["in"]),
             in_here=("(here)" if ctx.channel == tunnel["in"] else ""),
             permanent=("Yes" if tunnel["permanent"] else "No")
