@@ -219,8 +219,8 @@ class interchat(commands.Cog):
             await ctx.respond("Unable to open interchat tunnel to the same channel you are in.", ephemeral=True)
         await ctx.response.defer(ephemeral=True)
         if await self.start_interserver(ctx.channel, channel):
-            await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else "DM"} - {ctx.channel.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else ctx.channel.recipient.name}")
-            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - `{self.get_address(channel)}` requested connection.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) else "DM"} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) else channel.recipient.name}")
+            await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else 'DM'} - {ctx.channel.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) else ctx.channel.recipient.name}")
+            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - `{self.get_address(channel)}` requested connection.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) else 'DM'} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) else channel.recipient.name}")
             await ctx.followup.send("OK", ephemeral=True)
         else:
             await ctx.followup.send("Tunnel failed to open - there is already online connection using that address.", ephemeral=True)
