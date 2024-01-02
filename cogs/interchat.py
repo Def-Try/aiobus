@@ -9,6 +9,27 @@ import random
 import string
 import aiohttp
 
+# interchat bans.
+# michaai / UID 629999906429337600: opening and interacting with interchats.
+#      reason: just a clown. spammed a bunch of NSFW links and got around ban with this thing.
+interchat_bans = {
+    "begin": [
+         629999906429337600 # @michaai
+    ],
+    "end": [
+         629999906429337600 # @michaai
+    ],
+    "info": [
+         629999906429337600 # @michaai
+    ],
+    "address": [
+         629999906429337600 # @michaai
+    ],
+    "send": [
+         629999906429337600 # @michaai
+    ]
+}
+
 class interchat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -91,8 +112,7 @@ class interchat(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def tunneling_onmsg(self, message):
-        print(message, message.channel, message.author, message.content)
-        if message.author.id == self.bot.user.id: return
+        if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
             if message.channel.id == itunnel["out"].id:
@@ -154,7 +174,7 @@ class interchat(commands.Cog):
 
     @commands.Cog.listener("on_message_edit")
     async def tunneling_onmsgedit(self, message_before, message):
-        if message.author.id == self.bot.user.id: return
+        if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
             if message.channel == itunnel["out"]:
@@ -212,7 +232,7 @@ class interchat(commands.Cog):
 
     @commands.Cog.listener("on_message_delete")
     async def tunneling_onmsgdel(self, message):
-        if message.author.id == self.bot.user.id: return
+        if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
             if message.channel == itunnel["out"]:
@@ -236,9 +256,12 @@ class interchat(commands.Cog):
         name_localizations=localise("cog.interchat.commands.begin.name"),
         description_localisations=localise("cog.interchat.commands.begin.desc"))
     async def begin(self, ctx: discord.ApplicationContext, address: str):
+        if ctx.author.id in interchat_bans["begin"]:
+            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            return
         addrs = self.db.search(Query().address == address)
         if len(addrs) == 0:
-            await ctx.respond(localise("cog.interchat.answers.begin.notfound"))
+            await ctx.respond(localise("cog.interchat.answers.begin.notfound", ctx.interaction.locale))
             return
         chid = addrs[0]["chid"]
         guid = addrs[0]["guid"]
@@ -257,6 +280,9 @@ class interchat(commands.Cog):
         name_localizations=localise("cog.interchat.commands.end.name"),
         description_localisations=localise("cog.interchat.commands.end.desc"))
     async def end(self, ctx: discord.ApplicationContext):
+        if ctx.author.id in interchat_bans["end"]:
+            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            return
         for i, tunnel in enumerate(self.tunnels):
             if ctx.channel == tunnel["in"]:
                 if tunnel["permanent"]:
@@ -286,12 +312,19 @@ class interchat(commands.Cog):
         name_localizations=localise("cog.interchat.commands.address.name"),
         description_localisations=("cog.interchat.commands.address.desc"))
     async def address(self, ctx: discord.ApplicationContext):
+        if ctx.author.id in interchat_bans["address"]:
+            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            return
         await ctx.respond(localise("cog.interchat.answers.getaddress", ctx.interaction.locale).format(address=self.get_address(ctx.channel)))
-        
+
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.info.name"),
         description_localisations=("cog.interchat.commands.info.desc"))
     async def info(self, ctx: discord.ApplicationContext):
+        if ctx.author.id in interchat_bans["info"]:
+            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            return
+
         this_tunnel = None
         for i, tunnel in enumerate(self.tunnels):
             if ctx.channel == tunnel["in"] or ctx.channel == tunnel["out"]:
@@ -304,13 +337,12 @@ class interchat(commands.Cog):
             started=f"<t:{this_tunnel['started']}:R>",
             channel_out=f"{tunnel[out].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
             address_out=self.get_address(tunnel["out"]),
-            out_here=("(here)" if ctx.channel == tunnel["out"] else ""),
+            out_here=(f"({localise('generic.here', ctx.onteraction.locale)})" if ctx.channel == tunnel["out"] else ""),
             channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
             address_in=self.get_address(tunnel["in"]),
-            in_here=("(here)" if ctx.channel == tunnel["in"] else ""),
-            permanent=("Yes" if tunnel["permanent"] else "No")
+            in_here=(f"({localise('generic.here', ctx.onteraction.locale)})" if ctx.channel == tunnel["in"] else ""),
+            permanent=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale))
         ))
-        
 
 def setup(bot):
     bot.add_cog(interchat(bot))

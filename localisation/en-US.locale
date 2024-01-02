@@ -1,4 +1,9 @@
 {
+	"generic": {
+		"yes": "yes",
+		"no": "no",
+		"here": "here"
+	},
 	"cog": {
 		"actions_commands": {
 			"command_group": {
@@ -260,7 +265,8 @@
 				"getinfo": {
 					"online": "This interchat connection was started {started} ago\n{channel_out} {address_out}{out_here} -> {channel_in} {address_in}{in_here}\nIs permanent: {permanent}",
 					"offline": "No open interchat connection in this channel found..."
-				}
+				},
+				"banned": "You are banned from this command."
 			}
 		}
 	},
