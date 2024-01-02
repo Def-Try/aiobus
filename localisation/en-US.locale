@@ -232,6 +232,39 @@
 					}
 				}
 			}
+		},
+		"interchat": {
+			"command_group": {
+				"name": "interchat",
+				"desc": "Interchat. Allow for messages to be sent between different channels."
+			},
+			"commands": {
+				"begin": {
+					"name": "begin",
+					"desc": "Open an interchat. You must have an address of server channel in order to open it."
+				},
+				"end": {
+					"name": "end",
+					"desc": "End current interchat communication in this channel."
+				},
+				"address": {
+					"name": "address",
+					"desc": "Get an address of a channel this command was executed in."
+				}
+			},
+			"answers": {
+				"getaddress": "Address of this channel is {address}",
+				"begin": {
+					"notfound": "Unable to trace this address to channel. Maybe you made a typo?"
+				},
+				"getinfo": {
+					"online": "This interchat connection was started {started} ago\n{channel_out} {address_out}{out_here} -> {channel_in} {address_in}{in_here}\nIs permanent: {permanent}",
+					"offline": "No open interchat connection in this channel found..."
+				}
+			}
 		}
+	},
+	"error": {
+		"locale_string_unknown": "unknown_locale_string"
 	}
 }

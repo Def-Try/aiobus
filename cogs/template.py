@@ -14,6 +14,8 @@ class template(commands.Cog):
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["name"],
         description_localisations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["desc"])
+    def cmd(self, ctx: discord.ApplicationContext):
+        await ctx.reply("template")
 
 def setup(bot):
     bot.add_cog(template(bot))
