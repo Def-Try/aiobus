@@ -80,7 +80,7 @@ class interchat(commands.Cog):
             if tunnel["in"] == fromch:
                 return False
 
-        whookless = True
+        whookless = isinstance(fromch, discord.abc.PrivateChannel) or isinstance(toch, discord.abc.PrivateChannel) or isinstance(fromch, discord.PartialMessageable) or isinstance(toch, discord.PartialMessageable)
         self.tunnels.append({**{"out": fromch, "in": toch, 
             "messages": [], "rmessages": [], "permanent": False,
             "started": round(time.time()), "whookless": whookless}, **({
@@ -335,12 +335,12 @@ class interchat(commands.Cog):
             return
         await ctx.respond(localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale).format(
             started=f"<t:{this_tunnel['started']}:R>",
-            channel_out=f"{tunnel[out].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
+            channel_out=f"{tunnel['out'].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
             address_out=self.get_address(tunnel["out"]),
-            out_here=(f"({localise('generic.here', ctx.onteraction.locale)})" if ctx.channel == tunnel["out"] else ""),
+            out_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["out"] else ""),
             channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
             address_in=self.get_address(tunnel["in"]),
-            in_here=(f"({localise('generic.here', ctx.onteraction.locale)})" if ctx.channel == tunnel["in"] else ""),
+            in_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["in"] else ""),
             permanent=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale))
         ))
 
