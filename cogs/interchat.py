@@ -113,9 +113,10 @@ class interchat(commands.Cog):
                         avatar_url=(message.author.default_avatar.url if not message.author.avatar.url else message.author.avatar.url),
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments],
-                        wait=True
+                        wait=True,
+                        allowed_mentions=discord.AllowedMentions.none()
                         ) if not itunnel["whookless"] else 
-                    itunnel["in"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.content,
+                    itunnel["in"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments]))
                     )
@@ -140,9 +141,10 @@ class interchat(commands.Cog):
                         avatar_url=(message.author.default_avatar.url if not message.author.avatar.url else message.author.avatar.url),
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments],
-                        wait=True
+                        wait=True,
+                        allowed_mentions=discord.AllowedMentions.none()
                         ) if not itunnel["whookless"] else 
-                    itunnel["out"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.content,
+                    itunnel["out"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments]))
                     )
@@ -171,10 +173,11 @@ class interchat(commands.Cog):
                     itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["inwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
                             content=message.content, 
                             embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                            files=[await i.to_file() for i in message.attachments]
+                            files=[await i.to_file() for i in message.attachments],
+                            allowed_mentions=discord.AllowedMentions.none()
                         )
                 else:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = itunnel["messages"][itunnel["rmessages"].index(message_before)].edit((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.content,
+                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = itunnel["messages"][itunnel["rmessages"].index(message_before)].edit((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments])
                 itunnel["rmessages"][itunnel["rmessages"].index(message_before)] = message
@@ -196,10 +199,11 @@ class interchat(commands.Cog):
                     itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["inwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
                             content=message.content, 
                             embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                            files=[await i.to_file() for i in message.attachments]
+                            files=[await i.to_file() for i in message.attachments],
+                            allowed_mentions=discord.AllowedMentions.none()
                         )
                 else:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = itunnel["messages"][itunnel["rmessages"].index(message_before)].edit((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.content,
+                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = itunnel["messages"][itunnel["rmessages"].index(message_before)].edit((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments])
                 itunnel["rmessages"][itunnel["rmessages"].index(message_before)] = message
