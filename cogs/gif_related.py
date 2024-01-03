@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from nekosbest import Client, Result
 from config import CONFIG
-from localisation import LOCALISATIONS
+from localisation import localise
 
 import json
 
@@ -23,20 +23,20 @@ class gif_related(commands.Cog):
         self.bot = bot
 
     gif_cmds = discord.SlashCommandGroup("gif", "",
-        name_localizations=LOCALISATIONS["cog"]["gif_related"]["command_group"]["name"],
-        description_localisations=LOCALISATIONS["cog"]["gif_related"]["command_group"]["desc"])
+        name_localizations=localise("cog.gif_related.command_group.name"),
+        description_localisations=localise("cog.gif_related.command_group.desc"))
 
     @gif_cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["name"],
-        description_localisations=LOCALISATIONS["cog"]["gif_related"]["commands"]["findgif"]["desc"])
+        name_localizations=localise("cog.gif_related.commands.findgif.name"),
+        description_localisations=localise("cog.gif_related.commands.findgif.desc"))
     async def findgif(self, ctx: discord.ApplicationContext, category: discord.Option(str)):
         locale = ctx.interaction.locale
         if category not in categories:
-            await ctx.respond(LOCALISATIONS["cog"]["gif_related"]["answers"]["findgif"]["invalid_category"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}").replace("{categories}", ", ".join(categories)))
+            await ctx.respond(localise("cog.gif_related.answers.findgif.invalid_category", locale).format(categories=", ".join(categories)))
             return
         result = await nekosbest_client.get_image(category, 1)
         embed = discord.Embed(
-            title=LOCALISATIONS["cog"]["gif_related"]["answers"]["findgif"]["title"].get(locale, f"ERR: LOCALE_NOT_FOUND: {locale}"),
+            title=localise("cog.gif_related.answers.findgif.title", locale),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)

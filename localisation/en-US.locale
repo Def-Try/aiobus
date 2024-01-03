@@ -165,6 +165,16 @@
 					},
 					"nod": {
 						"self": "{member} nods"
+					},
+					"portal_cancel": "Portal opening canceled.",
+					"portal": {
+						"step1": "Great! Now repeat this command in channel you want to open portal.",
+						"step2": "Done! Portal's opened",
+						"opening": {
+							"title": "Portal creation",
+							"from": "{member} opens a portal to {channel}!",
+							"to": "A portal opens here from {channel}!"
+						}
 					}
 				}
 			}
@@ -235,6 +245,38 @@
 						"no_output": "Running has taken more than {timeout} seconds.",
 						"with_output": "Running has taken more than {timeout} seconds.\nOutput:\n```\n{output}\n```"
 					}
+				}
+			}
+		},
+		"rp_utils": {
+			"command_group": {
+				"name": "rp_utils",
+				"desc": "Utils for help, moderating, and doing RP."
+			},
+			"commands": {
+				"clean_offtopic": {
+					"name": "clean_offtopic",
+					"desc": "Clean offtopic messages in this channel"
+				},
+				"init_rp_channel": {
+					"name": "init_rp_channel",
+					"desc": "Mark this channel as RP channel."
+				}
+			},
+			"answers": {
+				"clean_offtopic": {
+					"message": {
+						"_1": "{x} messages will be deleted.",
+						"_2..4": "{x} messages will be deleted.",
+						"_5..9+0": "{x} messages will be deleted.",
+						"HOWTHEFUCK": "{x} messages will be deleted."
+					},
+					"audit": "Removing offtopic messages from RP channel (message prefix is one of {prefixes})"
+				},
+				"user_afk": "*{user} has a blank, distracted look, and {user} does not react to anything at all. Perhaps {user} will come out of this state soon.*",
+				"init_rp_channel": {
+					"ok": "RP channel initialised",
+					"already_initialised": "This channel is already initialised as an RP channel"
 				}
 			}
 		},

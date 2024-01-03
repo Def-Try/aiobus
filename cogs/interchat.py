@@ -39,6 +39,13 @@ class interchat(commands.Cog):
 
     @commands.Cog.listener("on_ready")
     async def complete_init_interchat(self):
+
+        async def fetch_message(channel, mid):
+            try:
+                return await channel.fetch_message(mid)
+            except:
+                return None
+
         for tunnel in self.tdb:
             self.tunnels.append({})
             rtunnel = self.tunnels[-1]
@@ -48,8 +55,8 @@ class interchat(commands.Cog):
             if not tunnel["whookless"]:
                 rtunnel["outwhook"] = await discord.Webhook.from_url(tunnel["outwhook"], session=aiohttp.ClientSession()).fetch()
                 rtunnel["inwhook"] = await discord.Webhook.from_url(tunnel["inwhook"], session=aiohttp.ClientSession()).fetch()
-            rtunnel["messages"] = list(filter(lambda x: x, [await rtunnel["out" if i[1] else "in"].fetch_message(i[0]) for i in tunnel["messages"]]))
-            rtunnel["rmessages"] = list(filter(lambda x: x, [await rtunnel["out" if i[1] else "in"].fetch_message(i[0]) for i in tunnel["rmessages"]]))
+            rtunnel["messages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["messages"]]))
+            rtunnel["rmessages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["rmessages"]]))
             rtunnel["permanent"] = tunnel["permanent"]
             rtunnel["started"] = tunnel["started"]
 

@@ -1,4 +1,7 @@
 import json
+from config import CONFIG
+
+DEFAULT_LOCALE = CONFIG["locale"]
 
 LOCALES = ["en-US", "ru"]
 LOADED_LOCALES = []
@@ -32,8 +35,10 @@ def localise(string, locale=None):
 		if localisations is None: break
 	if localisations is None and locale is None:
 		return LOCALISATIONS["error"]["locale_string_unknown"]
-	if localisations is None and locale is not None:
-		return LOCALISATIONS["error"]["locale_string_unknown"].get(locale, "error.locale_string_unknown."+locale)
+	if localisations is None:
+		return LOCALISATIONS["error"]["locale_string_unknown"].get(locale, 
+			LOCALISATIONS["error"]["locale_string_unknown"].get(DEFAULT_LOCALE, 
+				"error.locale_string_unknown."+locale))
 	if locale is None:
 		return localisations
-	return localisations.get(locale, string+"."+locale)
+	return localisations.get(locale, localisations.get(DEFAULT_LOCALE, string+"."+locale))
