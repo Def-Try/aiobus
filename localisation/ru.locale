@@ -2,7 +2,8 @@
 	"generic": {
 		"yes": "да",
 		"no": "нет",
-		"here": "здесь"
+		"here": "здесь",
+		"banned_from_command": "Вы забанены от использования данной команды."
 	},
 	"cog": {
 		"actions_commands": {
@@ -309,10 +310,9 @@
 					"notfound": "Невозможно вычислить канал назначения... Может быть вы сделали опечатку?"
 				},
 				"getinfo": {
-					"online": "Данный интерчат канал был открыт {started}\n{channel_out} {address_out}{out_here} -> {channel_in} {address_in}{in_here}\nПерманентный: {permanent}",
+					"online": "Данный интерчат канал был открыт {started}\n{address_out}{out_here} -> {address_in}{in_here}\nПерманентный: {permanent}",
 					"offline": "Открытого интерчат соединения в этом канале не найдено..."
-				},
-				"banned": "Вы забанены от использования данной команды."
+				}
 			}
 		}
 	},

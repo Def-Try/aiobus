@@ -10,7 +10,7 @@ import string
 import aiohttp
 
 # interchat bans.
-# michaai / UID 629999906429337600: opening and interacting with interchats.
+# michaai / UID 629999906429337600: opening, ending, and in general interacting with interchats.
 #      reason: just a clown. spammed a bunch of NSFW links and got around ban with this thing.
 interchat_bans = {
     "begin": [
@@ -75,6 +75,9 @@ class interchat(commands.Cog):
     def generate_address(self):
         c = (string.ascii_uppercase + string.digits)
         return "".join(random.choices(c, k=3))+"-"+"".join(random.choices(c, k=4))+"-"+"".join(random.choices(c, k=2))
+
+    def address_string(self, channel):
+        return f"[[ {channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'}, {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}, {self.get_address(channel)} ]]"
 
     async def start_interserver(self, fromch, toch):
         for tunnel in self.tunnels:
@@ -223,7 +226,7 @@ class interchat(commands.Cog):
                     sticker_embeds.append(discord.Embed(url=i.url))
                     sticker_embeds[-1].set_image(url=i.url)
                 if not itunnel["whookless"]:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["inwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
+                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["outwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
                             content=message.content, 
                             embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                             files=[await i.to_file() for i in message.attachments],
@@ -264,7 +267,7 @@ class interchat(commands.Cog):
         description_localisations=localise("cog.interchat.commands.begin.desc"))
     async def begin(self, ctx: discord.ApplicationContext, address: str):
         if ctx.author.id in interchat_bans["begin"]:
-            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
             return
         addrs = self.db.search(Query().address == address)
         if len(addrs) == 0:
@@ -278,7 +281,7 @@ class interchat(commands.Cog):
         await ctx.response.defer(ephemeral=True)
         if await self.start_interserver(ctx.channel, channel):
             await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) and not isinstance(ctx.channel, discord.PartialMessageable) else 'DM'} - {ctx.channel.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) and not isinstance(ctx.channel, discord.PartialMessageable) else ctx.channel.recipient.name}")
-            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - `{self.get_address(channel)}` requested connection.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}")
+            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - connection requested to `{self.get_address(channel)}`.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}")
             await ctx.followup.send("OK", ephemeral=True)
         else:
             await ctx.followup.send("Tunnel failed to open - there is already online connection using that address.", ephemeral=True)
@@ -288,7 +291,7 @@ class interchat(commands.Cog):
         description_localisations=localise("cog.interchat.commands.end.desc"))
     async def end(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["end"]:
-            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
             return
         for i, tunnel in enumerate(self.tunnels):
             if ctx.channel == tunnel["in"]:
@@ -296,8 +299,8 @@ class interchat(commands.Cog):
                     await ctx.respond("Unable to close permanent tunnel. Contact googer_ if you want to move or close this tunnel.")
                     return
                 await ctx.respond("OK", ephemeral=True)
-                await ctx.channel.send("# Incoming interchat communication channel ended by this side.\nTunnel closed.")
-                await tunnel["out"].send("# Outgoing interchat communication channel ended by receiver side.\nTunnel closed.")
+                await ctx.channel.send(f"# Incoming interchat communication channel ended by this side.\nTunnel closed. {self.address_string(tunnel['out'])} -> {self.address_string(tunnel['in'])}({localise('generic.here', ctx.interaction.locale)})")
+                await tunnel["out"].send(f"# Outgoing interchat communication channel ended by receiver side.\nTunnel closed. {self.address_string(tunnel['out'])}({localise('generic.here', ctx.interaction.locale)}) -> {self.address_string(tunnel['in'])}")
                 await self.end_interserver(tunnel)
                 self.tunnels.pop(i)
                 return
@@ -306,8 +309,8 @@ class interchat(commands.Cog):
                     await ctx.respond("Unable to close permanent tunnel. Contact googer_ if you want to move or close this tunnel.")
                     return
                 await ctx.respond("OK", ephemeral=True)
-                await ctx.channel.send("# Outgoing interchat communication channel ended by this side.\nTunnel closed.")
-                await tunnel["in"].send("# Incoming interchat communication channel ended by opener side.\nTunnel closed.")
+                await ctx.channel.send(f"# Outgoing interchat communication channel ended by this side.\nTunnel closed. {self.address_string(tunnel['out'])}({localise('generic.here', ctx.interaction.locale)}) -> {self.address_string(tunnel['in'])}")
+                await tunnel["in"].send(f"# Incoming interchat communication channel ended by opener side.\nTunnel closed. {self.address_string(tunnel['out'])} -> {self.address_string(tunnel['in'])}({localise('generic.here', ctx.interaction.locale)})")
                 await self.end_interserver(tunnel)
                 self.tunnels.pop(i)
                 return
@@ -320,7 +323,7 @@ class interchat(commands.Cog):
         description_localisations=("cog.interchat.commands.address.desc"))
     async def address(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["address"]:
-            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
             return
         await ctx.respond(localise("cog.interchat.answers.getaddress", ctx.interaction.locale).format(address=self.get_address(ctx.channel)))
 
@@ -329,7 +332,7 @@ class interchat(commands.Cog):
         description_localisations=("cog.interchat.commands.info.desc"))
     async def info(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["info"]:
-            await ctx.respond(localise("cog.interchat.answers.banned", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
             return
 
         this_tunnel = None
@@ -342,11 +345,9 @@ class interchat(commands.Cog):
             return
         await ctx.respond(localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale).format(
             started=f"<t:{this_tunnel['started']}:R>",
-            channel_out=f"{tunnel['out'].guild.name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['out'].name if not isinstance(tunnel['out'], discord.abc.PrivateChannel) else tunnel['out'].recipient.name}",
-            address_out=self.get_address(tunnel["out"]),
+            address_out=self.address_string(tunnel["out"]),
             out_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["out"] else ""),
-            channel_in=f"{tunnel['in'].guild.name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else 'DM'}, {tunnel['in'].name if not isinstance(tunnel['in'], discord.abc.PrivateChannel) else tunnel['in'].recipient.name}",
-            address_in=self.get_address(tunnel["in"]),
+            address_in=self.address_string(tunnel["in"]),
             in_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["in"] else ""),
             permanent=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale))
         ))

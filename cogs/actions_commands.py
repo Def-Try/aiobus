@@ -9,6 +9,12 @@ nekosbest_client = Client()
 
 portals_awaiting = {}
 
+# users banned entirely from this cog commands, basically
+# turely_159 / UID 781110424783290388: spams them a bunch. does not know when to stop.
+actions_bans = [
+    781110424783290388 # @turely_159
+]
+
 class actions_commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -21,6 +27,9 @@ class actions_commands(commands.Cog):
         description_localisations=localise("cog.actions_commands.command_group.desc"))
 
     async def act(self, action: str, ctx: discord.ApplicationContext):
+        if ctx.author.id in actions_bans:
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            return
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
         localis_act = localise(f"cog.actions_commands.answers.action.{action}.self", ctx.interaction.locale)
@@ -33,6 +42,9 @@ class actions_commands(commands.Cog):
         await ctx.respond(embed=embed)
 
     async def act_req_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+        if ctx.author.id in actions_bans:
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            return
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
         localis_act_self = localise(f"cog.actions_commands.answers.action.{action}.self", ctx.interaction.locale)
@@ -51,6 +63,9 @@ class actions_commands(commands.Cog):
         await ctx.respond(embed=embed)
 
     async def act_with_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
+        if ctx.author.id in actions_bans:
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            return
         result = await nekosbest_client.get_image(action, 1)
         locale = ctx.interaction.locale
         localis_act_self = localise(f"cog.actions_commands.answers.action.{action}.self", ctx.interaction.locale)
