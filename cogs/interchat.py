@@ -42,12 +42,15 @@ strings = { # TODO: localisation <- cogs.interchat.strings.*
     }
 }
 
-class interchat(commands.Cog):
+class interchat(commands.Cog, name="interchat"):
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB('databases/interchat.db')
         self.tdb = TinyDB('databases/interchat_tunnels.db')
         self.tunnels = []
+
+    async def unload(self):
+        pass
 
     @commands.Cog.listener("on_ready")
     async def complete_init_interchat(self):
@@ -64,10 +67,8 @@ class interchat(commands.Cog):
             rtunnel["in"] = self.bot.get_channel(tunnel["in"]) or self.bot.get_partial_messageable(tunnel["in"])
             rtunnel["whookless"] = tunnel["whookless"]
             if not tunnel["whookless"]:
-                rtunnel["outwhook"] = await discord.Webhook.from_url(tunnel["outwhook"], session=aiohttp.ClientSession()).fetch()
-                rtunnel["outwhook.managed"] = True
-                rtunnel["inwhook"] = await discord.Webhook.from_url(tunnel["inwhook"], session=aiohttp.ClientSession()).fetch()
-                rtunnel["inwhook.managed"] = True
+                rtunnel["outwhook"] = await discord.Webhook.from_url(tunnel["outwhook"], session=self.bot.http._HTTPClient__session).fetch()
+                rtunnel["inwhook"] = await discord.Webhook.from_url(tunnel["inwhook"], session=self.bot.http._HTTPClient__session).fetch()
             rtunnel["messages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["messages"]]))
             rtunnel["rmessages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["rmessages"]]))
             rtunnel["permanent"] = tunnel["permanent"]
@@ -122,11 +123,7 @@ class interchat(commands.Cog):
     async def end_interchat(self, tunnel):
         if not tunnel["whookless"]:
             await tunnel["outwhook"].delete()
-            if tunnel.get("outwhook.managed"):
-                await tunnel["outwhook"].session.close()
             await tunnel["inwhook"].delete()
-            if tunnel.get("inwhook.managed"):
-                await tunnel["inwhook"].session.close()
         q = Query()
         self.tdb.remove(q["in"] == tunnel["in"].id and q["out"] == tunnel["out"].id)
         self.tunnels.pop(self.tunnels.index(tunnel))
@@ -219,11 +216,11 @@ class interchat(commands.Cog):
 
     cmds = discord.SlashCommandGroup("interchat", "",
         name_localizations=localise("cog.interchat.command_group.name"),
-        description_localisations=localise("cog.interchat.command_group.desc"))
+        description_localizations=localise("cog.interchat.command_group.desc"))
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.begin.name"),
-        description_localisations=localise("cog.interchat.commands.begin.desc"))
+        description_localizations=localise("cog.interchat.commands.begin.desc"))
     async def begin(self, ctx: discord.ApplicationContext, address: str):
         if ctx.author.id in interchat_bans["begin"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
@@ -264,7 +261,7 @@ class interchat(commands.Cog):
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.end.name"),
-        description_localisations=localise("cog.interchat.commands.end.desc"))
+        description_localizations=localise("cog.interchat.commands.end.desc"))
     async def end(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["end"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
@@ -307,7 +304,7 @@ class interchat(commands.Cog):
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.address.name"),
-        description_localisations=("cog.interchat.commands.address.desc"))
+        description_localizations=localise("cog.interchat.commands.address.desc"))
     async def address(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["address"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
@@ -316,7 +313,7 @@ class interchat(commands.Cog):
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.info.name"),
-        description_localisations=("cog.interchat.commands.info.desc"))
+        description_localizations=localise("cog.interchat.commands.info.desc"))
     async def info(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["info"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
@@ -344,3 +341,6 @@ class interchat(commands.Cog):
 
 def setup(bot):
     bot.add_cog(interchat(bot))
+
+def teardown(bot):
+    bot.loop.call_soon(bot.get_cog("interchat").unload)

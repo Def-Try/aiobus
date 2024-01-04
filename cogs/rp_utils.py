@@ -25,11 +25,11 @@ class rp_utils(commands.Cog):
 
     rpu = discord.SlashCommandGroup("rp_utils", "",
         name_localizations=localise("cog.rp_utils.command_group.name"),
-        description_localisations=localise("cog.rp_utils.command_group.desc"))
+        description_localizations=localise("cog.rp_utils.command_group.desc"))
 
     @rpu.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.rp_utils.commands.clean_offtopic.name"),
-        description_localisations=localise("cog.rp_utils.commands.clean_offtopic.desc"))
+        description_localizations=localise("cog.rp_utils.commands.clean_offtopic.desc"))
     async def clean_offtopic(self, ctx: discord.ApplicationContext):
         await ctx.response.defer()
         locale = ctx.interaction.locale
@@ -52,7 +52,7 @@ class rp_utils(commands.Cog):
 
     @rpu.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.rp_utils.commands.init_rp_channel.name"),
-        description_localisations=localise("cog.rp_utils.commands.init_rp_channel.desc"))
+        description_localizations=localise("cog.rp_utils.commands.init_rp_channel.desc"))
     async def init_rp_channel(self, ctx: discord.ApplicationContext):
         if {"type": "RP_CHANNEL", "id": ctx.channel.id} in self.rp_channels:
             await ctx.respond(localise("cog.rp_utils.answers.init_rp_channel.already_initialised", ctx.interaction.locale))

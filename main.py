@@ -6,6 +6,7 @@ import colorama
 import termcolor
 import json
 import time
+import traceback
 
 from config import CONFIG, TOKEN
 
@@ -41,6 +42,7 @@ def reload_cogs(bot):
         except Exception as e:
             timings['unload'][name] = round((time.perf_counter() - start) * 1000, 2)
             bot.logger.error(f"Fatal error while unloading cog {name}: {e}")
+            traceback.print_exc()
             unload_fails.append(name)
 
     bot._cogs = []
@@ -59,6 +61,7 @@ def reload_cogs(bot):
         except Exception as e:
             timings['load'][cog] = round((time.perf_counter() - start) * 1000, 2)
             bot.logger.error(f"Fatal error while loading cog {cog}: {e}")
+            traceback.print_exc()
             load_fails.append(cog)
 
     return unload_fails+load_fails, bot._cogs, timings

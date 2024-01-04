@@ -24,11 +24,11 @@ class gif_related(commands.Cog):
 
     gif_cmds = discord.SlashCommandGroup("gif", "",
         name_localizations=localise("cog.gif_related.command_group.name"),
-        description_localisations=localise("cog.gif_related.command_group.desc"))
+        description_localizations=localise("cog.gif_related.command_group.desc"))
 
     @gif_cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.gif_related.commands.findgif.name"),
-        description_localisations=localise("cog.gif_related.commands.findgif.desc"))
+        description_localizations=localise("cog.gif_related.commands.findgif.desc"))
     async def findgif(self, ctx: discord.ApplicationContext, category: discord.Option(str)):
         locale = ctx.interaction.locale
         if category not in categories:

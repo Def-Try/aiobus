@@ -10,10 +10,10 @@ class template(commands.Cog):
 
     cmds = discord.SlashCommandGroup("", "",
         name_localizations=LOCALISATIONS["cog"]["template"]["command_group"]["name"],
-        description_localisations=LOCALISATIONS["cog"]["template"]["command_group"]["desc"])
+        description_localizations=LOCALISATIONS["cog"]["template"]["command_group"]["desc"])
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["name"],
-        description_localisations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["desc"])
+        description_localizations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["desc"])
     def cmd(self, ctx: discord.ApplicationContext):
         await ctx.reply("template")
 

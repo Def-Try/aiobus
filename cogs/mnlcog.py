@@ -20,11 +20,11 @@ class MnLCog(commands.Cog):
 
     mnlcmds = discord.SlashCommandGroup("mnl", "",
         name_localizations=localise("cog.mnlcog.command_group.name"),
-        description_localisations=localise("cog.mnlcog.command_group.desc"))
+        description_localizations=localise("cog.mnlcog.command_group.desc"))
 
     @mnlcmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.mnlcog.commands.init.name"),
-        description_localisations=localise("cog.mnlcog.commands.init.desc"))
+        description_localizations=localise("cog.mnlcog.commands.init.desc"))
     async def init(self, ctx: discord.ApplicationContext):
         locale = ctx.interaction.locale
         if ctx.author.id in self.engines.keys():
@@ -37,7 +37,7 @@ class MnLCog(commands.Cog):
 
     @mnlcmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.mnlcog.commands.config.name"),
-        description_localisations=localise("cog.mnlcog.commands.config.desc"))
+        description_localizations=localise("cog.mnlcog.commands.config.desc"))
     async def configure(self, ctx: discord.ApplicationContext, cfgname: discord.Option(str, choices=['persistent']), cfgval: str):
         if not ctx.author.id in self.engines.keys():
             await ctx.respond(localise("cog.mnlcog.answers.not_ready", locale))
@@ -53,7 +53,7 @@ class MnLCog(commands.Cog):
 
     @mnlcmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.mnlcog.commands.run.name"),
-        description_localisations=localise("cog.mnlcog.commands.run.desc"))
+        description_localizations=localise("cog.mnlcog.commands.run.desc"))
     async def run(self, ctx: discord.ApplicationContext, code: str):
         if not ctx.author.id in self.engines.keys():
             await ctx.respond(localise("cog.mnlcog.answers.not_ready", locale))
