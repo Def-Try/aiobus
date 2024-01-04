@@ -306,8 +306,15 @@
 					"notfound": "Unable to trace this address to channel. Maybe you made a typo?"
 				},
 				"getinfo": {
-					"online": "This interchat connection was started {started} ago\n{address_out}{out_here} -> {address_in}{in_here}\nIs permanent: {permanent}",
+					"online": "Found interchat tunnel open in this channel.",
 					"offline": "No open interchat connection in this channel found..."
+				},
+				"info": {
+					"started": "Started at",
+					"our_side": "Our side",
+					"incoming_to": "Incoming to",
+					"outgoing_from": "Outgoing from",
+					"permanent": "Is permanent?"
 				}
 			}
 		}

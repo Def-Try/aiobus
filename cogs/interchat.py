@@ -30,6 +30,20 @@ interchat_bans = {
     ]
 }
 
+strings = { # TODO: localisation <- cogs.interchat.strings.*
+    "reply": "Reply⤴️",
+    "init": {
+        "incoming": "# Incoming interchat communication channel opened!\n",
+        "outgoing": "# Outgoing interchat communication channel opened!\n",
+        "info": "{address_out}{out_here} -> {address_in}{in_here}\n{time_started}"
+    },
+    "end": {
+        "incoming": "# Incoming interchat communication channel closed by {side} side!\n",
+        "outgoing": "# Outgoing interchat communication channel closed by {side} side!\n",
+        "info": "{address_out}{out_here} -> {address_in}{in_here}\n{time_started}"
+    }
+}
+
 class interchat(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -77,9 +91,9 @@ class interchat(commands.Cog):
         return "".join(random.choices(c, k=3))+"-"+"".join(random.choices(c, k=4))+"-"+"".join(random.choices(c, k=2))
 
     def address_string(self, channel):
-        return f"[[ {channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'}, {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}, {self.get_address(channel)} ]]"
+        return f"`{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'}, {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}`, `{self.get_address(channel)}`"
 
-    async def start_interserver(self, fromch, toch):
+    async def start_interchat(self, fromch, toch):
         for tunnel in self.tunnels:
             if tunnel["out"] == fromch:
                 return False
@@ -94,8 +108,8 @@ class interchat(commands.Cog):
         self.tunnels.append({**{"out": fromch, "in": toch, 
             "messages": [], "rmessages": [], "permanent": False,
             "started": round(time.time()), "whookless": whookless}, **({
-                "outwhook": await fromch.create_webhook(name="Outgoing interserver tunnel"),
-                "inwhook":  await toch.create_webhook(name="Incoming interserver tunnel")
+                "outwhook": await fromch.create_webhook(name="Outgoing interchat tunnel"),
+                "inwhook":  await toch.create_webhook(name="Incoming interchat tunnel")
                 } if not whookless else {})})
         self.tdb.insert({
             **{"in": toch.id, "out": fromch.id,
@@ -105,14 +119,17 @@ class interchat(commands.Cog):
             )
         return True
 
-    async def end_interserver(self, tunnel):
+    async def end_interchat(self, tunnel):
         if not tunnel["whookless"]:
             await tunnel["outwhook"].delete()
+            await tunnel["outwhook"].session.close()
             await tunnel["inwhook"].delete()
+            await tunnel["inwhook"].session.close()
         q = Query()
         self.tdb.remove(q["in"] == tunnel["in"].id and q["out"] == tunnel["out"].id)
+        self.tunnels.pop(self.tunnels.index(tunnel))
 
-    async def update_interserver(self, tunnel):
+    async def update_interchat(self, tunnel):
         q = Query()
         self.tdb.update(
             {"messages": [[i.id, i.channel.id == tunnel["out"].id] for i in tunnel["messages"]], "rmessages": [[i.id, i.channel.id == tunnel["out"].id] for i in tunnel["rmessages"]]},
@@ -125,11 +142,11 @@ class interchat(commands.Cog):
         if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
-            if message.channel.id == itunnel["out"].id:
+            if message.channel.id == itunnel["out"].id or message.channel.id == itunnel["in"].id:
                 sticker_embeds = []
                 ref_embed = None
                 if message.reference:
-                    ref_embed = discord.Embed(title="Replying to...", description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
+                    ref_embed = discord.Embed(title=strings["reply"], description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
                     ref_embed.set_author(
                         name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
                         icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
@@ -138,7 +155,7 @@ class interchat(commands.Cog):
                     sticker_embeds.append(discord.Embed(url=i.url))
                     sticker_embeds[-1].set_image(url=i.url)
                 itunnel["messages"].append(
-                    await (itunnel["inwhook"].send(message.content, 
+                    await (itunnel["inwhook" if message.channel.id == itunnel["out"].id else "outwhook"].send(message.content,
                         username=(message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick),
                         avatar_url=(message.author.default_avatar.url if not message.author.avatar.url else message.author.avatar.url),
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
@@ -151,35 +168,7 @@ class interchat(commands.Cog):
                         files=[await i.to_file() for i in message.attachments]))
                     )
                 itunnel["rmessages"].append(message)
-                await self.update_interserver(itunnel)
-                break
-            if message.channel.id == itunnel["in"].id:
-                sticker_embeds = []
-                ref_embed = None
-                if message.reference:
-                    ref_embed = discord.Embed(title="Replying to...", description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
-                    ref_embed.set_author(
-                        name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
-                        icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
-
-                for i in message.stickers:
-                    sticker_embeds.append(discord.Embed(url=i.url))
-                    sticker_embeds[-1].set_image(url=i.url)
-                itunnel["messages"].append(
-                    await (itunnel["outwhook"].send(message.content, 
-                        username=(message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick),
-                        avatar_url=(message.author.default_avatar.url if not message.author.avatar.url else message.author.avatar.url),
-                        embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                        files=[await i.to_file() for i in message.attachments],
-                        wait=True,
-                        allowed_mentions=discord.AllowedMentions.none()
-                        ) if not itunnel["whookless"] else 
-                    itunnel["out"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
-                        embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                        files=[await i.to_file() for i in message.attachments]))
-                    )
-                itunnel["rmessages"].append(message)
-                await self.update_interserver(itunnel)
+                await self.update_interchat(itunnel)
                 break
 
     @commands.Cog.listener("on_message_edit")
@@ -187,11 +176,11 @@ class interchat(commands.Cog):
         if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
-            if message.channel == itunnel["out"]:
+            if message.channel.id == itunnel["out"].id or message.channel.id == itunnel["in"].id:
                 sticker_embeds = []
                 ref_embed = None
                 if message.reference:
-                    ref_embed = discord.Embed(title="Replying to...", description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
+                    ref_embed = discord.Embed(title=strings["reply"], description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
                     ref_embed.set_author(
                         name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
                         icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
@@ -200,8 +189,8 @@ class interchat(commands.Cog):
                     sticker_embeds.append(discord.Embed(url=i.url))
                     sticker_embeds[-1].set_image(url=i.url)
                 if not itunnel["whookless"]:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["inwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
-                            content=message.content, 
+                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["inwhook" if message.channel.id == itunnel["out"] else "outwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
+                            content=message.content,
                             embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                             files=[await i.to_file() for i in message.attachments],
                             allowed_mentions=discord.AllowedMentions.none()
@@ -211,33 +200,7 @@ class interchat(commands.Cog):
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments])
                 itunnel["rmessages"][itunnel["rmessages"].index(message_before)] = message
-                await self.update_interserver(itunnel)
-                break
-            if message.channel == itunnel["in"]:
-                sticker_embeds = []
-                ref_embed = None
-                if message.reference:
-                    ref_embed = discord.Embed(title="Replying to...", description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
-                    ref_embed.set_author(
-                        name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
-                        icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
-
-                for i in message.stickers:
-                    sticker_embeds.append(discord.Embed(url=i.url))
-                    sticker_embeds[-1].set_image(url=i.url)
-                if not itunnel["whookless"]:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = await itunnel["outwhook"].edit_message(itunnel["messages"][itunnel["rmessages"].index(message_before)].id,
-                            content=message.content, 
-                            embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                            files=[await i.to_file() for i in message.attachments],
-                            allowed_mentions=discord.AllowedMentions.none()
-                        )
-                else:
-                    itunnel["messages"][itunnel["rmessages"].index(message_before)] = itunnel["messages"][itunnel["rmessages"].index(message_before)].edit((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
-                        embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
-                        files=[await i.to_file() for i in message.attachments])
-                itunnel["rmessages"][itunnel["rmessages"].index(message_before)] = message
-                await self.update_interserver(itunnel)
+                await self.update_interchat(itunnel)
                 break
 
     @commands.Cog.listener("on_message_delete")
@@ -245,17 +208,11 @@ class interchat(commands.Cog):
         if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
-            if message.channel == itunnel["out"]:
+            if message.channel.id == itunnel["out"].id or message.channel.id == itunnel["in"].id:
                 await itunnel["messages"][itunnel["rmessages"].index(message)].delete()
                 itunnel["messages"].pop(itunnel["rmessages"].index(message))
                 itunnel["rmessages"].pop(itunnel["rmessages"].index(message))
-                await self.update_interserver(itunnel)
-                break
-            if message.channel == itunnel["in"]:
-                await itunnel["messages"][itunnel["rmessages"].index(message)].delete()
-                itunnel["messages"].pop(itunnel["rmessages"].index(message))
-                itunnel["rmessages"].pop(itunnel["rmessages"].index(message))
-                await self.update_interserver(itunnel)
+                await self.update_interchat(itunnel)
                 break
 
     cmds = discord.SlashCommandGroup("interchat", "",
@@ -267,7 +224,7 @@ class interchat(commands.Cog):
         description_localisations=localise("cog.interchat.commands.begin.desc"))
     async def begin(self, ctx: discord.ApplicationContext, address: str):
         if ctx.author.id in interchat_bans["begin"]:
-            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
         addrs = self.db.search(Query().address == address)
         if len(addrs) == 0:
@@ -277,44 +234,76 @@ class interchat(commands.Cog):
         guid = addrs[0]["guid"]
         channel = self.bot.get_channel(chid) or self.bot.get_partial_messageable(chid)
         if channel == ctx.channel:
-            await ctx.respond("Unable to open interchat tunnel to the same channel you are in.", ephemeral=True)
+            await ctx.respond(localise("cogs.interchat.answers.begin.fail.same_channel", ctx.interaction.locale), ephemeral=True)
+            return
         await ctx.response.defer(ephemeral=True)
-        if await self.start_interserver(ctx.channel, channel):
-            await channel.send(f"# Incoming interchat communication channel.\nTunnel opened - `{self.get_address(ctx.channel)}` requested connection.\n{ctx.channel.guild.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) and not isinstance(ctx.channel, discord.PartialMessageable) else 'DM'} - {ctx.channel.name if not isinstance(ctx.channel, discord.abc.PrivateChannel) and not isinstance(ctx.channel, discord.PartialMessageable) else ctx.channel.recipient.name}")
-            await ctx.channel.send(f"# Outgoing interchat communication channel.\nTunnel opened - connection requested to `{self.get_address(channel)}`.\n{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'} - {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}")
+        if await self.start_interchat(ctx.channel, channel):
+            await channel.send(
+                strings["init"]["incoming"].format() +\
+                strings["init"]["info"].format(
+                    address_out=self.address_string(ctx.channel),
+                    address_in=self.address_string(channel),
+                    out_here="",
+                    in_here=f"({localise('generic.here', ctx.interaction.locale)})",
+                    time_started=f"<t:{round(time.time())}:F>"
+                )
+            )
+            await ctx.channel.send(
+                strings["init"]["outgoing"].format() +\
+                strings["init"]["info"].format(
+                    address_out=self.address_string(ctx.channel),
+                    address_in=self.address_string(channel),
+                    out_here=f"({localise('generic.here', ctx.interaction.locale)})",
+                    in_here="",
+                    time_started=f"<t:{round(time.time())}:F>"
+                )
+            )
             await ctx.followup.send("OK", ephemeral=True)
         else:
-            await ctx.followup.send("Tunnel failed to open - there is already online connection using that address.", ephemeral=True)
+            await ctx.followup.send(localise("cogs.interchat.answers.begin.fail.already_open", ctx.interaction.locale), ephemeral=True)
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.end.name"),
         description_localisations=localise("cog.interchat.commands.end.desc"))
     async def end(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["end"]:
-            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
         for i, tunnel in enumerate(self.tunnels):
-            if ctx.channel == tunnel["in"]:
+            if ctx.channel.id == tunnel["in"].id or ctx.channel.id == tunnel["out"].id:
                 if tunnel["permanent"]:
-                    await ctx.respond("Unable to close permanent tunnel. Contact googer_ if you want to move or close this tunnel.")
+                    await ctx.respond(localise("cogs.interchat.answers.end.fail.permanent_tunnel"))
                     return
                 await ctx.respond("OK", ephemeral=True)
-                await ctx.channel.send(f"# Incoming interchat communication channel ended by this side.\nTunnel closed. {self.address_string(tunnel['out'])} -> {self.address_string(tunnel['in'])}({localise('generic.here', ctx.interaction.locale)})")
-                await tunnel["out"].send(f"# Outgoing interchat communication channel ended by receiver side.\nTunnel closed. {self.address_string(tunnel['out'])}({localise('generic.here', ctx.interaction.locale)}) -> {self.address_string(tunnel['in'])}")
-                await self.end_interserver(tunnel)
-                self.tunnels.pop(i)
+                await tunnel["in"].send(
+                    strings["end"]["incoming"].format(
+                        side=("this" if ctx.channel.id == tunnel["in"].id else "opener")
+                    ) +\
+                    strings["end"]["info"].format(
+                        address_out=self.address_string(tunnel["out"]),
+                        address_in=self.address_string(tunnel["in"]),
+                        out_here="",
+                        in_here=f"({localise('generic.here', ctx.interaction.locale)})",
+                        time_started=f"<t:{tunnel['started']}:F>"
+                    )
+                )
+                await tunnel["out"].send(
+                    strings["end"]["outgoing"].format(
+                        side=("this" if ctx.channel.id == tunnel["out"].id else "receiver")
+                    ) +\
+                    strings["end"]["info"].format(
+                        address_out=self.address_string(tunnel["out"]),
+                        address_in=self.address_string(tunnel["in"]),
+                        out_here=f"({localise('generic.here', ctx.interaction.locale)})",
+                        in_here="",
+                        time_started=f"<t:{tunnel['started']}:F>"
+                    )
+                )
+
+                await self.end_interchat(tunnel)
                 return
-            if ctx.channel == tunnel["out"]:
-                if tunnel["permanent"]:
-                    await ctx.respond("Unable to close permanent tunnel. Contact googer_ if you want to move or close this tunnel.")
-                    return
-                await ctx.respond("OK", ephemeral=True)
-                await ctx.channel.send(f"# Outgoing interchat communication channel ended by this side.\nTunnel closed. {self.address_string(tunnel['out'])}({localise('generic.here', ctx.interaction.locale)}) -> {self.address_string(tunnel['in'])}")
-                await tunnel["in"].send(f"# Incoming interchat communication channel ended by opener side.\nTunnel closed. {self.address_string(tunnel['out'])} -> {self.address_string(tunnel['in'])}({localise('generic.here', ctx.interaction.locale)})")
-                await self.end_interserver(tunnel)
-                self.tunnels.pop(i)
-                return
-        await ctx.respond("No opened tunnel for this channel has been found", ephemeral=True)
+
+        await ctx.respond(localise("cogs.interchat.answers.end.fail.not_opened", ctx.interaction.locale), ephemeral=True)
 
 
 
@@ -323,7 +312,7 @@ class interchat(commands.Cog):
         description_localisations=("cog.interchat.commands.address.desc"))
     async def address(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["address"]:
-            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
         await ctx.respond(localise("cog.interchat.answers.getaddress", ctx.interaction.locale).format(address=self.get_address(ctx.channel)))
 
@@ -332,7 +321,7 @@ class interchat(commands.Cog):
         description_localisations=("cog.interchat.commands.info.desc"))
     async def info(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["info"]:
-            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale))
+            await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
 
         this_tunnel = None
@@ -340,17 +329,20 @@ class interchat(commands.Cog):
             if ctx.channel == tunnel["in"] or ctx.channel == tunnel["out"]:
                 this_tunnel = tunnel
                 break
+        embed = discord.Embed(title="Interchat Info")
         if not this_tunnel:
-            await ctx.respond(localise("cog.interchat.answers.getinfo.offline", ctx.interaction.locale))
+            embed.description = localise("cog.interchat.answers.getinfo.offline", ctx.interaction.locale)
+            embed.color = discord.Color.red()
+            await ctx.respond(embed=embed)
             return
-        await ctx.respond(localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale).format(
-            started=f"<t:{this_tunnel['started']}:R>",
-            address_out=self.address_string(tunnel["out"]),
-            out_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["out"] else ""),
-            address_in=self.address_string(tunnel["in"]),
-            in_here=(f"({localise('generic.here', ctx.interaction.locale)})" if ctx.channel == tunnel["in"] else ""),
-            permanent=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale))
-        ))
+        embed.description = localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale)
+        embed.add_field(name=localise("cog.interchat.answers.info.started", ctx.interaction.locale), value=f"<t:{this_tunnel['started']}:F>")
+        embed.add_field(name=localise("cog.interchat.answers.info.our_side", ctx.interaction.locale), value=("Receiver" if ctx.channel.id == tunnel["in"].id else "Opener"))
+        embed.add_field(name=localise("cog.interchat.answers.info.incoming_to", ctx.interaction.locale), value=self.address_string(tunnel["in"]))
+        embed.add_field(name=localise("cog.interchat.answers.info.outgoing_from", ctx.interaction.locale), value=self.address_string(tunnel["out"]))
+        embed.add_field(name=localise("cog.interchat.answers.info.permanent", ctx.interaction.locale), value=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale)))
+        embed.color = discord.Color.green()
+        await ctx.respond(embed=embed)
 
 def setup(bot):
     bot.add_cog(interchat(bot))

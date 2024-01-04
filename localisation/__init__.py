@@ -33,12 +33,8 @@ def localise(string, locale=None):
 	for i in localstring:
 		localisations = localisations.get(i, None)
 		if localisations is None: break
-	if localisations is None and locale is None:
-		return LOCALISATIONS["error"]["locale_string_unknown"]
 	if localisations is None:
-		return LOCALISATIONS["error"]["locale_string_unknown"].get(locale, 
-			LOCALISATIONS["error"]["locale_string_unknown"].get(DEFAULT_LOCALE, 
-				"error.locale_string_unknown."+locale))
+		localisations = {loc: string+"."+locale for loc in LOCALES}
 	if locale is None:
 		return localisations
 	return localisations.get(locale, localisations.get(DEFAULT_LOCALE, string+"."+locale))
