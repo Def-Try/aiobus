@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from config import CONFIG
-from localisation import localise
+from localisation import localise, DEFAULT_LOCALE
 from tinydb import TinyDB, Query
 import json
 import time
@@ -32,15 +32,13 @@ interchat_bans = {
 
 strings = { # TODO: localisation <- cogs.interchat.strings.*
     "reply": "Reply⤴️",
-    "init": {
-        "incoming": "# Incoming interchat communication channel opened!\n",
-        "outgoing": "# Outgoing interchat communication channel opened!\n",
-        "info": "{address_out}{out_here} -> {address_in}{in_here}\n{time_started}"
+    "begin": {
+        "incoming": "# Incoming interchat communication channel opened!",
+        "outgoing": "# Outgoing interchat communication channel opened!",
     },
     "end": {
-        "incoming": "# Incoming interchat communication channel closed by {side} side!\n",
-        "outgoing": "# Outgoing interchat communication channel closed by {side} side!\n",
-        "info": "{address_out}{out_here} -> {address_in}{in_here}\n{time_started}"
+        "incoming": "# Incoming interchat communication channel closed by {side}!",
+        "outgoing": "# Outgoing interchat communication channel closed by {side}!",
     }
 }
 
@@ -61,18 +59,20 @@ class interchat(commands.Cog):
                 return None
 
         for tunnel in self.tdb:
-            self.tunnels.append({})
-            rtunnel = self.tunnels[-1]
+            rtunnel = {}
             rtunnel["out"] = self.bot.get_channel(tunnel["out"]) or self.bot.get_partial_messageable(tunnel["out"])
             rtunnel["in"] = self.bot.get_channel(tunnel["in"]) or self.bot.get_partial_messageable(tunnel["in"])
             rtunnel["whookless"] = tunnel["whookless"]
             if not tunnel["whookless"]:
                 rtunnel["outwhook"] = await discord.Webhook.from_url(tunnel["outwhook"], session=aiohttp.ClientSession()).fetch()
+                rtunnel["outwhook.managed"] = True
                 rtunnel["inwhook"] = await discord.Webhook.from_url(tunnel["inwhook"], session=aiohttp.ClientSession()).fetch()
+                rtunnel["inwhook.managed"] = True
             rtunnel["messages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["messages"]]))
             rtunnel["rmessages"] = list(filter(lambda x: x, [await fetch_message(rtunnel["out" if i[1] else "in"], i[0]) for i in tunnel["rmessages"]]))
             rtunnel["permanent"] = tunnel["permanent"]
             rtunnel["started"] = tunnel["started"]
+            self.tunnels.append(rtunnel)
 
     def get_address(self, channel):
         addrs = self.db.search(Query().chid == channel.id)
@@ -122,9 +122,11 @@ class interchat(commands.Cog):
     async def end_interchat(self, tunnel):
         if not tunnel["whookless"]:
             await tunnel["outwhook"].delete()
-            await tunnel["outwhook"].session.close()
+            if tunnel.get("outwhook.managed"):
+                await tunnel["outwhook"].session.close()
             await tunnel["inwhook"].delete()
-            await tunnel["inwhook"].session.close()
+            if tunnel.get("inwhook.managed"):
+                await tunnel["inwhook"].session.close()
         q = Query()
         self.tdb.remove(q["in"] == tunnel["in"].id and q["out"] == tunnel["out"].id)
         self.tunnels.pop(self.tunnels.index(tunnel))
@@ -146,7 +148,7 @@ class interchat(commands.Cog):
                 sticker_embeds = []
                 ref_embed = None
                 if message.reference:
-                    ref_embed = discord.Embed(title=strings["reply"], description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
+                    ref_embed = discord.Embed(title=localise("cog.interchat.answers.reply", DEFAULT_LOCALE), description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
                     ref_embed.set_author(
                         name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
                         icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
@@ -180,7 +182,7 @@ class interchat(commands.Cog):
                 sticker_embeds = []
                 ref_embed = None
                 if message.reference:
-                    ref_embed = discord.Embed(title=strings["reply"], description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
+                    ref_embed = discord.Embed(title=localise("cog.interchat.answers.reply", DEFAULT_LOCALE), description=(message.reference.resolved.content if len(message.reference.resolved.content) < 30 else message.reference.resolved.content[:27]+"..."))
                     ref_embed.set_author(
                         name=(message.reference.resolved.author.name if isinstance(message.reference.resolved.author, discord.User) or not message.reference.resolved.author.nick else message.reference.resolved.author.nick),
                         icon_url=(message.reference.resolved.author.default_avatar.url if not message.reference.resolved.author.avatar.url else message.reference.resolved.author.avatar.url))
@@ -238,26 +240,24 @@ class interchat(commands.Cog):
             return
         await ctx.response.defer(ephemeral=True)
         if await self.start_interchat(ctx.channel, channel):
-            await channel.send(
-                strings["init"]["incoming"].format() +\
-                strings["init"]["info"].format(
-                    address_out=self.address_string(ctx.channel),
-                    address_in=self.address_string(channel),
-                    out_here="",
-                    in_here=f"({localise('generic.here', ctx.interaction.locale)})",
-                    time_started=f"<t:{round(time.time())}:F>"
-                )
-            )
-            await ctx.channel.send(
-                strings["init"]["outgoing"].format() +\
-                strings["init"]["info"].format(
-                    address_out=self.address_string(ctx.channel),
-                    address_in=self.address_string(channel),
-                    out_here=f"({localise('generic.here', ctx.interaction.locale)})",
-                    in_here="",
-                    time_started=f"<t:{round(time.time())}:F>"
-                )
-            )
+            embed = discord.Embed()
+            embed.title = localise("cog.interchat.answers.begin.incoming", DEFAULT_LOCALE)
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.started", DEFAULT_LOCALE), value=f"<t:{round(time.time())}:F>")
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.our_side", DEFAULT_LOCALE), value=localise("cog.interchat.answers.info.receiver_side", DEFAULT_LOCALE))
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.incoming_to", DEFAULT_LOCALE), value=self.address_string(channel))
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.outgoing_from", DEFAULT_LOCALE), value=self.address_string(ctx.channel))
+            embed.color = discord.Color.green()
+            await channel.send(embed=embed)
+
+            embed = discord.Embed()
+            embed.title = localise("cog.interchat.answers.begin.outgoing", DEFAULT_LOCALE)
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.started", DEFAULT_LOCALE), value=f"<t:{round(time.time())}:F>")
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.our_side", DEFAULT_LOCALE), value=localise("cog.interchat.answers.info.opener_side", DEFAULT_LOCALE))
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.incoming_to", DEFAULT_LOCALE), value=self.address_string(channel))
+            embed.add_field(inline=False, name=localise("cog.interchat.answers.info.outgoing_from", DEFAULT_LOCALE), value=self.address_string(ctx.channel))
+            embed.color = discord.Color.green()
+            await ctx.channel.send(embed=embed)
+
             await ctx.followup.send("OK", ephemeral=True)
         else:
             await ctx.followup.send(localise("cogs.interchat.answers.begin.fail.already_open", ctx.interaction.locale), ephemeral=True)
@@ -272,33 +272,31 @@ class interchat(commands.Cog):
         for i, tunnel in enumerate(self.tunnels):
             if ctx.channel.id == tunnel["in"].id or ctx.channel.id == tunnel["out"].id:
                 if tunnel["permanent"]:
-                    await ctx.respond(localise("cogs.interchat.answers.end.fail.permanent_tunnel"))
+                    await ctx.respond(localise("cogs.interchat.answers.end.fail.permanent_tunnel", ctx.interaction.locale), ephemeral=True)
                     return
                 await ctx.respond("OK", ephemeral=True)
-                await tunnel["in"].send(
-                    strings["end"]["incoming"].format(
-                        side=("this" if ctx.channel.id == tunnel["in"].id else "opener")
-                    ) +\
-                    strings["end"]["info"].format(
-                        address_out=self.address_string(tunnel["out"]),
-                        address_in=self.address_string(tunnel["in"]),
-                        out_here="",
-                        in_here=f"({localise('generic.here', ctx.interaction.locale)})",
-                        time_started=f"<t:{tunnel['started']}:F>"
+
+                embed = discord.Embed()
+                embed.title = localise("cog.interchat.answers.end.incoming", DEFAULT_LOCALE).format(
+                        side=(localise("cog.interchat.answers.info.receiver_side", DEFAULT_LOCALE) if ctx.channel.id == tunnel["in"].id else localise("cog.interchat.answers.info.opener_side", DEFAULT_LOCALE))
                     )
-                )
-                await tunnel["out"].send(
-                    strings["end"]["outgoing"].format(
-                        side=("this" if ctx.channel.id == tunnel["out"].id else "receiver")
-                    ) +\
-                    strings["end"]["info"].format(
-                        address_out=self.address_string(tunnel["out"]),
-                        address_in=self.address_string(tunnel["in"]),
-                        out_here=f"({localise('generic.here', ctx.interaction.locale)})",
-                        in_here="",
-                        time_started=f"<t:{tunnel['started']}:F>"
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.started", DEFAULT_LOCALE), value=f"<t:{tunnel['started']}:F>")
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.our_side", DEFAULT_LOCALE), value=localise("cog.interchat.answers.info.receiver_side", DEFAULT_LOCALE))
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.incoming_to", DEFAULT_LOCALE), value=self.address_string(tunnel["in"]))
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.outgoing_from", DEFAULT_LOCALE), value=self.address_string(tunnel["out"]))
+                embed.color = discord.Color.red()
+                await tunnel["in"].send(embed=embed)
+
+                embed = discord.Embed()
+                embed.title = localise("cog.interchat.answers.end.outgoing", DEFAULT_LOCALE).format(
+                        side=(localise("cog.interchat.answers.info.opener_side", DEFAULT_LOCALE) if ctx.channel.id == tunnel["out"].id else localise("cog.interchat.answers.info.receiver_side", DEFAULT_LOCALE))
                     )
-                )
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.started", DEFAULT_LOCALE), value=f"<t:{tunnel['started']}:F>")
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.our_side", DEFAULT_LOCALE), value=localise("cog.interchat.answers.info.opener_side", DEFAULT_LOCALE))
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.incoming_to", DEFAULT_LOCALE), value=self.address_string(tunnel["in"]))
+                embed.add_field(inline=False, name=localise("cog.interchat.answers.info.outgoing_from", DEFAULT_LOCALE), value=self.address_string(tunnel["out"]))
+                embed.color = discord.Color.red()
+                await tunnel["out"].send(embed=embed)
 
                 await self.end_interchat(tunnel)
                 return
@@ -329,19 +327,19 @@ class interchat(commands.Cog):
             if ctx.channel == tunnel["in"] or ctx.channel == tunnel["out"]:
                 this_tunnel = tunnel
                 break
-        embed = discord.Embed(title="Interchat Info")
+        embed = discord.Embed(title=localise("cog.interchat.answers.info.title", ctx.interaction.locale))
         if not this_tunnel:
-            embed.description = localise("cog.interchat.answers.getinfo.offline", ctx.interaction.locale)
+            embed.description = localise("cog.interchat.answers.info.offline", ctx.interaction.locale)
             embed.color = discord.Color.red()
             await ctx.respond(embed=embed)
             return
-        embed.description = localise("cog.interchat.answers.getinfo.online", ctx.interaction.locale)
-        embed.add_field(name=localise("cog.interchat.answers.info.started", ctx.interaction.locale), value=f"<t:{this_tunnel['started']}:F>")
-        embed.add_field(name=localise("cog.interchat.answers.info.our_side", ctx.interaction.locale), value=("Receiver" if ctx.channel.id == tunnel["in"].id else "Opener"))
-        embed.add_field(name=localise("cog.interchat.answers.info.incoming_to", ctx.interaction.locale), value=self.address_string(tunnel["in"]))
-        embed.add_field(name=localise("cog.interchat.answers.info.outgoing_from", ctx.interaction.locale), value=self.address_string(tunnel["out"]))
-        embed.add_field(name=localise("cog.interchat.answers.info.permanent", ctx.interaction.locale), value=(localise("generic.yes", ctx.interaction.locale) if tunnel["permanent"] else localise("generic.no", ctx.interaction.locale)))
-        embed.color = discord.Color.green()
+        embed.description = localise("cog.interchat.answers.info.online", ctx.interaction.locale)
+        embed.add_field(inline=False, name=localise("cog.interchat.answers.info.started", ctx.interaction.locale), value=f"<t:{this_tunnel['started']}:F>")
+        embed.add_field(inline=False, name=localise("cog.interchat.answers.info.our_side", ctx.interaction.locale), value=(localise("cog.interchat.answers.info.receiver_side", ctx.interaction.locale) if ctx.channel.id == this_tunnel["in"].id else localise("cog.interchat.answers.info.opener_side", ctx.interaction.locale)))
+        embed.add_field(inline=False, name=localise("cog.interchat.answers.info.incoming_to", ctx.interaction.locale), value=self.address_string(this_tunnel["in"]))
+        embed.add_field(inline=False, name=localise("cog.interchat.answers.info.outgoing_from", ctx.interaction.locale), value=self.address_string(this_tunnel["out"]))
+        embed.add_field(inline=False, name=localise("cog.interchat.answers.info.permanent", ctx.interaction.locale), value=(localise("generic.yes", ctx.interaction.locale) if this_tunnel["permanent"] else localise("generic.no", ctx.interaction.locale)))
+        embed.color = discord.Color.blurple()
         await ctx.respond(embed=embed)
 
 def setup(bot):

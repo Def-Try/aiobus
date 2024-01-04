@@ -303,18 +303,25 @@
 			"answers": {
 				"getaddress": "Address of this channel is {address}",
 				"begin": {
-					"notfound": "Unable to trace this address to channel. Maybe you made a typo?"
+					"notfound": "Unable to trace this address to channel. Maybe you made a typo?",
+					"incoming": "Incoming interchat connection requested",
+					"outgoing": "Initiated outgoing interchat connection"
 				},
-				"getinfo": {
-					"online": "Found interchat tunnel open in this channel.",
-					"offline": "No open interchat connection in this channel found..."
+				"end": {
+					"incoming": "Incoming interchat connection closed by side \"{side}\"",
+					"outgoing": "Outgoing interchat connection closed by side \"{side}\""
 				},
 				"info": {
+					"title": "Interchat Info",
+					"online": "Found interchat tunnel open in this channel.",
+					"offline": "No open interchat connection in this channel found...",
 					"started": "Started at",
 					"our_side": "Our side",
 					"incoming_to": "Incoming to",
 					"outgoing_from": "Outgoing from",
-					"permanent": "Is permanent?"
+					"permanent": "Is permanent?",
+                    "receiver_side": "Receiver side",
+                    "opener_side": "Opener side"
 				}
 			}
 		}

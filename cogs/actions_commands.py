@@ -11,10 +11,8 @@ portals_awaiting = {}
 
 # users banned entirely from this cog commands, basically
 # turely_159 / UID 781110424783290388: spams them a bunch. does not know when to stop.
-# michaai / UID 629999906429337600: just a dumbass.
 actions_bans = [
     781110424783290388, # @turely_159
-    629999906429337600  # @michaai
 ]
 
 class actions_commands(commands.Cog):
