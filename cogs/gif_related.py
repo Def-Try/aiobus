@@ -19,6 +19,8 @@ categories = ['baka', 'bite', 'blush', 'bored', 'cry', 'cuddle',
               'peck', 'yawn']
 
 class gif_related(commands.Cog):
+    author = "googer_"
+
     def __init__(self, bot):
         self.bot = bot
 

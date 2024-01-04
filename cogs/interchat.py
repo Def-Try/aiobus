@@ -43,6 +43,8 @@ strings = { # TODO: localisation <- cogs.interchat.strings.*
 }
 
 class interchat(commands.Cog, name="interchat"):
+    author = "googer_"
+
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB('databases/interchat.db')

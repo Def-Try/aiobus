@@ -6,7 +6,73 @@
 		"banned_from_command": "You are banned from this command."
 	},
 	"cog": {
+		"basic": {
+			"info": {
+				"desc": "Basic commands cog. Provides, well, basic functionality - /help, /reload_cogs, /ping commands."
+			},
+			"commands": {
+				"help": {
+					"name": "help",
+					"desc": "Listing of all commands with their descriptions and examples.",
+					"options": {
+						"command": {
+							"name": "command",
+							"desc": "Command to get help on."
+						},
+						"cog": {
+							"name": "cog",
+							"desc": "Cog to get (command) help on"
+						}
+					}
+				},
+				"reload_cogs": {
+					"name": "reload_cogs",
+					"desc": "Reload bot's extensions(aka cogs)."
+				},
+				"ping": {
+					"name": "ping",
+					"desc": "Return latency status for bot."
+				}
+			},
+			"answers": {
+				"help": {
+					"hidden": "...{amount} more command(s) hidden...",
+					"title": "Bot Help",
+					"desc": "{mention}, formely known as `googer's random things bot` is a bot based on modularity. Most of it's components can be removed or replaced without need for code editing, which makes it perfect for implementing both small and big commands without affecting others, partly which is why it's named `random things` bot.",
+					"command": "Command `/{command}`",
+					"elements": {
+						"desc": "Description",
+						"parameters": "Parameters",
+						"cog": "Cog"
+					},
+					"error": {
+						"unknown_cog": "Unknown cog. Maybe you made a typo? Make sure to type in exact name of cog - it's case-sensitive!",
+						"unknown_command": "Unknown command. Maybe you typed in wrong cog, or command does not exist. You can use both 'internal' and visual name of command."
+					}
+				},
+				"ping": {
+					"title": "Ping (latency status)",
+					"desc": "pong!",
+					"dwpl": "Discord Websocket Protocol Latency (DWPL)",
+					"unit": "ms"
+				},
+				"reload_cogs": {
+					"in_progress": "Reloading...",
+					"title": "Cogs reloaded",
+					"description": "`{errored}` errored, `{success}` successfully",
+					"cog": {
+						"error": "[ERROR ]",
+						"ok": "[  OK  ]",
+						"name": "`{status}` - {name}",
+						"desc": "Unloaded/loaded in: `{unload}ms`/`{load}ms`"
+					}
+				}
+			}
+		},
 		"actions_commands": {
+			"info": {
+				"desc": "Cog that provides action commands. Commands that respond with fancy embed with gif of action."
+			},
 			"command_group": {
 				"name": "action",
 				"desc": "Slash-commands that send fancy embed with gif of your action."
@@ -181,6 +247,9 @@
 			}
 		},
 		"gif_related": {
+			"info": {
+				"desc": "Cog that provides commands that are related to gifs in any way."
+			},
 			"command_group": {
 				"name": "gif",
 				"desc": "Slash-commands that are related to gifs in any way."
@@ -199,6 +268,9 @@
 			}
 		},
 		"mnlcog": {
+			"info": {
+				"desc": "Cog that integrates MnL esolanguage into discord. See more on that at https://github.com/Def-Try/MnLEsolang"
+			},
 			"command_group": {
 				"name": "mnl",
 				"desc": "MnLCore slash-commands."
@@ -250,6 +322,9 @@
 			}
 		},
 		"rp_utils": {
+			"info": {
+				"desc": "Cog that provides various RP utilities, like auto-afk-ping, offtopic messages cleanup, etc..."
+			},
 			"command_group": {
 				"name": "rp_utils",
 				"desc": "Utils for help, moderating, and doing RP."
@@ -282,6 +357,9 @@
 			}
 		},
 		"interchat": {
+			"info": {
+				"desc": "Interchat is a cog that basically connects two different channels with webhooks and keeps them up-to-date with each other by syncing messages. Interchat can be opened by anyone who has address of channel where you want to open it."
+			},
 			"command_group": {
 				"name": "interchat",
 				"desc": "Interchat. Allow for messages to be sent between different channels."
@@ -325,8 +403,5 @@
 				}
 			}
 		}
-	},
-	"error": {
-		"locale_string_unknown": "unknown_locale_string"
 	}
 }

@@ -5,6 +5,8 @@ from localisation import LOCALISATIONS
 import json
 
 class template(commands.Cog):
+    author = "googer_"
+
     def __init__(self, bot):
         self.bot = bot
 

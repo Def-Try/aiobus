@@ -16,13 +16,15 @@ actions_bans = [
 ]
 
 class actions_commands(commands.Cog):
+    author = "googer_"
+    
     def __init__(self, bot):
         self.bot = bot
 
-    acts_1 = discord.SlashCommandGroup("actions_1", "",
+    acts_1 = discord.SlashCommandGroup("actions_1",
         name_localizations=localise("cog.actions_commands.command_group.name"),
         description_localizations=localise("cog.actions_commands.command_group.desc"))
-    acts_2 = discord.SlashCommandGroup("actions_2", "",
+    acts_2 = discord.SlashCommandGroup("actions_2",
         name_localizations=localise("cog.actions_commands.command_group.name"),
         description_localizations=localise("cog.actions_commands.command_group.desc"))
 

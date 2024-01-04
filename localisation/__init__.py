@@ -34,7 +34,7 @@ def localise(string, locale=None):
 		localisations = localisations.get(i, None)
 		if localisations is None: break
 	if localisations is None:
-		localisations = {loc: string+"."+locale for loc in LOCALES}
+		localisations = {loc: string+"."+loc for loc in LOCALES}
 	if locale is None:
 		return localisations
 	return localisations.get(locale, localisations.get(DEFAULT_LOCALE, string+"."+locale))

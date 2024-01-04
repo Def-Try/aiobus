@@ -14,6 +14,8 @@ AWAY_KEYWORDS     = ["ушёл", "ушел", "телепортировался",
                       "fissled away"]
 
 class rp_utils(commands.Cog):
+    author = "googer_"
+
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB('databases/rputils.db')

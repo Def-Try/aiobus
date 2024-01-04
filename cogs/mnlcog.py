@@ -14,6 +14,8 @@ from localisation import localise
 from config import CONFIG
 
 class MnLCog(commands.Cog):
+    author = "googer_"
+
     def __init__(self, bot):
         self.bot = bot
         self.engines = {}
