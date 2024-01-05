@@ -164,7 +164,7 @@ class interchat(commands.Cog, name="interchat"):
                         wait=True,
                         allowed_mentions=discord.AllowedMentions.none()
                         ) if not itunnel["whookless"] else 
-                    itunnel["in"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
+                    itunnel["in" if message.channel.id == itunnel["out"].id else "out"].send((message.author.name if isinstance(message.author, discord.User) or not message.author.nick else message.author.nick)+": "+message.clean_content,
                         embeds=(message.embeds or []) + sticker_embeds + ([ref_embed] if ref_embed else []),
                         files=[await i.to_file() for i in message.attachments]))
                     )
