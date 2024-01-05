@@ -13,7 +13,7 @@ import json
 from localisation import localise
 from config import CONFIG
 
-class MnLCog(commands.Cog):
+class mnlcog(commands.Cog):
     author = "googer_"
 
     def __init__(self, bot):
@@ -81,4 +81,4 @@ class MnLCog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(MnLCog(bot))
+    bot.add_cog(mnlcog(bot))

@@ -66,7 +66,7 @@ class basic(commands.Cog):
             return string.strip()
 
         for name, cog in self.bot.cogs.items():
-            embed.add_field(name=f"Cog `{name}`", value=do_commands(ctx, cog.get_commands()), inline=False)
+            embed.add_field(name=f"Cog `{name}` - {localise(f'cog.{cog_name}.info.brief', ctx.interaction.locale)}", value=do_commands(ctx, cog.get_commands()), inline=False)
         await ctx.respond(embed=embed, ephemeral=True)
 
     async def help_error(self, ctx: discord.ApplicationContext, error):
@@ -197,6 +197,7 @@ class basic(commands.Cog):
 
 
     @commands.slash_command(guild_ids=CONFIG["g_ids"],
+        description=localise("cog.basic.commands.ping.desc", DEFAULT_LOCALE),
         name_localizations=localise("cog.basic.commands.ping.name"),
         description_localizations=localise("cog.basic.commands.ping.desc"))
     async def ping(self, ctx: discord.ApplicationContext):
@@ -209,6 +210,7 @@ class basic(commands.Cog):
         await ctx.respond(embed=embed)
 
     @commands.slash_command(guild_ids=CONFIG["g_ids"],
+        description=localise("cog.basic.commands.reload_cogs.desc", DEFAULT_LOCALE),
         name_localizations=localise("cog.basic.commands.reload_cogs.name"),
         description_localizations=localise("cog.basic.commands.reload_cogs.desc"))
     @commands.is_owner()

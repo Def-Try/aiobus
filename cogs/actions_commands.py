@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from nekosbest import Client, Result
 import json
-from localisation import localise
+from localisation import localise, DEFAULT_LOCALE
 from config import CONFIG
 
 nekosbest_client = Client()
@@ -43,7 +43,11 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    async def act_req_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def act_req_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         if ctx.author.id in actions_bans:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
@@ -64,7 +68,11 @@ class actions_commands(commands.Cog):
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
 
-    async def act_with_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
+    async def act_with_other(self, action: str, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )=None):
         if ctx.author.id in actions_bans:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
@@ -94,97 +102,162 @@ class actions_commands(commands.Cog):
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.pat"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def pat(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+
+    async def pat(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("pat", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.hug"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def hug(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def hug(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("hug", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.cuddle"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def cuddle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def cuddle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("cuddle", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.handshake"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def handshake(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def handshake(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("handshake", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.bite"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def bite(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def bite(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("bite", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.highfive"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def highfive(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def highfive(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("highfive", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.kiss"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def kiss(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def kiss(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("kiss", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.poke"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def poke(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def poke(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("poke", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.slap"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def slap(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def slap(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("slap", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.handhold"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def handhold(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def handhold(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("handhold", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.kick"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def kick(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def kick(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("kick", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.punch"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def punch(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def punch(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("punch", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.tickle"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def tickle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def tickle(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("tickle", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.feed"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def feed(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)):
+    async def feed(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )):
         await self.act_req_other("feed", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.stare"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def stare(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
+    async def stare(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )=None):
         await self.act_with_other("stare", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.actions_commands.commands.wave"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"))
-    async def wave(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member)=None):
+    async def wave(self, ctx: discord.ApplicationContext, other: discord.Option(discord.Member,
+            name_localizations=localise("cog.actions_commands.commands.action.options.other.name"),
+            description=localise("cog.actions_commands.commands.action.options.other.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.actions_commands.commands.action.options.other.desc"),
+        )=None):
         await self.act_with_other("wave", ctx, other)
 
     @acts_1.command(guild_ids=CONFIG["g_ids"],
@@ -257,7 +330,7 @@ class actions_commands(commands.Cog):
     #  регион ИНТЕРАКТИВНЫЕ ДЕЙСТВИЯ
 
     @acts_2.command(guild_ids=CONFIG["g_ids"],
-        name_localisations=localise("cog.actions_commands.commands.portal.name"),
+        name_localizations=localise("cog.actions_commands.commands.portal.name"),
         description_localizations=localise("cog.actions_commands.commands.portal.desc"))
     async def portal(self, ctx: discord.ApplicationContext):
         if ctx.author.id in portals_awaiting.keys():
@@ -282,7 +355,7 @@ class actions_commands(commands.Cog):
         await ctx.respond(localise("cog.actions_commands.answers.action.portal.step1", ctx.interaction.locale), ephemeral=True)
 
     @acts_2.command(guild_ids=CONFIG["g_ids"],
-        name_localisations=localise("cog.actions_commands.commands.portal_cancel.name"),
+        name_localizations=localise("cog.actions_commands.commands.portal_cancel.name"),
         description_localizations=localise("cog.actions_commands.commands.portal_cancel.desc"))
     async def portal_cancel(self, ctx: discord.ApplicationContext):
         del portals_awaiting[ctx.author.id]

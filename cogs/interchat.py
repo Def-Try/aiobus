@@ -223,7 +223,11 @@ class interchat(commands.Cog, name="interchat"):
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.begin.name"),
         description_localizations=localise("cog.interchat.commands.begin.desc"))
-    async def begin(self, ctx: discord.ApplicationContext, address: str):
+    async def begin(self, ctx: discord.ApplicationContext, address: discord.Option(str,
+            name_localizations=localise("cog.interchat.commands.begin.options.address.name"),
+            description=localise("cog.interchat.commands.begin.options.address.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.interchat.commands.begin.options.address.desc"),
+        )):
         if ctx.author.id in interchat_bans["begin"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return

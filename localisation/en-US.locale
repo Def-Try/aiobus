@@ -8,7 +8,8 @@
 	"cog": {
 		"basic": {
 			"info": {
-				"desc": "Basic commands cog. Provides, well, basic functionality - /help, /reload_cogs, /ping commands."
+				"desc": "Basic commands cog. Provides, well, basic functionality - /help, /reload_cogs, /ping commands.",
+				"brief": "Basic commands"
 			},
 			"commands": {
 				"help": {
@@ -71,7 +72,8 @@
 		},
 		"actions_commands": {
 			"info": {
-				"desc": "Cog that provides action commands. Commands that respond with fancy embed with gif of action."
+				"desc": "Cog that provides action commands. Commands that respond with fancy embed with gif of action.",
+				"brief": "Action commands"
 			},
 			"command_group": {
 				"name": "action",
@@ -106,7 +108,13 @@
 				"nod": "nod",
 
 				"action": {
-					"desc": "Self-explanatory."
+					"desc": "Self-explanatory.",
+					"options": {
+						"other": {
+							"name": "user",
+							"desc": "User that you want to do action to"
+						}
+					}
 				},
 
 				"portal": {
@@ -248,7 +256,8 @@
 		},
 		"gif_related": {
 			"info": {
-				"desc": "Cog that provides commands that are related to gifs in any way."
+				"desc": "Cog that provides commands that are related to gifs in any way.",
+				"brief": "Commands related to gifs"
 			},
 			"command_group": {
 				"name": "gif",
@@ -257,7 +266,13 @@
 			"commands": {
 				"findgif": {
 					"name": "find_gif",
-					"desc": "Find gif by one of categories. Powered by nekos.best API."
+					"desc": "Find gif by one of categories. Powered by nekos.best API.",
+					"options": {
+						"category": {
+							"name": "category",
+							"desc": "Gif category to find."
+						}
+					}
 				}
 			},
 			"answers": {
@@ -269,7 +284,8 @@
 		},
 		"mnlcog": {
 			"info": {
-				"desc": "Cog that integrates MnL esolanguage into discord. See more on that at https://github.com/Def-Try/MnLEsolang"
+				"desc": "Cog that integrates MnL esolanguage into discord. See more on that at https://github.com/Def-Try/MnLEsolang",
+				"brief": "MnL commands."
 			},
 			"command_group": {
 				"name": "mnl",
@@ -323,7 +339,8 @@
 		},
 		"rp_utils": {
 			"info": {
-				"desc": "Cog that provides various RP utilities, like auto-afk-ping, offtopic messages cleanup, etc..."
+				"desc": "Cog that provides various RP utilities, like auto-afk-ping, offtopic messages cleanup, etc...",
+				"brief": "RP utilities"
 			},
 			"command_group": {
 				"name": "rp_utils",
@@ -358,7 +375,8 @@
 		},
 		"interchat": {
 			"info": {
-				"desc": "Interchat is a cog that basically connects two different channels with webhooks and keeps them up-to-date with each other by syncing messages. Interchat can be opened by anyone who has address of channel where you want to open it."
+				"desc": "Interchat is a cog that basically connects two different channels with webhooks and keeps them up-to-date with each other by syncing messages. Interchat can be opened by anyone who has address of channel where you want to open it.",
+				"brief": "Interchat commands and hooks"
 			},
 			"command_group": {
 				"name": "interchat",
@@ -367,7 +385,13 @@
 			"commands": {
 				"begin": {
 					"name": "begin",
-					"desc": "Open an interchat. You must have an address of server channel in order to open it."
+					"desc": "Open an interchat. You must have an address of server channel in order to open it.",
+					"options": {
+						"address": {
+							"name": "address",
+							"desc": "Address of channel where you want to open interchat."
+						}
+					}
 				},
 				"end": {
 					"name": "end",
@@ -376,6 +400,10 @@
 				"address": {
 					"name": "address",
 					"desc": "Get an address of a channel this command was executed in."
+				},
+				"info": {
+					"name": "info",
+					"desc": "Get information about interchat connection in this channel"
 				}
 			},
 			"answers": {

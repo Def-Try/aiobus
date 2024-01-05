@@ -19,12 +19,15 @@ logging.basicConfig(format=FORMAT)
 logger = logging.getLogger('root')
 logger.setLevel(logging.INFO)
 
-pingers = {}
+try:
+    import localisation
+except json.JSONDecodeError as e:
+    logger.error(f"Localisation error: Json could not be decoded: {e}")
+    exit(1)
 
 bot = commands.Bot(intents=discord.Intents.all())
 
 bot.logger = logger
-bot._config = CONFIG
 
 def reload_cogs(bot):
     bot.logger.info(f"Reloading cogs...")
