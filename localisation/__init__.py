@@ -16,16 +16,19 @@ def merge(main_dict, to_merge):
 		if not main_dict.get(key): main_dict[key] = to_merge.get(key)
 
 for l in LOCALES:
-	with open("localisation/"+l+".locale", 'r', encoding='utf-8') as f:
-	    locale = json.loads(f.read())
-	    def prepare_locale(locale, lang):
-	        for k, v in locale.items():
-	            if type(v) == str:
-	                locale[k] = {lang: v}
-	                continue
-	            prepare_locale(v, lang)
-	    prepare_locale(locale, l)
-	    merge(LOCALISATIONS, locale)
+	with open("localisation/"+l+"/locale.txt", 'r', encoding='utf-8') as f:
+	    filelist = [i.strip() for i in f.readlines()]
+	for file in filelist:
+	    with open("localisation/"+l+"/strings/"+file, 'r', encoding='utf-8') as f:
+		    locale = json.loads(f.read())
+		    def prepare_locale(locale, lang):
+	        	for k, v in locale.items():
+		            if type(v) == str:
+		                locale[k] = {lang: v}
+	        	        continue
+		            prepare_locale(v, lang)
+		    prepare_locale(locale, l)
+		    merge(LOCALISATIONS, locale)
 
 def localise(string, locale=None):
 	localstring = string.split(".")

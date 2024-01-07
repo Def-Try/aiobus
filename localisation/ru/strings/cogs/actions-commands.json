@@ -1,0 +1,188 @@
+{
+        "cog": {
+                "actions_commands": {
+                        "info": {
+                                "desc": "Ког реализующий команды действия. Команды в нем отвечают в эмбедах с гифками действия.",
+                                "brief": "Команды действия"
+                        },
+                        "command_group": {
+                                "name": "действие",
+                                "desc": "Слеш-команды которые отправляют красивый эмбед с гифкой вашего действия."
+                        },
+                        "commands": {
+                                "pat": "гладить",
+                                "hug": "обнять",
+                                "cuddle": "прижаться",
+                                "handshake": "пожать_руку",
+                                "bite": "укусить",
+                                "highfive": "дать_пять",
+                                "kiss": "поцеловать",
+                                "poke": "тыкать",
+                                "slap": "шлёпнуть",
+                                "handhold": "держать_руку",
+                                "kick": "пнуть",
+                                "punch": "ударить",
+                                "tickle": "щекотать",
+                                "feed": "кормить",
+                                "stare": "смотреть",
+                                "wave": "махать_рукой",
+                                "cry": "плакать",
+                                "blush": "краснеть",
+                                "dance": "танцевать",
+                                "happy": "радость",
+                                "laugh": "смеяться",
+                                "shrug": "пожать_плечами",
+                                "sleep": "спать",
+                                "smile": "улыбнуться",
+                                "think": "думать",
+                                "nod": "кивать",
+
+                                "action": {
+                                        "desc": "И так понятно.",
+                                        "options": {
+                                                "other": {
+                                                        "name": "пользователь",
+                                                        "desc": "Пользователь, с которым вы хотите произвести данное действие."
+                                                }
+                                        }
+                                },
+
+                                "portal": {
+                                        "name": "портал_начать",
+                                        "desc": "Начать или завершить открытие портала."
+                                },
+                                "portal_cancel": {
+                                        "name": "отменить_портал",
+                                        "desc": "Отменить открытие портала."
+                                }
+                        },
+                        "answers": {
+                                "action": {
+                                        "name": "Действие",
+                                        "pat": {
+                                                "other": "{member} гладит {other}",
+                                                "self": "{member} гладит самого себя",
+                                                "bot": "{member} гладит меня"
+                                        },
+                                        "hug": {
+                                                "other": "{member} обнимает {other}",
+                                                "self": "{member} обнимает самих себя",
+                                                "bot": "{member} обнимает меня"
+                                        },
+                                        "cuddle": {
+                                                "other": "{member} прижимается к {other}",
+                                                "self": "{member} прижимается к самому себе",
+                                                "bot": "{member} прижимается ко мне"
+                                        },
+                                        "handshake": {
+                                                "other": "{member} пожимает руку {other}",
+                                                "self": "{member} пожимает свою руку",
+                                                "bot": "{member} пожимает мою руку"
+                                        },
+                                        "bite": {
+                                                "other": "{member} кусает {other}",
+                                                "self": "{member} кусает самого себя",
+                                                "bot": "{member} кусает меня"
+                                        },
+                                        "highfive": {
+                                                "other": "{member} даёт пять {other}",
+                                                "self": "{member} даёт самому себе пять",
+                                                "bot": "{member} даёт пять мне"
+                                        },
+                                        "kiss": {
+                                                "other": "{member} целует {other}",
+                                                "self": "{member} целует самого себя",
+                                                "bot": "{member} целует меня"
+                                        },
+                                        "poke": {
+                                                "other": "{member} тыкает в {other}",
+                                                "self": "{member} тыкает в самого себя",
+                                                "bot": "{member} тыкает в меня"
+                                        },
+                                        "slap": {
+                                                "other": "{member} шлёпает {other}",
+                                                "self": "{member} шлёпает самого себя",
+                                                "bot": "{member} шлёпает меня"
+                                        },
+                                        "handhold": {
+                                                "other": "{member} держит руку {other}",
+                                                "self": "{member} держит свою руку",
+                                                "bot": "{member} дерэит мою руку"
+                                        },
+                                        "kick": {
+                                                "other": "{member} пинает {other}",
+                                                "self": "{member} пинает самого себя",
+                                                "bot": "{member} пинает меня"
+                                        },
+                                        "punch": {
+                                                "other": "{member} ударяет {other}",
+                                                "self": "{member} ударяет самого себя",
+                                                "bot": "{member} ударяет меня"
+                                        },
+                                        "tickle": {
+                                                "other": "{member} щекочет {other}",
+                                                "self": "{member} щекочет самого себя",
+                                                "bot": "{member} щекочет меня"
+                                        },
+                                        "feed": {
+                                                "other": "{member} кормит {other}",
+                                                "self": "{member} кормит самого себя",
+                                                "bot": "{member} кормит меня"
+                                        },
+                                        "stare": {
+                                                "other": "{member} смотрит на {other}",
+                                                "self": "{member} смотрит на самого себя",
+                                                "bot": "{member} смотрит на меня",
+                                                "none": "{member} смотрит на что-то"
+                                        },
+                                        "wave": {
+                                                "other": "{member} машет рукой {other}",
+                                                "self": "{member} машет рукой самому себе",
+                                                "bot": "{member} машет мне рукой",
+                                                "none": "{member} машет"
+                                        },
+                                        "cry": {
+                                                "self": "{member} плачет"
+                                        },
+                                        "blush": {
+                                                "self": "{member} краснеет"
+                                        },
+                                        "dance": {
+                                                "self": "{member} танцует"
+                                        },
+                                        "happy": {
+                                                "self": "{member} просто рад"
+                                        },
+                                        "laugh": {
+                                                "self": "{member} смеётся"
+                                        },
+                                        "shrug": {
+                                                "self": "{member} пожимает плечами"
+                                        },
+                                        "sleep": {
+                                                "self": "{member} спит"
+                                        },
+                                        "smile": {
+                                                "self": "{member} улыбается"
+                                        },
+                                        "think": {
+                                                "self": "{member} думает"
+                                        },
+                                        "nod": {
+                                                "self": "{member} кивает"
+                                        },
+                                        "portal_cancel": "Открытие портала отменено.",
+                                        "portal": {
+                                                "step1": "Отлично! Теперь повторите данную команду в канале, куда вы хотите открыть портал.",
+                                                "step2": "Готово! Портал открыт.",
+                                                "opening": {
+                                                        "title": "Открытие портала.",
+                                                        "from": "{member} открывает портал в {channel}!",
+                                                        "to": "Портал открывается сюда из {channel}!"
+                                                }
+                                        }
+                                }
+                        }
+                }
+        }
+}
