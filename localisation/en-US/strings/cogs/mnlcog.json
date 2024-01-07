@@ -1,1 +1,59 @@
-{"cog": {"mnlcog": {"info": {"desc": "Cog that integrates MnL esolanguage into discord. See more on that at https://github.com/Def-Try/MnLEsolang", "brief": "MnL commands."}, "command_group": {"name": "mnl", "desc": "MnLCore slash-commands."}, "commands": {"init": {"name": "init", "desc": "Initialise MnLEngine"}, "config": {"name": "config", "desc": "Configure MnLEngine"}, "run": {"name": "run", "desc": "Run code in MnLEngine"}}, "answers": {"not_ready": "MnLEngine is not ready!", "init": {"already_initialised": "MnLEngine was ready already!", "ready": "MnLEngine is ready!"}, "config": {"persisting_globals": {"true": "Variables will persist between runs.", "false": "Variables will not persist between runs."}}, "run": {"ok": {"no_output": "Running complete!", "with_output": "Running complete!\nOutput:\n```\n{output}\n```"}, "mnl_error": {"no_output": "There was an error while running your code: {error}.", "with_output": "There was an error while running your code: {error}.\nOutput:\n```\n{output}\n```"}, "fatal_error": {"no_output": "Fatal core error while running: {error}.", "with_output": "Fatal core error while running: {error}.\nOutput:\n```\n{output}\n```"}, "timed_out": {"no_output": "Running has taken more than {timeout} seconds.", "with_output": "Running has taken more than {timeout} seconds.\nOutput:\n```\n{output}\n```"}}}}}}
+{
+        "cog": {
+                "mnlcog": {
+                        "info": {
+                                "desc": "Cog that integrates MnL esolanguage into discord. See more on that at https://github.com/Def-Try/MnLEsolang",
+                                "brief": "MnL commands."
+                        },
+                        "command_group": {
+                                "name": "mnl",
+                                "desc": "MnLCore slash-commands."
+                        },
+                        "commands": {
+                                "init": {
+                                        "name": "init",
+                                        "desc": "Initialise MnLEngine"
+                                },
+                                "config": {
+                                        "name": "config",
+                                        "desc": "Configure MnLEngine"
+                                },
+                                "run": {
+                                        "name": "run",
+                                        "desc": "Run code in MnLEngine"
+                                }
+                        },
+                        "answers": {
+                                "not_ready": "MnLEngine is not ready!",
+                                "init": {
+                                        "already_initialised": "MnLEngine was ready already!",
+                                        "ready": "MnLEngine is ready!"
+                                },
+                                "config": {
+                                        "persisting_globals": {
+                                                "true": "Variables will persist between runs.",
+                                                "false": "Variables will not persist between runs."
+                                        }
+                                },
+                                "run": {
+                                        "ok": {
+                                                "no_output": "Running complete!",
+                                                "with_output": "Running complete!\nOutput:\n```\n{output}\n```"
+                                        },
+                                        "mnl_error": {
+                                                "no_output": "There was an error while running your code: {error}.",
+                                                "with_output": "There was an error while running your code: {error}.\nOutput:\n```\n{output}\n```"
+                                        },
+                                        "fatal_error": {
+                                                "no_output": "Fatal core error while running: {error}.",
+                                                "with_output": "Fatal core error while running: {error}.\nOutput:\n```\n{output}\n```"
+                                        },
+                                        "timed_out": {
+                                                "no_output": "Running has taken more than {timeout} seconds.",
+                                                "with_output": "Running has taken more than {timeout} seconds.\nOutput:\n```\n{output}\n```"
+                                        }
+                                }
+                        }
+                }
+        }
+}

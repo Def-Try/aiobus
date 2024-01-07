@@ -310,10 +310,10 @@ class interchat(commands.Cog, name="interchat"):
         if ctx.author.id in interchat_bans["bind"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
             return
-        await ctx.response.defer(ephemeral=True)
         if not self.get_hub(addr=address, create=False):
             await ctx.respond(localise("cog.interchat.answers.bind.not_found", ctx.interaction.locale), ephemeral=True)
             return
+        await ctx.response.defer(ephemeral=True)
         result = await self.bind_interchat_hub(address, ctx.channel)
         if result == 1:
             await ctx.followup.send(localise("cog.interchat.answers.bind.success", ctx.interaction.locale))
@@ -407,6 +407,9 @@ class interchat(commands.Cog, name="interchat"):
         )):
         if ctx.author.id in interchat_bans["unbind"]:
             await ctx.respond(localise("generic.banned_from_command", ctx.interaction.locale), ephemeral=True)
+            return
+        if not self.get_hub(addr=address, create=False):
+            await ctx.respond(localise("cog.interchat.answers.unbind.not_found", ctx.interaction.locale), ephemeral=True)
             return
         await ctx.response.defer(ephemeral=True)
         result = await self.unbind_interchat_hub(address, ctx.channel)

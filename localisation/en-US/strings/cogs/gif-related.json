@@ -1,1 +1,32 @@
-{"cog": {"gif_related": {"info": {"desc": "Cog that provides commands that are related to gifs in any way.", "brief": "Commands related to gifs"}, "command_group": {"name": "gif", "desc": "Slash-commands that are related to gifs in any way."}, "commands": {"findgif": {"name": "find_gif", "desc": "Find gif by one of categories. Powered by nekos.best API.", "options": {"category": {"name": "category", "desc": "Gif category to find."}}}}, "answers": {"findgif": {"invalid_category": "Wrong category: should be one of next: {categories}", "title": "Gif"}}}}}
+{
+        "cog": {
+                "gif_related": {
+                        "info": {
+                                "desc": "Cog that provides commands that are related to gifs in any way.",
+                                "brief": "Commands related to gifs"
+                        },
+                        "command_group": {
+                                "name": "gif",
+                                "desc": "Slash-commands that are related to gifs in any way."
+                        },
+                        "commands": {
+                                "findgif": {
+                                        "name": "find_gif",
+                                        "desc": "Find gif by one of categories. Powered by nekos.best API.",
+                                        "options": {
+                                                "category": {
+                                                        "name": "category",
+                                                        "desc": "Gif category to find."
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {
+                                "findgif": {
+                                        "invalid_category": "Wrong category: should be one of next: {categories}",
+                                        "title": "Gif"
+                                }
+                        }
+                }
+        }
+}

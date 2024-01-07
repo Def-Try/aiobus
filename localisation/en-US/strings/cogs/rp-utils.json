@@ -1,1 +1,40 @@
-{"cog": {"rp_utils": {"info": {"desc": "Cog that provides various RP utilities, like auto-afk-ping, offtopic messages cleanup, etc...", "brief": "RP utilities"}, "command_group": {"name": "rp_utils", "desc": "Utils for help, moderating, and doing RP."}, "commands": {"clean_offtopic": {"name": "clean_offtopic", "desc": "Clean offtopic messages in this channel"}, "init_rp_channel": {"name": "init_rp_channel", "desc": "Mark this channel as RP channel."}}, "answers": {"clean_offtopic": {"message": {"_1": "{x} messages will be deleted.", "_2..4": "{x} messages will be deleted.", "_5..9+0": "{x} messages will be deleted.", "HOWTHEFUCK": "{x} messages will be deleted."}, "audit": "Removing offtopic messages from RP channel (message prefix is one of {prefixes})"}, "user_afk": "*{user} has a blank, distracted look, and {user} does not react to anything at all. Perhaps {user} will come out of this state soon.*", "init_rp_channel": {"ok": "RP channel initialised", "already_initialised": "This channel is already initialised as an RP channel"}}}}}
+{
+        "cog": {
+                "rp_utils": {
+                        "info": {
+                                "desc": "Cog that provides various RP utilities, like auto-afk-ping, offtopic messages cleanup, etc...",
+                                "brief": "RP utilities"
+                        },
+                        "command_group": {
+                                "name": "rp_utils",
+                                "desc": "Utils for help, moderating, and doing RP."
+                        },
+                        "commands": {
+                                "clean_offtopic": {
+                                        "name": "clean_offtopic",
+                                        "desc": "Clean offtopic messages in this channel"
+                                },
+                                "init_rp_channel": {
+                                        "name": "init_rp_channel",
+                                        "desc": "Mark this channel as RP channel."
+                                }
+                        },
+                        "answers": {
+                                "clean_offtopic": {
+                                        "message": {
+                                                "_1": "{x} messages will be deleted.",
+                                                "_2..4": "{x} messages will be deleted.",
+                                                "_5..9+0": "{x} messages will be deleted.",
+                                                "HOWTHEFUCK": "{x} messages will be deleted."
+                                        },
+                                        "audit": "Removing offtopic messages from RP channel (message prefix is one of {prefixes})"
+                                },
+                                "user_afk": "*{user} has a blank, distracted look, and {user} does not react to anything at all. Perhaps {user} will come out of this state soon.*",
+                                "init_rp_channel": {
+                                        "ok": "RP channel initialised",
+                                        "already_initialised": "This channel is already initialised as an RP channel"
+                                }
+                        }
+                }
+        }
+}
