@@ -66,7 +66,7 @@ class basic(commands.Cog):
             return string.strip()
 
         for name, cog in self.bot.cogs.items():
-            embed.add_field(name=f"Cog `{name}` - {localise(f'cog.{cog_name}.info.brief', ctx.interaction.locale)}", value=do_commands(ctx, cog.get_commands()), inline=False)
+            embed.add_field(name=f"Cog `{name}` - {localise(f'cog.{cog.qualified_name}.info.brief', ctx.interaction.locale)}", value=do_commands(ctx, cog.get_commands()), inline=False)
         await ctx.respond(embed=embed, ephemeral=True)
 
     async def help_error(self, ctx: discord.ApplicationContext, error):
@@ -191,7 +191,7 @@ class basic(commands.Cog):
                 string += "`"+do_name(ctx, command) + "` - `"+command.name+"`\n"
             return string.strip()
 
-        embed.add_field(name=f"Author", value=cog.author, inline=False)
+        embed.add_field(name=f"Author", value="`"+cog.author+"`", inline=False)
         embed.add_field(name=f"Commands", value=do_commands(ctx, cog.get_commands()), inline=False)
         await ctx.respond(embed=embed, ephemeral=True)
 
