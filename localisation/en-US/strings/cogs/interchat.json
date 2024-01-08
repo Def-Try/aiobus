@@ -62,6 +62,7 @@
                                 }
                         },
                         "answers": {
+                                "reply": "Reply⤴️",
                                 "getaddress": "Address of this channel is {address}",
                                 "getaddresshub": "Address of this channel as a hub is {address}",
                                 "begin": {
