@@ -269,8 +269,14 @@ class interchat(commands.Cog, name="interchat"):
             itunnel["rmessages"].append(message.id)
             await self.update_interchat(itunnel)
 
-    @commands.Cog.listener("on_message_edit")
-    async def tunneling_onmsgedit(self, message_before, message):
+    @commands.Cog.listener("on_raw_message_edit")
+    async def tunneling_onmsgedit_raw(self, payload):
+        await self.tunneling_onmsgedit(
+            await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+            )
+
+    #@commands.Cog.listener("on_message_edit")
+    async def tunneling_onmsgedit(self, message):
         if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
@@ -303,7 +309,7 @@ class interchat(commands.Cog, name="interchat"):
                 embeds[-1].set_image(url=i.url)
 
             sent_message = None
-            old_message = itunnel["messages"][itunnel["rmessages"].index(message_before.id)]
+            old_message = itunnel["messages"][itunnel["rmessages"].index(message.id)]
             channel = None
             if not itunnel["whookless"]:
                 channel = itunnel["inwhook" if message.channel.id == itunnel["out"].id else "outwhook"]
@@ -311,6 +317,9 @@ class interchat(commands.Cog, name="interchat"):
                 channel = itunnel["in" if message.channel.id == itunnel["out"] else "out"]
 
             old_message = await channel.fetch_message(old_message)
+            if not itunnel["whookless"]:
+                if hasattr(old_message, "_thread_id") and getattr(old_message, "_thread_id") == None:
+                    delattr(old_message, "_thread_id")
 
             if not itunnel["whookless"]:
                 sent_message = await old_message.edit(
@@ -328,14 +337,31 @@ class interchat(commands.Cog, name="interchat"):
                         files=[await i.to_file() for i in message.attachments]
                     )
 
-            itunnel["messages"][itunnel["rmessages"].index(message_before.id)] = sent_message.id
-            itunnel["rmessages"][itunnel["rmessages"].index(message_before.id)] = message.id
+            #itunnel["messages"][itunnel["rmessages"].index(message.id)] = sent_message.id
+            #itunnel["rmessages"][itunnel["rmessages"].index(message.id)] = message.id
             await self.update_interchat(itunnel)
 
-    @commands.Cog.listener("on_message_delete")
-    async def tunneling_onmsgdel(self, message):
-        if message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]: return
+    @commands.Cog.listener("on_raw_message_delete")
+    async def tunneling_onmsgedel_raw(self, payload):
+        await self.tunneling_onmsgdel(
+            payload.message_id, True, payload.channel_id
+            )
+
+    #@commands.Cog.listener("on_message_delete")
+    async def tunneling_onmsgdel(self, message, message_is_id=False, chid=None):
+        if not message_is_id and (message.author.id == self.bot.user.id or message.author.id in interchat_bans["send"]): return
+        if message_is_id:
+            class FakeObject:
+                def __init__(self): pass
+            msg = message
+            message = FakeObject()
+            message.id = msg
+            message.channel = FakeObject()
+            message.channel.id = chid
+            message.author = FakeObject()
+            message.author.id = -1
         for itunnel in self.tunnels:
+            if message_is_id and message.id not in itunnel["rmessages"]: continue
             if not itunnel["whookless"] and (message.author.id == itunnel["outwhook"].id or message.author.id == itunnel["inwhook"].id): return
             if not (message.channel.id == itunnel["out"].id or message.channel.id == itunnel["in"].id): continue
             channel = None
