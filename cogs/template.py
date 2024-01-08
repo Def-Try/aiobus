@@ -17,7 +17,7 @@ class template(commands.Cog):
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.template.commands.cmd.name"),
         description_localizations=localise("cog.template.commands.cmd.desc"))
-    def cmd(self, ctx: discord.ApplicationContext):
+    async def cmd(self, ctx: discord.ApplicationContext):
         await ctx.respond(localise("cog.template.answers.cmd.text", ctx.interaction.locale))
 
 def setup(bot):
