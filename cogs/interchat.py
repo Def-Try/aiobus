@@ -371,7 +371,7 @@ class interchat(commands.Cog, name="interchat"):
         guid = addrs[0]["guid"]
         channel = self.bot.get_channel(chid) or self.bot.get_partial_messageable(chid)
         if channel == ctx.channel:
-            await ctx.respond(localise("cogs.interchat.answers.begin.fail.same_channel", ctx.interaction.locale), ephemeral=True)
+            await ctx.respond(localise("cog.interchat.answers.begin.fail.same_channel", ctx.interaction.locale), ephemeral=True)
             return
         await ctx.response.defer(ephemeral=True)
         if await self.start_interchat(ctx.channel, channel):
@@ -395,7 +395,7 @@ class interchat(commands.Cog, name="interchat"):
 
             await ctx.followup.send("OK", ephemeral=True)
         else:
-            await ctx.followup.send(localise("cogs.interchat.answers.begin.fail.already_open", ctx.interaction.locale), ephemeral=True)
+            await ctx.followup.send(localise("cog.interchat.answers.begin.fail.already_open", ctx.interaction.locale), ephemeral=True)
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.interchat.commands.unbind.name"),
@@ -455,7 +455,7 @@ class interchat(commands.Cog, name="interchat"):
             return
         hub = self.get_hub(channel=ctx.channel, create=False)
         if not hub:
-            await ctx.respond(localise("cogs.interchat.answers.destroy_hub.not_found", ctx.interaction.locale), ephemeral=True)
+            await ctx.respond(localise("cog.interchat.answers.destroy_hub.not_found", ctx.interaction.locale), ephemeral=True)
             return
         await ctx.respond("OK", ephemeral=True)
         for channel in hub["channels"]:
@@ -480,7 +480,7 @@ class interchat(commands.Cog, name="interchat"):
         for i, tunnel in enumerate(self.tunnels):
             if ctx.channel.id == tunnel["in"].id or ctx.channel.id == tunnel["out"].id:
                 if tunnel["permanent"]:
-                    await ctx.respond(localise("cogs.interchat.answers.end.fail.permanent_tunnel", ctx.interaction.locale), ephemeral=True)
+                    await ctx.respond(localise("cog.interchat.answers.end.fail.permanent_tunnel", ctx.interaction.locale), ephemeral=True)
                     return
                 await ctx.respond("OK", ephemeral=True)
 
@@ -509,7 +509,7 @@ class interchat(commands.Cog, name="interchat"):
                 await self.end_interchat(tunnel)
                 return
 
-        await ctx.respond(localise("cogs.interchat.answers.end.fail.not_opened", ctx.interaction.locale), ephemeral=True)
+        await ctx.respond(localise("cog.interchat.answers.end.fail.not_opened", ctx.interaction.locale), ephemeral=True)
 
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
