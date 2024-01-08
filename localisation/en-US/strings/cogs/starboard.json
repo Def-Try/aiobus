@@ -1,0 +1,31 @@
+{
+        "cog": {
+                "starboard": {
+                        "info": {
+                                "desc": "starboard cog. put a :star: on message as reaction.",
+                                "brief": "starboard"
+                        },
+                        "command_group": {
+                                "name": "starboard",
+                                "desc": "Starboard commands"
+                        },
+                        "commands": {
+                                "init": {
+                                        "name": "init",
+                                        "desc": "Initialise a starboard",
+                                        "options": {
+                                                "channel": {
+                                                        "name": "channel",
+                                                        "desc": "starboard channel"
+                                                },
+                                                "limit": {
+                                                        "name": "limit",
+                                                        "desc": "minimum amount of stars required for message to go in starboard"
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {}
+                }
+        }
+}

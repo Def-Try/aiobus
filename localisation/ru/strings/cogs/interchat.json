@@ -62,6 +62,7 @@
                                 }
                         },
                         "answers": {
+                                "reply": "Ответ⤴️",
                                 "getaddress": "Адрес данного канала {address}",
                                 "getaddresshub": "Адрес данного канала как хаба - {address}",
                                 "begin": {

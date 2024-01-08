@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from config import CONFIG
-from localisation import LOCALISATIONS
+from localisation import localise
 import json
 
 class template(commands.Cog):
@@ -10,14 +10,15 @@ class template(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    cmds = discord.SlashCommandGroup("", "",
-        name_localizations=LOCALISATIONS["cog"]["template"]["command_group"]["name"],
-        description_localizations=LOCALISATIONS["cog"]["template"]["command_group"]["desc"])
+    cmds = discord.SlashCommandGroup("template", "",
+        name_localizations=localise("cog.template.command_group.name"),
+        description_localizations=localise("cog.template.command_group.desc"))
+
     @cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["name"],
-        description_localizations=LOCALISATIONS["cog"]["template"]["commands"]["cmd"]["desc"])
-    def cmd(self, ctx: discord.ApplicationContext):
-        await ctx.reply("template")
+        name_localizations=localise("cog.template.commands.cmd.name"),
+        description_localizations=localise("cog.template.commands.cmd.desc"))
+    async def cmd(self, ctx: discord.ApplicationContext):
+        await ctx.respond(localise("cog.template.answers.cmd.text", ctx.interaction.locale))
 
 def setup(bot):
     bot.add_cog(template(bot))
