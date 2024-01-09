@@ -23,6 +23,16 @@
                                                         "desc": "minimum amount of stars required for message to go in starboard"
                                                 }
                                         }
+                                },
+                                "destroy": {
+                                        "name": "destroy",
+                                        "desc": "Destroy a starboard",
+                                        "options": {
+                                                "channel": {
+                                                        "name": "channel",
+                                                        "desc": "starboard channel"
+                                                }
+                                        }
                                 }
                         },
                         "answers": {}
