@@ -5,3 +5,4 @@ cogs/mnlcog.json
 cogs/basic.json
 cogs/interchat.json
 cogs/rp-utils.json
+cogs/debug.json

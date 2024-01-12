@@ -1,0 +1,26 @@
+{
+        "cog": {
+                "debug": {
+                        "info": {
+                                "desc": "Cog with debug and not-so-debug-as-a-dev-QoL commands",
+                                "brief": "DEBUG"
+                        },
+                        "command_group": {
+                                "name": "debug",
+                                "desc": "Utils for debugging the bot"
+                        },
+                        "commands": {
+                                "senddbs": {
+                                        "name": "send_databases",
+                                        "desc": "Send databases as a zip file. Will be sent as ephemeral message."
+                                }
+                        },
+                        "answers": {
+                                "senddbs": {
+                                        "ok": "OK, all zipped!",
+                                        "cantzip": "Failed to zip databases. Call gary!"
+                                }
+                        }
+                }
+        }
+}

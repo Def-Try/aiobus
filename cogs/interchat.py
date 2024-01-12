@@ -243,7 +243,7 @@ class interchat(commands.Cog, name="interchat"):
             if not itunnel["whookless"]:
                 channel = itunnel["inwhook" if message.channel.id == itunnel["out"].id else "outwhook"]
             else:
-                channel = itunnel["in" if message.channel.id == itunnel["out"] else "out"]
+                channel = itunnel["in" if message.channel.id == itunnel["out"].id else "out"]
             if not itunnel["whookless"]:
                 sent_message = await channel.send(
                         message.content,
@@ -260,7 +260,7 @@ class interchat(commands.Cog, name="interchat"):
                 sent_message = await channel.send(
                         (message.author.name
                             if isinstance(message.author, discord.User) or not message.author.nick else
-                                message.author.nick) + ((" | "+self.address_string(message.channel)) if itunnel["hub_addr"] else "") + message.clean_content,
+                                message.author.nick) + ((" | "+self.address_string(message.channel)) if itunnel["hub_addr"] else "") + ": " + message.clean_content,
                         embeds=embeds,
                         files=[await i.to_file() for i in message.attachments]
                     )
@@ -332,7 +332,7 @@ class interchat(commands.Cog, name="interchat"):
                 sent_message = await old_message.edit(
                         (message.author.name
                             if isinstance(message.author, discord.User) or not message.author.nick else
-                                message.author.nick) + ((" | "+self.address_string(message.channel)) if itunnel["hub_addr"] else "") + message.clean_content,
+                                message.author.nick) + ((" | "+self.address_string(message.channel)) if itunnel["hub_addr"] else "") + ": " + message.clean_content,
                         embeds=embeds,
                         files=[await i.to_file() for i in message.attachments]
                     )

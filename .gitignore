@@ -2,3 +2,4 @@ config/token.txt
 __pycache__
 .idea
 databases
+temp

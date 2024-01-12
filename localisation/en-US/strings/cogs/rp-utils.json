@@ -23,8 +23,8 @@
                                 "clean_offtopic": {
                                         "message": {
                                                 "_1": "{x} messages will be deleted.",
-                                                "_2..4": "{x} messages will be deleted.",
-                                                "_5..9+0": "{x} messages will be deleted.",
+                                                "_2-4": "{x} messages will be deleted.",
+                                                "_5-9+0": "{x} messages will be deleted.",
                                                 "HOWTHEFUCK": "{x} messages will be deleted."
                                         },
                                         "audit": "Removing offtopic messages from RP channel (message prefix is one of {prefixes})"
