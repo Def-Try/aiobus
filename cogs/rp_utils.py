@@ -42,7 +42,7 @@ class rp_utils(commands.Cog):
                 messages.append(message)
         numeral = ('_1' 
                     if len(messages) == 1 or len(messages) % 10 == 1 else
-                '_2.-4'
+                '_2-4'
                     if len(messages) % 10 in (2, 3, 4) else
                 '_5-9+0'
                     if len(messages) % 10 in (5, 6, 7, 8, 9, 0) else
