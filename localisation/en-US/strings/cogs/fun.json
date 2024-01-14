@@ -1,0 +1,49 @@
+{
+        "cog": {
+                "fun": {
+                        "info": {
+                                "desc": "Cog with fun commands",
+                                "brief": "Fun commands"
+                        },
+                        "command_group": {
+                                "name": "fun",
+                                "desc": "Fun commands"
+                        },
+                        "commands": {
+                                "crash_server": {
+                                        "name": "crash_server",
+                                        "desc": "Completely destroy this server."
+                                },
+                                "translate": {
+                                        "name": "translate",
+                                        "desc": "Translate text",
+                                        "options": {
+                                                "mode": {
+                                                        "name": "mode",
+                                                        "desc": "translation mode"
+                                                },
+                                                "language": {
+                                                        "name": "language",
+                                                        "desc": "translation language"
+                                                },
+                                                "text": {
+                                                        "name": "text",
+                                                        "desc": "text to translate"
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {
+                                "crash_server": {
+                                        "progress": "Collecting info... {percent}% done...",
+                                        "error": "Failed due to the error: ITZ_A_J0K3"
+                                },
+                                "translate": {
+                                        "done": "Translated `{text}` {way} {language}: `{translated}`",
+                                        "to": "into",
+                                        "from": "from"
+                                }
+                        }
+                }
+        }
+}

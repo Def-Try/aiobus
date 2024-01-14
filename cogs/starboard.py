@@ -76,7 +76,7 @@ class starboard(commands.Cog):
                 icon_url=message.author.avatar.url if message.author.avatar else message.author.default_avatar.url
                 )
             embeds = [embed] + message.embeds if not message.channel.nsfw else []
-            files = [i.to_file() for i in message.attachments] if not message.channel.nsfw else []
+            files = [await i.to_file() for i in message.attachments] if not message.channel.nsfw else []
             if str(message.id) in starboard["messages"].keys():
                 starmessage = await self.bot.get_channel(starboard["channel"]).fetch_message(starboard["messages"][str(message.id)])
                 await starmessage.edit(embeds=embeds, files=files)

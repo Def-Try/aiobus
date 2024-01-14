@@ -7,3 +7,4 @@ cogs/interchat.json
 cogs/rp-utils.json
 cogs/starboard.json
 cogs/debug.json
+cogs/fun.json
