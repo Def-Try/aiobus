@@ -70,7 +70,8 @@ class starboard(commands.Cog):
                 del starboard["messages"][str(message.id)]
                 self.db.update(starboard, Query().guild == message.guild.id)
                 continue
-            embed = discord.Embed(title=f"{star_amount}{self.emoji}",description=message.content)
+            content = f"{star_amount}{self.emoji}"
+            embed = discord.Embed(title=f"Jump!",description=message.content,url=message.jump_url)
             embed.set_author(
                 name=message.author.name if not hasattr(message.author, "nick") or not message.author.nick else message.author.nick,
                 icon_url=message.author.avatar.url if message.author.avatar else message.author.default_avatar.url
@@ -79,9 +80,9 @@ class starboard(commands.Cog):
             files = [await i.to_file() for i in message.attachments] if not message.channel.nsfw else []
             if str(message.id) in starboard["messages"].keys():
                 starmessage = await self.bot.get_channel(starboard["channel"]).fetch_message(starboard["messages"][str(message.id)])
-                await starmessage.edit(embeds=embeds, files=files)
+                await starmessage.edit(content=content, embeds=embeds, files=files)
             else:
-                starboard["messages"][str(message.id)] = (await self.bot.get_channel(starboard["channel"]).send(embeds=embeds, files=files)).id
+                starboard["messages"][str(message.id)] = (await self.bot.get_channel(starboard["channel"]).send(content=content, embeds=embeds, files=files)).id
             self.db.update(starboard, Query().guild == message.guild.id)
 
 def setup(bot):

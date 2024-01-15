@@ -67,7 +67,7 @@ class fun(commands.Cog):
         await ctx.respond(
             localise("cog.fun.answers.translate.done", ctx.interaction.locale).format(
                 text=text, language=language, translated=translated, way = localise(f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
-                ))
+                ), ephemeral=True)
 
 
 def setup(bot):
