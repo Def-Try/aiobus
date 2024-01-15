@@ -1,10 +1,14 @@
 import json
-from config import CONFIG
+try:
+	from config import CONFIG
+except ImportError:
+	print("Unable to load config.")
+	CONFIG = {"locale": "en-US"}
+
 
 DEFAULT_LOCALE = CONFIG["locale"]
 
 LOCALES = ["en-US", "ru"]
-LOADED_LOCALES = []
 
 LOCALISATIONS = {}
 
