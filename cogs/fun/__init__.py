@@ -69,6 +69,66 @@ class fun(commands.Cog):
                 text=text, language=language, translated=translated, way = localise(f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
                 ), ephemeral=True)
 
+    """
+;радио
+:канал радио
+%s - подпись
+*действие
+действие*
+%ноты - пение
+(радио)действие*текст
+
+_подчеркивание_
++жирный+
+|курсивный|
+    """
+    @cmds.command(guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.fun.commands.parse_rpd.name"),
+        description_localizations=localise("cog.fun.commands.parse_rpd.desc"))
+    async def parse_rpd(self, ctx: discord.ApplicationContext, text: discord.Option(str,
+            name_localizations=localise("cog.fun.commands.parse_rpd.options.text.name"),
+            description=localise("cog.fun.commands.parse_rpd.options.text.desc", DEFAULT_LOCALE),
+            description_localizations=localise("cog.fun.commands.parse_rpd.options.text.desc"))):
+        rtext = text
+        radio = False
+        radio_channel = ""
+        radio_channel_done = False
+        text = ""
+        doing_text = True
+        action = ""
+        doing_action = False
+        for n,ch in enumerate(rtext):
+            if ch == ";" and n == 0:
+                radio, radio_channel = True, "common"
+                radio_channel_done = True
+                continue
+            if ch == ":" and n == 0:
+                radio = True
+                continue
+            if radio and not radio_channel_done:
+                if ch == " ":
+                    radio_channel_done = True
+                    continue
+                radio_channel += ch
+                continue
+            if radio and ch == "*":
+                action = text
+                text = ""
+                doing_text = True
+                continue
+            if ch == "*" and text:
+                action = text
+                text = ""
+                doing_text = True
+                continue
+            if ch == "*" and not text:
+                doing_action = True
+                doing_text = False
+                continue
+            if doing_action: action += ch
+            if doing_text: text += ch
+        await ctx.respond((f"[{radio_channel.title()}] " if radio else "")+(ctx.author.display_name if ctx.author.display_name else ctx.author.name if not ctx.autthor.nick else ctx.author.nick)+" "+(action+(", и " if text else "") if action else "")+("говорит \""+text+"\"" if text else ""))
+
 
 def setup(bot):
     bot.add_cog(fun(bot))

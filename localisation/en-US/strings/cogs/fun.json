@@ -31,6 +31,16 @@
                                                         "desc": "text to translate"
                                                 }
                                         }
+                                },
+                                "parse_rpd": {
+					"name": "parse_rp",
+					"desc": "Parse RP text",
+					"options": {
+						"text": {
+							"name": "text",
+							"desc": "Text to parse"
+						}
+					}
                                 }
                         },
                         "answers": {
