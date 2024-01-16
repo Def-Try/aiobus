@@ -2,12 +2,12 @@
         "cog": {
                 "fun": {
                         "info": {
-                                "desc": "Cog with fun commands",
-                                "brief": "Fun commands"
+                                "desc": "Cog with functional commands",
+                                "brief": "Functional commands"
                         },
                         "command_group": {
-                                "name": "fun",
-                                "desc": "Fun commands"
+                                "name": "funct",
+                                "desc": "Functional commands"
                         },
                         "commands": {
                                 "crash_server": {
@@ -52,6 +52,48 @@
                                         "done": "Translated `{text}` {way} {language}: `{translated}`",
                                         "to": "into",
                                         "from": "from"
+                                },
+                                "parse_rpd": {
+                                	"no": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}",
+                                			"nact": "[{channel}] {nick} exists..."
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}",
+                                			"nact": "{nick} exists..."
+                                		}
+                                	},
+                                	"say": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, and says \"{text}\"",
+                                			"nact": "[{channel}] {nick} says \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, and says \"{text}\"",
+                                			"nact": "{nick} says \"{text}\""
+                                		}
+                                	},
+                                	"exclaim": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, and exclaims \"{text}\"",
+                                			"nact": "[{channel}] {nick} exclaims \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, and exclaims \"{text}\"",
+                                			"nact": "{nick} exclaims \"{text}\""
+                                		}
+                                	},
+                                	"ask": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, and asks \"{text}\"",
+                                			"nact": "[{channel}] {nick} asks \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, and asks \"{text}\"",
+                                			"nact": "{nick} asks \"{text}\""
+                                		}
+                                	}
                                 }
                         }
                 }

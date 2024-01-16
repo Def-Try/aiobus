@@ -8,11 +8,6 @@ import random
 
 from . import languages
 
-28356
-1331
-46827
-12104
-
 class fun(commands.Cog):
     author = "googer_"
 
@@ -127,7 +122,23 @@ _подчеркивание_
                 continue
             if doing_action: action += ch
             if doing_text: text += ch
-        await ctx.respond((f"[{radio_channel.title()}] " if radio else "")+(ctx.author.display_name if ctx.author.display_name else ctx.author.name if not ctx.autthor.nick else ctx.author.nick)+" "+(action+(", и " if text else "") if action else "")+("говорит \""+text+"\"" if text else ""))
+        if text[-1] not in ".!?": text += "."
+        def sliceindex(x):
+            i = 0
+            for c in x:
+                if c.isalpha():
+                    i = i + 1
+                    return i
+                i = i + 1
+
+        def upperfirst(x):
+            i = sliceindex(x)
+            return x[:i].upper() + x[i:]
+
+        text = upperfirst(text.strip())
+        name = ctx.author.display_name if ctx.author.display_name else ctx.author.name if not ctx.autthor.nick else ctx.author.nick
+        ending = "no" if not text else "ask" if text[-1] == "?" else "exclaim" if text[-1] == "!" else "say"
+        await ctx.respond(localise("cog.fun.answers.parse_rpd."+ending+"."+("w" if radio else "n")+"radio."+("w" if action else "n")+"act", ctx.interaction.locale).format(nick=name, text=text, action=action, channel=radio_channel.title()))
 
 
 def setup(bot):

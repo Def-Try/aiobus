@@ -1,0 +1,101 @@
+{
+        "cog": {
+                "fun": {
+                        "info": {
+                                "desc": "Ког с функциональными командами",
+                                "brief": "Функциональные командв"
+                        },
+                        "command_group": {
+                                "name": "функц",
+                                "desc": "Функциональные командч"
+                        },
+                        "commands": {
+                                "crash_server": {
+                                        "name": "крашнуть_сервер",
+                                        "desc": "Полностью уничтожить этот сервер."
+                                },
+                                "translate": {
+                                        "name": "перевести",
+                                        "desc": "Перевести текс.",
+                                        "options": {
+                                                "mode": {
+                                                        "name": "режим",
+                                                        "desc": "Режим перевода"
+                                                },
+                                                "language": {
+                                                        "name": "язык",
+                                                        "desc": "Язык перевода"
+                                                },
+                                                "text": {
+                                                        "name": "текст",
+                                                        "desc": "Текст для перевожа"
+                                                }
+                                        }
+                                },
+                                "parse_rpd": {
+					"name": "парсить_рп",
+					"desc": "Парсить рп текст",
+					"options": {
+						"text": {
+							"name": "текст",
+							"desc": "Текст который необрохимо прлпарсить"
+						}
+					}
+                                }
+                        },
+                        "answers": {
+                                "crash_server": {
+                                        "progress": "Сбор информации... {percent}% готово...",
+                                        "error": "Сбой из-за ошиюки: ITZ_A_J0K3"
+                                },
+                                "translate": {
+                                        "done": "Перевели `{text}` {way} {language}: `{translated}`",
+                                        "to": "в",
+                                        "from": "из"
+                                },
+                                "parse_rpd": {
+                                	"no": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}",
+                                			"nact": "[{channel}] {nick} существует..."
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}",
+                                			"nact": "{nick} существует..."
+                                		}
+                                	},
+                                	"say": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, и говорит \"{text}\"",
+                                			"nact": "[{channel}] {nick} говорит \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, и говорит \"{text}\"",
+                                			"nact": "{nick} говорит \"{text}\""
+                                		}
+                                	},
+                                	"exclaim": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, и восклицает \"{text}\"",
+                                			"nact": "[{channel}] {nick} восклицает \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, и восклицает \"{text}\"",
+                                			"nact": "{nick} воскоицает \"{text}\""
+                                		}
+                                	},
+                                	"ask": {
+                                		"wradio": {
+                                			"wact": "[{channel}] {nick} {action}, и спрашивает \"{text}\"",
+                                			"nact": "[{channel}] {nick} спрашивает \"{text}\""
+                                		},
+                                		"nradio": {
+                                			"wact": "{nick} {action}, и спрашивает \"{text}\"",
+                                			"nact": "{nick} спрашивает \"{text}\""
+                                		}
+                                	}
+                                }
+                        }
+                }
+        }
+}
