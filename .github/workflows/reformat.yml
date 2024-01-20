@@ -30,8 +30,9 @@ jobs:
         pip install git+https://github.com/psf/black
     - name: Create log files
       run: |
-        touch autopep8-reformat.txt
-        touch black-reformat.txt
+        mkdir lint-logs
+        touch lint-logs/autopep8-reformat.txt
+        touch lint-logs/black-reformat.txt
     - name: AutoPEP8 code reformatting
       run: |
         for f in $(git ls-files '*.py'); do
