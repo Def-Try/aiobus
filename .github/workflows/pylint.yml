@@ -25,4 +25,9 @@ jobs:
         pip install --upgrade aiohttp
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint $(git ls-files '*.py') --exit-zero > lintfile
+        cat lintfile
+    - name: Fix pylinting (if any fixes required)
+      run: |
+        autopylint lintfile
+  
