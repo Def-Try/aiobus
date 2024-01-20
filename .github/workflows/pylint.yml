@@ -3,7 +3,7 @@ name: Pylint
 on: [push]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,9 +29,10 @@ jobs:
         for f in $(git ls-files '*.py'); do autopep8 -i $f; done
     - name: Commit AutoPEP8 changes
       run: |
-        git add $(git ls-files '*.py')
-        git commit -m "AutoPEP8 reformat for commit $GITHUB_SHA"
-        git push
+        git config --global user.name '${GITHUB_ACTOR}'
+        git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'
+        git add -A && git commit -m 'AutoPEP8 changes' --allow-empty
+        git push -u origin HEAD
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py') --exit-zero
