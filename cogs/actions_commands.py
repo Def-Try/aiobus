@@ -17,7 +17,6 @@ actions_bans = [
 
 
 class ActionsCommands(commands.Cog):
-
     author = "googer_"
 
     def __init__(self, bot):
@@ -35,7 +34,7 @@ class ActionsCommands(commands.Cog):
     )
 
     async def act(self, action: str, ctx: discord.ApplicationContext):
-        '''action command. requires action itself and discord context.'''
+        """action command. requires action itself and discord context."""
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
@@ -56,12 +55,9 @@ class ActionsCommands(commands.Cog):
         await ctx.respond(embed=embed)
 
     async def act_req_other(
-        self,
-        action: str,
-        ctx: discord.ApplicationContext,
-        other: discord.Member
+        self, action: str, ctx: discord.ApplicationContext, other: discord.Member
     ):
-        '''action command. requires action itself, other member, and discord context.'''
+        """action command. requires action itself, other member, and discord context."""
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
@@ -102,7 +98,7 @@ class ActionsCommands(commands.Cog):
         ctx: discord.ApplicationContext,
         other: discord.Member = None,
     ):
-        '''action command. requires action itself, optionally other member, and discord context.'''
+        """action command. requires action itself, optionally other member, and discord context."""
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
