@@ -9,7 +9,7 @@ import random
 from . import languages
 
 
-class fun(commands.Cog):
+class Fun(commands.Cog):
     author = "googer_"
 
     def __init__(self, bot):
@@ -114,20 +114,6 @@ class fun(commands.Cog):
             ephemeral=True,
         )
 
-    """
-;радио
-:канал радио
-%s - подпись
-*действие
-действие*
-%ноты - пение
-(радио)действие*текст
-
-_подчеркивание_
-+жирный+
-|курсивный|
-    """
-
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.fun.commands.parse_rpd.name"),
@@ -207,7 +193,7 @@ _подчеркивание_
             ctx.author.display_name
             if ctx.author.display_name
             else ctx.author.name
-            if not ctx.autthor.nick
+            if not ctx.author.nick
             else ctx.author.nick
         )
         ending = (
@@ -234,4 +220,4 @@ _подчеркивание_
 
 
 def setup(bot):
-    bot.add_cog(fun(bot))
+    bot.add_cog(Fun(bot))

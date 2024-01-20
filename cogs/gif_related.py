@@ -1,10 +1,8 @@
 import discord
 from discord.ext import commands
-from nekosbest import Client, Result
+from nekosbest import Client
 from config import CONFIG
 from localisation import localise, DEFAULT_LOCALE
-
-import json
 
 nekosbest_client = Client()
 
@@ -56,7 +54,7 @@ categories = [
 ]
 
 
-class gif_related(commands.Cog):
+class GifRelated(commands.Cog):
     author = "googer_"
 
     def __init__(self, bot):
@@ -107,4 +105,4 @@ class gif_related(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(gif_related(bot))
+    bot.add_cog(GifRelated(bot))

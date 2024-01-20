@@ -292,12 +292,12 @@ class Basic(commands.Cog):
             description=localise(f"cog.{cog_name}.info.desc", ctx.interaction.locale),
         )
 
-        def do_commands(ctx, commands):
+        def do_commands(ctx, cmds):
             string = ""
 
-            def collect_commands(commands):
+            def collect_commands(to_collect):
                 to_do_commands = []
-                for command in commands:
+                for command in to_collect:
                     if isinstance(command, discord.SlashCommandGroup):
                         to_do_commands += collect_commands(command.walk_commands())
                     else:
@@ -314,8 +314,8 @@ class Basic(commands.Cog):
                     name = do_name(ctx, command.parent) + " " + name
                 return name
 
-            commands = collect_commands(commands)
-            for command in commands:
+            commands_ = collect_commands(cmds)
+            for command in commands_:
                 string += "`" + do_name(ctx, command) + "` - `" + command.name + "`\n"
             return string.strip()
 
