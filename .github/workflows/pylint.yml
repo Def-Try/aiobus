@@ -31,7 +31,7 @@ jobs:
     - name: AutoPEP8 code reformatting
       run: |
         for f in $(git ls-files '*.py'); do autopep8 -i $f; done
-    - name: AutoPEP8 code reformatting
+    - name: Black code reformatting
       run: |
         for f in $(git ls-files '*.py'); do python -m black $f; done
     - uses: stefanzweifel/git-auto-commit-action@v4
