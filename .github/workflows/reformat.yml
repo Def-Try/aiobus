@@ -1,0 +1,51 @@
+name: Reformat
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+        pip install py-cord
+        pip install simpleeval
+        pip install tinydb
+        pip install aiohttp==3.6.2
+        pip install nekosbest
+        pip install --upgrade aiohttp
+        pip install autopep8
+        pip install git+https://github.com/psf/black
+    - name: Create log files
+      run: |
+        touch autopep8-reformat.txt
+        touch black-reformat.txt
+    - name: AutoPEP8 code reformatting
+      run: |
+        for f in $(git ls-files '*.py'); do
+          echo "Reformatting" $f >> lint-logs/autopep8-reformat.txt
+          autopep8 -i $f >> lint-logs/autopep8-reformat.txt
+        done
+    - name: Black code reformatting
+      run: |
+        for f in $(git ls-files '*.py'); do
+          echo "Reformatting" $f >> lint-logs/black-reformat.txt
+          python -m black $f >> lint-logs/black-reformat.txt
+        done
+    - uses: stefanzweifel/git-auto-commit-action@v4
+    - uses: actions/upload-artifact@v4
+      with:
+        name: logs.zip
+        path: lint-logs/
