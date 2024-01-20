@@ -39,3 +39,6 @@ jobs:
       with:
         name: ${{env.LOGFILE_NAME}}
         path: lint-logs/
+    - name: Remove log files
+      run: |
+        rm -r lint-logs
