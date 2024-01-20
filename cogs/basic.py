@@ -140,9 +140,9 @@ class Basic(commands.Cog):
     def find_command(self, ctx, command, cog):
         command_parts = command.split(" ")
 
-        def collect_commands(commands):
+        def collect_commands(to_collect):
             to_do_commands = []
-            for command in commands:
+            for command in to_collect:
                 if isinstance(command, discord.SlashCommandGroup):
                     to_do_commands += collect_commands(command.walk_commands())
                 else:
@@ -161,15 +161,15 @@ class Basic(commands.Cog):
 
         ccommands = []
         if not cog:
-            for _, cog in self.bot.cogs.items():
-                ccommands += collect_commands(cog.walk_commands())
+            for _, cog_ in self.bot.cogs.items():
+                ccommands += collect_commands(cog_.walk_commands())
         else:
             ccommands += collect_commands(cog.walk_commands())
-        for command in ccommands:
-            if command.name == command_parts[0]:
-                return command
-            if do_name(ctx, command) == " ".join(command_parts):
-                return command
+        for cmd in ccommands:
+            if cmd.name == command_parts[0]:
+                return cmd
+            if do_name(ctx, cmd) == " ".join(command_parts):
+                return cmd
 
     async def help_command(self, ctx: discord.ApplicationContext, cog, command):
         if isinstance(cog, str):

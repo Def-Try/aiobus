@@ -1,12 +1,11 @@
+import shutil
 import discord
 from discord.ext import commands
 from localisation import localise
 from config import CONFIG
 
-import shutil
 
-
-class debug(commands.Cog):
+class Debug(commands.Cog):
     author = "googer_'s blood and tears :sob:"
 
     def __init__(self, bot):
@@ -30,22 +29,14 @@ class debug(commands.Cog):
     )
     @commands.is_owner()
     async def senddbs(self, ctx: discord.ApplicationContext):
-        try:
-            shutil.make_archive("temp/__TEMP_DEBUG_SENDDBS", "zip", "databases")
-        except:
+        shutil.make_archive("temp/__TEMP_DEBUG_SENDDBS", "zip", "databases")
+        with open("temp/__TEMP_DEBUG_SENDDBS.zip", "rb") as file:
             await ctx.respond(
-                localise("cog.debug.answers.senddbs.cantzip", ctx.interaction.locale),
+                localise("cog.debug.answers.senddbs.ok", ctx.interaction.locale),
                 ephemeral=True,
+                file=discord.File(file, filename="databases.zip"),
             )
-            return
-        file = open("temp/__TEMP_DEBUG_SENDDBS.zip", "rb")
-        await ctx.respond(
-            localise("cog.debug.answers.senddbs.ok", ctx.interaction.locale),
-            ephemeral=True,
-            file=discord.File(file, filename="databases.zip"),
-        )
-        file.close()
 
 
 def setup(bot):
-    bot.add_cog(debug(bot))
+    bot.add_cog(Debug(bot))

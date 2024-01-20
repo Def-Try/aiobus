@@ -1,12 +1,12 @@
-import discord
-from discord.ext import commands
-from localisation import localise
-from config import CONFIG
-
 """
 template cog
 aka How To Make Your Own Module
 """
+
+import discord
+from discord.ext import commands
+from localisation import localise
+from config import CONFIG
 
 
 class template(commands.Cog):
@@ -14,9 +14,7 @@ class template(commands.Cog):
     first, Class Name.
     it should describe your cog in literally 1 to 2 words.
     also it usually is used in localisation strings, soo...
-    """
 
-    """
     author field in cog is used for Help commands coghelp.
     usually should be your nickname
     """
@@ -51,8 +49,7 @@ class template(commands.Cog):
     """
     cog's command group. PLEASE, use it instead of straight
     making command instead of putting it in a group
-    """
-    """
+
     also, about localise(localistring, locale=None)
     localistring is a json path, where dot is the divider.
     a.b.c.d path maps to json 
