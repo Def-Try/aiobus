@@ -23,16 +23,16 @@ jobs:
         pip install aiohttp==3.6.2
         pip install nekosbest
         pip install --upgrade aiohttp
+        pip install autopep8
+    - name: AutoPEP8 code reformatting
+      run: |
+        for f in $(git ls-files '*.py'); do autopep8 -i $f; done
+    - name: Commit AutoPEP8 changes
+      run: |
+        git add $(git ls-files '*.py')
+        git commit -m "AutoPEP8 reformat for commit $GITHUB_SHA"
+        git push
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py') --exit-zero > lintfile
-        cat lintfile
-    - name: Fix pylinting (if any fixes required)
-      run: |
-        git clone https://github.com/hughdbrown/autopylint.git
-        cd autopylint
-        python setup.py install --user
-        cd ..
-        rm -rf autopylint
-        python -m autopylint lintfile
+        pylint $(git ls-files '*.py') --exit-zero
   
