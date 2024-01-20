@@ -29,5 +29,10 @@ jobs:
         cat lintfile
     - name: Fix pylinting (if any fixes required)
       run: |
+        git clone https://github.com/hughdbrown/autopylint.git
+        cd autopylint
+        python setup.py install --user
+        cd ..
+        rm -rf autopylint
         autopylint lintfile
   
