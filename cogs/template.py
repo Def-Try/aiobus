@@ -8,6 +8,7 @@ template cog
 aka How To Make Your Own Module
 """
 
+
 class template(commands.Cog):
     """
     first, Class Name.
@@ -42,8 +43,9 @@ class template(commands.Cog):
         pass
 
     cmds = discord.SlashCommandGroup("template", "",
-        name_localizations=localise("cog.template.command_group.name"),
-        description_localizations=localise("cog.template.command_group.desc"))
+                                     name_localizations=localise(
+                                         "cog.template.command_group.name"),
+                                     description_localizations=localise("cog.template.command_group.desc"))
     """
     cog's command group. PLEASE, use it instead of straight
     making command instead of putting it in a group
@@ -66,10 +68,12 @@ class template(commands.Cog):
     """
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.template.commands.cmd.name"),
-        description_localizations=localise("cog.template.commands.cmd.desc"))
+                  name_localizations=localise(
+                      "cog.template.commands.cmd.name"),
+                  description_localizations=localise("cog.template.commands.cmd.desc"))
     async def cmd(self, ctx: discord.ApplicationContext):
         await ctx.respond(localise("cog.template.answers.cmd.text", ctx.interaction.locale))
+
 
 def setup(bot):
     bot.add_cog(template(bot))

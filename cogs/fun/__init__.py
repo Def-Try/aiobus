@@ -8,6 +8,7 @@ import random
 
 from . import languages
 
+
 class fun(commands.Cog):
     author = "googer_"
 
@@ -23,12 +24,14 @@ class fun(commands.Cog):
         pass
 
     cmds = discord.SlashCommandGroup("fun", "",
-        name_localizations=localise("cog.fun.command_group.name"),
-        description_localizations=localise("cog.fun.command_group.desc"))
+                                     name_localizations=localise(
+                                         "cog.fun.command_group.name"),
+                                     description_localizations=localise("cog.fun.command_group.desc"))
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.fun.commands.crash_server.name"),
-        description_localizations=localise("cog.fun.commands.crash_server.desc"))
+                  name_localizations=localise(
+                      "cog.fun.commands.crash_server.name"),
+                  description_localizations=localise("cog.fun.commands.crash_server.desc"))
     async def crash_server(self, ctx: discord.ApplicationContext):
         msg = await ctx.respond(localise("cog.fun.answers.crash_server.progress", ctx.interaction.locale).format(percent=0))
         await asyncio.sleep(0.5)
@@ -41,28 +44,41 @@ class fun(commands.Cog):
         await msg.edit_original_response(content=localise("cog.fun.answers.crash_server.error", ctx.interaction.locale))
 
     @cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.fun.commands.translate.name"),
-        description_localizations=localise("cog.fun.commands.translate.desc"))
+                  name_localizations=localise(
+                      "cog.fun.commands.translate.name"),
+                  description_localizations=localise("cog.fun.commands.translate.desc"))
     async def translate(self, ctx: discord.ApplicationContext, mode: discord.Option(str,
-            name_localizations=localise("cog.fun.commands.translate.options.mode.name"),
-            description=localise("cog.fun.commands.translate.options.mode.desc", DEFAULT_LOCALE),
-            description_localizations=localise("cog.fun.commands.translate.options.mode.desc"),
-            choices=["to", "from"]
-        ), language: discord.Option(str,
-            name_localizations=localise("cog.fun.commands.translate.options.language.name"),
-            description=localise("cog.fun.commands.translate.options.language.desc", DEFAULT_LOCALE),
-            description_localizations=localise("cog.fun.commands.translate.options.language.desc"),
-            choices=list(languages.languages.keys())
-        ), text: discord.Option(str,
-            name_localizations=localise("cog.fun.commands.translate.options.text.name"),
-            description=localise("cog.fun.commands.translate.options.text.desc", DEFAULT_LOCALE),
-            description_localizations=localise("cog.fun.commands.translate.options.text.desc")
-        )):
+                                                                                    name_localizations=localise(
+                                                                                        "cog.fun.commands.translate.options.mode.name"),
+                                                                                    description=localise(
+                                                                                        "cog.fun.commands.translate.options.mode.desc", DEFAULT_LOCALE),
+                                                                                    description_localizations=localise(
+                                                                                        "cog.fun.commands.translate.options.mode.desc"),
+                                                                                    choices=[
+                                                                                        "to", "from"]
+                                                                                    ), language: discord.Option(str,
+                                                                                                                name_localizations=localise(
+                                                                                                                    "cog.fun.commands.translate.options.language.name"),
+                                                                                                                description=localise(
+                                                                                                                    "cog.fun.commands.translate.options.language.desc", DEFAULT_LOCALE),
+                                                                                                                description_localizations=localise(
+                                                                                                                    "cog.fun.commands.translate.options.language.desc"),
+                                                                                                                choices=list(
+                                                                                                                    languages.languages.keys())
+                                                                                                                ), text: discord.Option(str,
+                                                                                                                                        name_localizations=localise(
+                                                                                                                                            "cog.fun.commands.translate.options.text.name"),
+                                                                                                                                        description=localise(
+                                                                                                                                            "cog.fun.commands.translate.options.text.desc", DEFAULT_LOCALE),
+                                                                                                                                        description_localizations=localise(
+                                                                                                                                            "cog.fun.commands.translate.options.text.desc")
+                                                                                                                                        )):
         translated = languages.languages[language].translate(mode, text)
         await ctx.respond(
             localise("cog.fun.answers.translate.done", ctx.interaction.locale).format(
-                text=text, language=language, translated=translated, way = localise(f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
-                ), ephemeral=True)
+                text=text, language=language, translated=translated, way=localise(
+                    f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
+            ), ephemeral=True)
 
     """
 ;радио
@@ -78,12 +94,15 @@ _подчеркивание_
 |курсивный|
     """
     @cmds.command(guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.fun.commands.parse_rpd.name"),
-        description_localizations=localise("cog.fun.commands.parse_rpd.desc"))
+                  name_localizations=localise(
+                      "cog.fun.commands.parse_rpd.name"),
+                  description_localizations=localise("cog.fun.commands.parse_rpd.desc"))
     async def parse_rpd(self, ctx: discord.ApplicationContext, text: discord.Option(str,
-            name_localizations=localise("cog.fun.commands.parse_rpd.options.text.name"),
-            description=localise("cog.fun.commands.parse_rpd.options.text.desc", DEFAULT_LOCALE),
-            description_localizations=localise("cog.fun.commands.parse_rpd.options.text.desc"))):
+                                                                                    name_localizations=localise(
+                                                                                        "cog.fun.commands.parse_rpd.options.text.name"),
+                                                                                    description=localise(
+                                                                                        "cog.fun.commands.parse_rpd.options.text.desc", DEFAULT_LOCALE),
+                                                                                    description_localizations=localise("cog.fun.commands.parse_rpd.options.text.desc"))):
         rtext = text
         radio = False
         radio_channel = ""
@@ -92,7 +111,7 @@ _подчеркивание_
         doing_text = True
         action = ""
         doing_action = False
-        for n,ch in enumerate(rtext):
+        for n, ch in enumerate(rtext):
             if ch == ";" and n == 0:
                 radio, radio_channel = True, "common"
                 radio_channel_done = True
@@ -120,9 +139,13 @@ _подчеркивание_
                 doing_action = True
                 doing_text = False
                 continue
-            if doing_action: action += ch
-            if doing_text: text += ch
-        if text[-1] not in ".!?": text += "."
+            if doing_action:
+                action += ch
+            if doing_text:
+                text += ch
+        if text[-1] not in ".!?":
+            text += "."
+
         def sliceindex(x):
             i = 0
             for c in x:
