@@ -18,6 +18,7 @@ class template(commands.Cog):
     author field in cog is used for Help commands coghelp.
     usually should be your nickname
     """
+
     author = "googer_"
 
     def __init__(self, bot):
