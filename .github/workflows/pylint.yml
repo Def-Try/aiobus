@@ -30,11 +30,12 @@ jobs:
       run: |
         mkdir lint-logs
         touch lint-logs/pylint.txt
+        echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
   
     - uses: actions/upload-artifact@v4
       with:
-        name: logs.zip
+        name: ${{env.LOGFILE_NAME}}
         path: lint-logs/
