@@ -91,8 +91,10 @@ class Basic(commands.Cog):
 
         for name, cog in self.bot.cogs.items():
             embed.add_field(
-                name=f"Cog `{name}` - " + \
-                  localise(f'cog.{cog.qualified_name}.info.brief', ctx.interaction.locale),
+                name=f"Cog `{name}` - "
+                + localise(
+                    f"cog.{cog.qualified_name}.info.brief", ctx.interaction.locale
+                ),
                 value=do_commands(ctx, cog.get_commands()),
                 inline=False,
             )
@@ -337,7 +339,7 @@ class Basic(commands.Cog):
         embed.add_field(
             name=localise("cog.basic.answers.ping.dwpl", ctx.interaction.locale),
             value=f"{round(self.bot.latency*1000, 2)}"
-              f"{localise('cog.basic.answers.ping.unit', ctx.interaction.locale)}",
+            f"{localise('cog.basic.answers.ping.unit', ctx.interaction.locale)}",
             inline=False,
         )
 
