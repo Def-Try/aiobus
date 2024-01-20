@@ -29,7 +29,6 @@ jobs:
     - name: Create log files
       run: |
         touch pylint.txt
-    - uses: stefanzweifel/git-auto-commit-action@v4
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
