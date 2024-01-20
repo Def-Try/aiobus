@@ -1,4 +1,4 @@
-name: Pylint
+name: Pylint code check
 
 on: [push]
 
@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
     permissions:
       contents: write
     steps:
@@ -26,16 +26,15 @@ jobs:
         pip install aiohttp==3.6.2
         pip install nekosbest
         pip install --upgrade aiohttp
-        pip install autopep8
-        pip install git+https://github.com/psf/black
-    - name: AutoPEP8 code reformatting
+    - name: Create log files
       run: |
-        for f in $(git ls-files '*.py'); do autopep8 -i $f; done
-    - name: Black code reformatting
-      run: |
-        for f in $(git ls-files '*.py'); do python -m black $f; done
+        touch pylint.txt
     - uses: stefanzweifel/git-auto-commit-action@v4
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py') --exit-zero
+        pylint $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
   
+    - uses: actions/upload-artifact@v4
+      with:
+        name: logs.zip
+        path: lint-logs/
