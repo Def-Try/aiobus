@@ -42,10 +42,12 @@ class template(commands.Cog):
         """
         pass
 
-    cmds = discord.SlashCommandGroup("template", "",
-                                     name_localizations=localise(
-                                         "cog.template.command_group.name"),
-                                     description_localizations=localise("cog.template.command_group.desc"))
+    cmds = discord.SlashCommandGroup(
+        "template",
+        "",
+        name_localizations=localise("cog.template.command_group.name"),
+        description_localizations=localise("cog.template.command_group.desc"),
+    )
     """
     cog's command group. PLEASE, use it instead of straight
     making command instead of putting it in a group
@@ -67,12 +69,15 @@ class template(commands.Cog):
     ask me (googer_) for more info on that, idk how to explain it
     """
 
-    @cmds.command(guild_ids=CONFIG["g_ids"],
-                  name_localizations=localise(
-                      "cog.template.commands.cmd.name"),
-                  description_localizations=localise("cog.template.commands.cmd.desc"))
+    @cmds.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.template.commands.cmd.name"),
+        description_localizations=localise("cog.template.commands.cmd.desc"),
+    )
     async def cmd(self, ctx: discord.ApplicationContext):
-        await ctx.respond(localise("cog.template.answers.cmd.text", ctx.interaction.locale))
+        await ctx.respond(
+            localise("cog.template.answers.cmd.text", ctx.interaction.locale)
+        )
 
 
 def setup(bot):

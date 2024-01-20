@@ -14,9 +14,12 @@ def check(localedict, localepath):
         if isinstance(v, dict):
             if any([i in v for i in LOCALES]):
                 if not all([i in v for i in LOCALES]):
-                    print(localepath+"."+k, "does not have a translation string for locale(s)",
-                          ", ".join(diff(LOCALES, v)))
-            check(v, localepath+"."+k)
+                    print(
+                        localepath + "." + k,
+                        "does not have a translation string for locale(s)",
+                        ", ".join(diff(LOCALES, v)),
+                    )
+            check(v, localepath + "." + k)
             continue
         # print(localepath+"."+k)
 
