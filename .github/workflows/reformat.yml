@@ -1,9 +1,9 @@
-name: Reformat
+name: Reformat code
 
 on: [push]
 
 jobs:
-  lint:
+  reformat:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,9 +30,9 @@ jobs:
         pip install git+https://github.com/psf/black
     - name: Create log files
       run: |
-        mkdir lint-logs
-        touch lint-logs/autopep8-reformat.txt
-        touch lint-logs/black-reformat.txt
+        mkdir ref-logs
+        touch ref-logs/autopep8-reformat.txt
+        touch ref-logs/black-reformat.txt
         echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
     - name: AutoPEP8 code reformatting
       run: |
@@ -46,8 +46,11 @@ jobs:
           echo "Reformatting" $f >> ref-logs/black-reformat.txt
           python -m black $f >> ref-logs/black-reformat.txt
         done
-    - uses: stefanzweifel/git-auto-commit-action@v4
     - uses: actions/upload-artifact@v4
       with:
         name: ${{env.LOGFILE_NAME}}
         path: ref-logs/
+    - name: Remove log files
+      run: |
+        rm -r ref-logs
+    - uses: stefanzweifel/git-auto-commit-action@v4
