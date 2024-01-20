@@ -16,7 +16,8 @@ actions_bans = [
 ]
 
 
-class actions_commands(commands.Cog):
+class ActionsCommands(commands.Cog):
+
     author = "googer_"
 
     def __init__(self, bot):
@@ -34,6 +35,7 @@ class actions_commands(commands.Cog):
     )
 
     async def act(self, action: str, ctx: discord.ApplicationContext):
+        '''action command. requires action itself and discord context.'''
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
@@ -46,7 +48,7 @@ class actions_commands(commands.Cog):
             f"cog.actions_commands.answers.action.{action}.self", ctx.interaction.locale
         )
         embed = discord.Embed(
-            title=localise(f"cog.actions_commands.answers.action.name", locale),
+            title=localise("cog.actions_commands.answers.action.name", locale),
             description=localis_act.format(member=ctx.author.mention),
             color=discord.Colour.blurple(),
         )
@@ -57,20 +59,9 @@ class actions_commands(commands.Cog):
         self,
         action: str,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
-            discord.Member,
-            name_localizations=localise(
-                "cog.actions_commands.commands.action.options.other.name"
-            ),
-            description=localise(
-                "cog.actions_commands.commands.action.options.other.desc",
-                DEFAULT_LOCALE,
-            ),
-            description_localizations=localise(
-                "cog.actions_commands.commands.action.options.other.desc"
-            ),
-        ),
+        other: discord.Member
     ):
+        '''action command. requires action itself, other member, and discord context.'''
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
@@ -90,7 +81,7 @@ class actions_commands(commands.Cog):
             ctx.interaction.locale,
         )
         embed = discord.Embed(
-            title=localise(f"cog.actions_commands.answers.action.name", locale),
+            title=localise("cog.actions_commands.answers.action.name", locale),
             description=localis_act_self.format(member=ctx.author.mention)
             if other == ctx.author
             else localis_act_bot.format(
@@ -109,20 +100,9 @@ class actions_commands(commands.Cog):
         self,
         action: str,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
-            discord.Member,
-            name_localizations=localise(
-                "cog.actions_commands.commands.action.options.other.name"
-            ),
-            description=localise(
-                "cog.actions_commands.commands.action.options.other.desc",
-                DEFAULT_LOCALE,
-            ),
-            description_localizations=localise(
-                "cog.actions_commands.commands.action.options.other.desc"
-            ),
-        ) = None,
+        other: discord.Member = None,
     ):
+        '''action command. requires action itself, optionally other member, and discord context.'''
         if ctx.author.id in actions_bans:
             await ctx.respond(
                 localise("generic.banned_from_command", ctx.interaction.locale),
@@ -145,7 +125,7 @@ class actions_commands(commands.Cog):
             f"cog.actions_commands.answers.action.{action}.none", ctx.interaction.locale
         )
         embed = discord.Embed(
-            title=localise(f"cog.actions_commands.answers.action.name", locale),
+            title=localise("cog.actions_commands.answers.action.name", locale),
             description=localis_act_self.format(member=ctx.author.mention)
             if other == ctx.author
             else localis_act_bot.format(
@@ -173,7 +153,7 @@ class actions_commands(commands.Cog):
     async def pat(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -197,7 +177,7 @@ class actions_commands(commands.Cog):
     async def hug(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -221,7 +201,7 @@ class actions_commands(commands.Cog):
     async def cuddle(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -245,7 +225,7 @@ class actions_commands(commands.Cog):
     async def handshake(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -269,7 +249,7 @@ class actions_commands(commands.Cog):
     async def bite(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -293,7 +273,7 @@ class actions_commands(commands.Cog):
     async def highfive(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -317,7 +297,7 @@ class actions_commands(commands.Cog):
     async def kiss(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -341,7 +321,7 @@ class actions_commands(commands.Cog):
     async def poke(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -365,7 +345,7 @@ class actions_commands(commands.Cog):
     async def slap(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -389,7 +369,7 @@ class actions_commands(commands.Cog):
     async def handhold(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -413,7 +393,7 @@ class actions_commands(commands.Cog):
     async def kick(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -437,7 +417,7 @@ class actions_commands(commands.Cog):
     async def punch(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -461,7 +441,7 @@ class actions_commands(commands.Cog):
     async def tickle(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -485,7 +465,7 @@ class actions_commands(commands.Cog):
     async def feed(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -509,7 +489,7 @@ class actions_commands(commands.Cog):
     async def stare(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -533,7 +513,7 @@ class actions_commands(commands.Cog):
     async def wave(
         self,
         ctx: discord.ApplicationContext,
-        other: discord.Option(
+        other: commands.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -710,4 +690,4 @@ class actions_commands(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(actions_commands(bot))
+    bot.add_cog(ActionsCommands(bot))
