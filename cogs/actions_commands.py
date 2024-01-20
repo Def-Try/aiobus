@@ -153,7 +153,7 @@ class ActionsCommands(commands.Cog):
     async def pat(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -177,7 +177,7 @@ class ActionsCommands(commands.Cog):
     async def hug(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -201,7 +201,7 @@ class ActionsCommands(commands.Cog):
     async def cuddle(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -225,7 +225,7 @@ class ActionsCommands(commands.Cog):
     async def handshake(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -249,7 +249,7 @@ class ActionsCommands(commands.Cog):
     async def bite(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -273,7 +273,7 @@ class ActionsCommands(commands.Cog):
     async def highfive(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -297,7 +297,7 @@ class ActionsCommands(commands.Cog):
     async def kiss(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -321,7 +321,7 @@ class ActionsCommands(commands.Cog):
     async def poke(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -345,7 +345,7 @@ class ActionsCommands(commands.Cog):
     async def slap(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -369,7 +369,7 @@ class ActionsCommands(commands.Cog):
     async def handhold(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -393,7 +393,7 @@ class ActionsCommands(commands.Cog):
     async def kick(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -417,7 +417,7 @@ class ActionsCommands(commands.Cog):
     async def punch(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -441,7 +441,7 @@ class ActionsCommands(commands.Cog):
     async def tickle(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -465,7 +465,7 @@ class ActionsCommands(commands.Cog):
     async def feed(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -489,7 +489,7 @@ class ActionsCommands(commands.Cog):
     async def stare(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
@@ -513,7 +513,7 @@ class ActionsCommands(commands.Cog):
     async def wave(
         self,
         ctx: discord.ApplicationContext,
-        other: commands.Option(
+        other: commands.options.Option(
             discord.Member,
             name_localizations=localise(
                 "cog.actions_commands.commands.action.options.other.name"
