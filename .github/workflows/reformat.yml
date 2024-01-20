@@ -33,20 +33,21 @@ jobs:
         mkdir lint-logs
         touch lint-logs/autopep8-reformat.txt
         touch lint-logs/black-reformat.txt
+        echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
     - name: AutoPEP8 code reformatting
       run: |
         for f in $(git ls-files '*.py'); do
-          echo "Reformatting" $f >> lint-logs/autopep8-reformat.txt
-          autopep8 -i $f >> lint-logs/autopep8-reformat.txt
+          echo "Reformatting" $f >> ref-logs/autopep8-reformat.txt
+          autopep8 -i $f >> ref-logs/autopep8-reformat.txt
         done
     - name: Black code reformatting
       run: |
         for f in $(git ls-files '*.py'); do
-          echo "Reformatting" $f >> lint-logs/black-reformat.txt
-          python -m black $f >> lint-logs/black-reformat.txt
+          echo "Reformatting" $f >> ref-logs/black-reformat.txt
+          python -m black $f >> ref-logs/black-reformat.txt
         done
     - uses: stefanzweifel/git-auto-commit-action@v4
     - uses: actions/upload-artifact@v4
       with:
-        name: logs.zip
-        path: lint-logs/
+        name: ${{env.LOGFILE_NAME}}
+        path: ref-logs/
