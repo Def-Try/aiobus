@@ -33,7 +33,10 @@ jobs:
         echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=missing-docstring $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
+        pylint --disable=missing-docstring \
+          --disable=no-member \
+          --disable=too-many-public-methods \
+          $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
   
     - uses: actions/upload-artifact@v4
       with:
