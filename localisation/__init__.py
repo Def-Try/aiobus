@@ -11,6 +11,8 @@ DEFAULT_LOCALE = CONFIG["locale"]
 
 LOCALES = ["en-US", "ru"]
 
+check_locales = False
+
 LOCALISATIONS = {}
 
 
@@ -34,10 +36,15 @@ for l in LOCALES:
         filelist = [i.strip() for i in f.readlines()]
     for file in filelist:
         with open("localisation/" + l + "/strings/" + file, "r", encoding="utf-8") as f:
-            locale = json.loads(f.read())
+            loc = json.loads(f.read())
 
-            prepare_locale(locale, l)
-            merge(LOCALISATIONS, locale)
+            prepare_locale(loc, l)
+            merge(LOCALISATIONS, loc)
+            del loc
+        del f
+    del filelist
+    del file
+del l
 
 
 def localise(string, locale=None):
@@ -54,3 +61,37 @@ def localise(string, locale=None):
     return localisations.get(
         locale, localisations.get(DEFAULT_LOCALE, string + "." + locale)
     )
+
+if check_locales:
+    def diff(source, diff_):
+        has = []
+        for i in source:
+            if i not in diff_:
+                has.append(i)
+        return has
+
+
+    def check(localedict, localepath):
+        for k, v in localedict.items():
+            if isinstance(v, dict):
+                if any(i in v for i in LOCALES):
+                    if not all(i in v for i in LOCALES):
+                        print(
+                            localepath + "." + k,
+                            "does not have a translation string for locale(s)",
+                            ", ".join(diff(LOCALES, v)),
+                        )
+                check(v, localepath + "." + k)
+                continue
+
+
+    check(LOCALISATIONS, "root")
+
+    del check
+    del diff
+
+del json
+del CONFIG
+del check_locales
+del merge
+del prepare_locale
