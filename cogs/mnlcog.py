@@ -68,9 +68,15 @@ class MnLCog(commands.Cog):
             return
         engine = self.engines[ctx.author.id]
         if cfgname == "persistent":
-            engine.persisting_globals = (
-                cfgval in ["T", "True", "true", "t", "1", "yes", "y"]
-            )
+            engine.persisting_globals = cfgval in [
+                "T",
+                "True",
+                "true",
+                "t",
+                "1",
+                "yes",
+                "y",
+            ]
             if engine.persisting_globals:
                 await ctx.respond(
                     localise(
@@ -125,7 +131,8 @@ class MnLCog(commands.Cog):
         except Exception as e:
             await ctx.followup.send(
                 localise(
-                    "cog.mnlcog.answers.run.fatal_error."+(('with' if output else 'no')+'_output'),
+                    "cog.mnlcog.answers.run.fatal_error."
+                    + (("with" if output else "no") + "_output"),
                     ctx.interaction.locale,
                 ).format(error=str(e), output=output)
             )
