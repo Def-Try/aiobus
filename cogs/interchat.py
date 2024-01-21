@@ -23,7 +23,7 @@ interchat_bans = {
 }
 
 
-class interchat(commands.Cog, name="interchat"):
+class Interchat(commands.Cog, name="interchat"):
     author = "googer_ & minemaster_"
 
     def __init__(self, bot):
@@ -49,12 +49,14 @@ class interchat(commands.Cog, name="interchat"):
             ) or self.bot.get_partial_messageable(tunnel["in"])
             rtunnel["whookless"] = tunnel["whookless"]
             if not tunnel["whookless"]:
+                # pylint: disable=protected-access
                 rtunnel["outwhook"] = await discord.Webhook.from_url(
                     tunnel["outwhook"], session=self.bot.http._HTTPClient__session
                 ).fetch()
                 rtunnel["inwhook"] = await discord.Webhook.from_url(
                     tunnel["inwhook"], session=self.bot.http._HTTPClient__session
                 ).fetch()
+                # pylint: enable=protected-access
             rtunnel["messages"] = tunnel["messages"]
             rtunnel["rmessages"] = tunnel["rmessages"]
             rtunnel["permanent"] = tunnel["permanent"]
@@ -150,28 +152,26 @@ class interchat(commands.Cog, name="interchat"):
         inwhook = None
 
         whookless = (
-            isinstance(fromch, discord.abc.PrivateChannel)
-            or isinstance(toch, discord.abc.PrivateChannel)
-            or isinstance(fromch, discord.PartialMessageable)
-            or isinstance(toch, discord.PartialMessageable)
+            isinstance(fromch, (discord.abc.PrivateChannel, discord.PartialMessageable))
+            or isinstance(toch, (discord.abc.PrivateChannel, discord.PartialMessageable))
         )
 
         for tunnel in self.tunnels:
             if tunnel["out"] == fromch and not hub:
                 return False
-            elif tunnel["out"] == fromch and not whookless:
+            if tunnel["out"] == fromch and not whookless:
                 outwhook = tunnel["outwhook"]
             if tunnel["in"] == toch and not hub:
                 return False
-            elif tunnel["in"] == toch and not whookless:
+            if tunnel["in"] == toch and not whookless:
                 inwhook = tunnel["inwhook"]
             if tunnel["out"] == toch and not hub:
                 return False
-            elif tunnel["out"] == toch and not whookless:
+            if tunnel["out"] == toch and not whookless:
                 outwhook = tunnel["outwhook"]
             if tunnel["in"] == fromch and not hub:
                 return False
-            elif tunnel["in"] == fromch and not whookless:
+            if tunnel["in"] == fromch and not whookless:
                 inwhook = tunnel["inwhook"]
 
         if not whookless and not outwhook:
@@ -225,7 +225,7 @@ class interchat(commands.Cog, name="interchat"):
         if channel.id == hub["host"]:
             return -2
         if self.get_hub(channel=channel, create=False):
-            -2
+            return -2
         if await self.start_interchat(
             channel, self.bot.get_channel(hub["host"]), hub_addr
         ):
@@ -238,8 +238,7 @@ class interchat(commands.Cog, name="interchat"):
                 Query().address == hub_addr,
             )
             return 1
-        else:
-            return -3
+        return -3
 
     async def end_interchat(self, tunnel):
         if not tunnel["whookless"] and not tunnel["hub_addr"]:
@@ -266,7 +265,7 @@ class interchat(commands.Cog, name="interchat"):
         if channel.id == hub["host"]:
             return -2
         for tunnel in filter(
-            lambda tun: (tun["in"].id == channel.id or tun["out"].id == channel.id)
+            lambda tun: channel.id in set(tun["in"].id, tun["out"].id)
             and tun["hub_addr"] == hub_addr,
             self.tunnels,
         ):
@@ -293,13 +292,11 @@ class interchat(commands.Cog, name="interchat"):
             return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (
-                message.author.id == itunnel["outwhook"].id
-                or message.author.id == itunnel["inwhook"].id
+                message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
             ):
                 return
             if not (
-                message.channel.id == itunnel["out"].id
-                or message.channel.id == itunnel["in"].id
+                message.channel.id in (itunnel["out"].id, itunnel["in"].id)
             ):
                 continue
             embeds = []
@@ -410,13 +407,11 @@ class interchat(commands.Cog, name="interchat"):
             return
         for itunnel in self.tunnels:
             if not itunnel["whookless"] and (
-                message.author.id == itunnel["outwhook"].id
-                or message.author.id == itunnel["inwhook"].id
+                message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
             ):
                 return
             if not (
-                message.channel.id == itunnel["out"].id
-                or message.channel.id == itunnel["in"].id
+                message.channel.id in (itunnel["out"].id, itunnel["in"].id)
             ):
                 continue
             embeds = []
@@ -469,7 +464,7 @@ class interchat(commands.Cog, name="interchat"):
             if not itunnel["whookless"]:
                 if (
                     hasattr(old_message, "_thread_id")
-                    and getattr(old_message, "_thread_id") == None
+                    and getattr(old_message, "_thread_id") is None
                 ):
                     delattr(old_message, "_thread_id")
 
@@ -1252,7 +1247,7 @@ class interchat(commands.Cog, name="interchat"):
 
 
 def setup(bot):
-    bot.add_cog(interchat(bot))
+    bot.add_cog(Iinterchat(bot))
 
 
 def teardown(bot):
