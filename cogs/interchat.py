@@ -1035,7 +1035,7 @@ class Interchat(commands.Cog, name="interchat"):
             )
             return
         for tunnel in self.tunnels:
-            if ctx.channel.id in (tunnel['in'].id, tunnel['out'].id):
+            if ctx.channel.id in (tunnel["in"].id, tunnel["out"].id):
                 if tunnel["permanent"]:
                     await ctx.respond(
                         localise(
@@ -1180,7 +1180,7 @@ class Interchat(commands.Cog, name="interchat"):
 
         this_tunnel = None
         for tunnel in self.tunnels:
-            if ctx.channel.id in (tunnel['in'].id, tunnel['out'].id):
+            if ctx.channel.id in (tunnel["in"].id, tunnel["out"].id):
                 this_tunnel = tunnel
                 break
         embed = discord.Embed(
