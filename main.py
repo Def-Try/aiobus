@@ -1,13 +1,12 @@
-import discord
-from discord.ext import commands
 import logging
-import asyncio
-import colorama
-import termcolor
 import json
 import time
 import traceback
-
+import sys
+import discord
+from discord.ext import commands
+import colorama
+import termcolor
 from config import CONFIG, TOKEN
 
 colorama.just_fix_windows_console()
@@ -27,24 +26,26 @@ logger.setLevel(logging.INFO)
 # This is used to check localisation, but is not used in main.
 try:
     import localisation
-except json.JSONDecodeError as e:
-    logger.error(f"Localisation error: JSON could not be decoded: {e}")
-    exit(1)
+except json.JSONDecodeError as uh_oh_json_error:
+    logger.error(f"Localisation error: JSON could not be decoded: {uh_oh_json_error}")
+    sys.exit(1)
 # pylint: enable=unused-import
 
-bot = commands.Bot(intents=discord.Intents.all())
+discord_bot = commands.Bot(intents=discord.Intents.all())
 
-bot.logger = logger
+discord_bot.logger = logger
 
 
 def reload_cogs(bot):
-    bot.logger.info(f"Reloading cogs...")
+    bot.logger.info("Reloading cogs...")
 
     timings = {"load": {}, "unload": {}}
 
+    # pylint: disable=broad-exception-caught
+
     unload_fails = []
     load_fails = []
-    for name in bot._cogs:
+    for name in bot.loaded_cogs:
         start = time.perf_counter()
         try:
             bot.unload_extension(name)
@@ -56,7 +57,7 @@ def reload_cogs(bot):
             traceback.print_exc()
             unload_fails.append(name)
 
-    bot._cogs = []
+    bot.loaded_cogs = []
 
     for cog in CONFIG["cogs"]:
         start = time.perf_counter()
@@ -70,26 +71,26 @@ def reload_cogs(bot):
             bot.load_extension(cog)
             timings["load"][cog] = round((time.perf_counter() - start) * 1000, 2)
             bot.logger.info(f"Loaded cog {cog}")
-            bot._cogs.append(cog)
+            bot.loaded_cogs.append(cog)
         except Exception as e:
             timings["load"][cog] = round((time.perf_counter() - start) * 1000, 2)
             bot.logger.error(f"Fatal error while loading cog {cog}: {e}")
             traceback.print_exc()
             load_fails.append(cog)
 
-    return unload_fails + load_fails, bot._cogs, timings
+    # pylint: enable=broad-exception-caught
+
+    return unload_fails + load_fails, bot.loaded_cogs, timings
 
 
 if __name__ == "__main__":
-    bot.reload_cogs = reload_cogs
+    discord_bot.reload_cogs = reload_cogs
 
-    @bot.event
+    @discord_bot.event
     async def on_ready():
-        bot.logger.info(f"We have logged in as {bot.user}")
+        discord_bot.logger.info(f"We have logged in as {bot.user}")
 
-    #    await reload_cogs()
+    bot.loaded_cogs = []
+    _, _, _ = discord_bot.reload_cogs(discord_bot)
 
-    bot._cogs = []
-    _, _, _ = bot.reload_cogs(bot)
-
-    bot.run(TOKEN)
+    discord_bot.run(TOKEN)
