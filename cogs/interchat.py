@@ -294,11 +294,10 @@ class Interchat(commands.Cog, name="interchat"):
         ):
             return
         for itunnel in self.tunnels:
-            if not itunnel["whookless"] and (
-                message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
-            ):
+            if not itunnel["whookless"] and \
+                message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id):
                 return
-            if not (message.channel.id in (itunnel["out"].id, itunnel["in"].id)):
+            if not message.channel.id in (itunnel["out"].id, itunnel["in"].id):
                 continue
             embeds = []
             if message.reference:
@@ -411,7 +410,7 @@ class Interchat(commands.Cog, name="interchat"):
                 message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
             ):
                 return
-            if not (message.channel.id in (itunnel["out"].id, itunnel["in"].id)):
+            if not message.channel.id in (itunnel["out"].id, itunnel["in"].id):
                 continue
             embeds = []
             if message.reference:
@@ -467,14 +466,14 @@ class Interchat(commands.Cog, name="interchat"):
                     delattr(old_message, "_thread_id")
 
             if not itunnel["whookless"]:
-                sent_message = await old_message.edit(
+                await old_message.edit(
                     message.content,
                     embeds=embeds,
                     files=[await i.to_file() for i in message.attachments],
                     allowed_mentions=discord.AllowedMentions.none(),
                 )
             else:
-                sent_message = await old_message.edit(
+               await old_message.edit(
                     (
                         message.author.name
                         if isinstance(message.author, discord.User)
@@ -525,15 +524,9 @@ class Interchat(commands.Cog, name="interchat"):
         for itunnel in self.tunnels:
             if message_is_id and message.id not in itunnel["rmessages"]:
                 continue
-            if not itunnel["whookless"] and (
-                message.author.id == itunnel["outwhook"].id
-                or message.author.id == itunnel["inwhook"].id
-            ):
+            if not itunnel["whookless"] and message.author.id in (itunnel['outwhook'].id, itunnel['inwhook'].id):
                 return
-            if not (
-                message.channel.id == itunnel["out"].id
-                or message.channel.id == itunnel["in"].id
-            ):
+            if not message.channel.id in (itunnel['out'].id, itunnel['in'].id):
                 continue
             channel = None
             if not itunnel["whookless"]:
