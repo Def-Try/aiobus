@@ -1,6 +1,7 @@
 import string
 import math
 
+
 class Language:
     def initdict(self):
         pass
