@@ -124,24 +124,28 @@ class interchat(commands.Cog, name="interchat"):
         )
 
     def address_string(self, channel):
-        guild_name = 'PartialMessageable'
-        channel_name = '???'
-        if not isinstance(channel, discord.abc.PrivateChannel) and\
-            not isinstance(channel, discord.PartialMessageable):
+        guild_name = "PartialMessageable"
+        channel_name = "???"
+        if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(
+            channel, discord.PartialMessageable
+        ):
             guild_name = channel.guild.name
-        if not isinstance(channel, discord.abc.PrivateChannel) and\
-            not isinstance(channel, discord.PartialMessageable):
+        if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(
+            channel, discord.PartialMessageable
+        ):
             channel_name = channel.name
         return f"`{guild_name}, {channel_name}`, `{self.get_address(channel)}`"
 
     def address_string_hub(self, channel):
-        guild_name = 'PartialMessageable'
-        channel_name = '???'
-        if not isinstance(channel, discord.abc.PrivateChannel) and\
-            not isinstance(channel, discord.PartialMessageable):
+        guild_name = "PartialMessageable"
+        channel_name = "???"
+        if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(
+            channel, discord.PartialMessageable
+        ):
             guild_name = channel.guild.name
-        if not isinstance(channel, discord.abc.PrivateChannel) and\
-            not isinstance(channel, discord.PartialMessageable):
+        if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(
+            channel, discord.PartialMessageable
+        ):
             channel_name = channel.name
         return f"`{guild_name}, {channel_name}`, `{self.get_hub(channel=channel)['address']}`"
 
