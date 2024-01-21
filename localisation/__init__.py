@@ -64,14 +64,15 @@ def localise(string, locale=None):
         locale, localisations.get(DEFAULT_LOCALE, string + "." + locale)
     )
 
+
 if check_locales:
+
     def diff(source, diff_):
         has = []
         for i in source:
             if i not in diff_:
                 has.append(i)
         return has
-
 
     def check(localedict, localepath):
         for k, v in localedict.items():
@@ -85,7 +86,6 @@ if check_locales:
                         )
                 check(v, localepath + "." + k)
                 continue
-
 
     check(LOCALISATIONS, "root")
 
