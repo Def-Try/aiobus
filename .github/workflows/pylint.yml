@@ -38,6 +38,7 @@ jobs:
         pylint --disable=missing-docstring \
           --disable=no-member \
           --disable=too-many-public-methods \
+          --disable=too-few-public-methods
           --disable=too-many-locals \
           --disable=too-many-statements \
           --disable=logging-fstring-interpolation \

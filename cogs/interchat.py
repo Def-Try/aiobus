@@ -452,7 +452,6 @@ class Interchat(commands.Cog, name="interchat"):
                 embeds.append(discord.Embed(url=i.url))
                 embeds[-1].set_image(url=i.url)
 
-            sent_message = None
             old_message = itunnel["messages"][itunnel["rmessages"].index(message.id)]
             channel = None
             if not itunnel["whookless"]:
@@ -519,6 +518,7 @@ class Interchat(commands.Cog, name="interchat"):
                 def __init__(self):
                     pass
 
+            # pylint: disable=attribute-defined-outside-init
             msg = message
             message = FakeObject()
             message.id = msg
@@ -526,6 +526,7 @@ class Interchat(commands.Cog, name="interchat"):
             message.channel.id = chid
             message.author = FakeObject()
             message.author.id = -1
+            # pylint: enable=attribute-defined-outside-init
         for itunnel in self.tunnels:
             if message_is_id and message.id not in itunnel["rmessages"]:
                 continue
@@ -753,7 +754,6 @@ class Interchat(commands.Cog, name="interchat"):
             )
             return
         chid = addrs[0]["chid"]
-        guid = addrs[0]["guid"]
         channel = self.bot.get_channel(chid) or self.bot.get_partial_messageable(chid)
         if channel == ctx.channel:
             await ctx.respond(
@@ -1039,8 +1039,8 @@ class Interchat(commands.Cog, name="interchat"):
                 ephemeral=True,
             )
             return
-        for i, tunnel in enumerate(self.tunnels):
-            if ctx.channel.id == tunnel["in"].id or ctx.channel.id == tunnel["out"].id:
+        for tunnel in self.tunnels:
+            if ctx.channel.id in (tunnel['in'].id, tunnel['out'].id):
                 if tunnel["permanent"]:
                     await ctx.respond(
                         localise(
@@ -1184,8 +1184,8 @@ class Interchat(commands.Cog, name="interchat"):
             return
 
         this_tunnel = None
-        for i, tunnel in enumerate(self.tunnels):
-            if ctx.channel == tunnel["in"] or ctx.channel == tunnel["out"]:
+        for tunnel in self.tunnels:
+            if ctx.channel.id in (tunnel['in'].id, tunnel['out'].id):
                 this_tunnel = tunnel
                 break
         embed = discord.Embed(
@@ -1251,7 +1251,7 @@ class Interchat(commands.Cog, name="interchat"):
 
 
 def setup(bot):
-    bot.add_cog(Iinterchat(bot))
+    bot.add_cog(Interchat(bot))
 
 
 def teardown(bot):
