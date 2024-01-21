@@ -70,7 +70,6 @@ if CHECK_LOCALES:
                 has.append(i)
         return has
 
-
     def check(localedict, localepath):
         for k, v in localedict.items():
             if isinstance(v, dict):
@@ -83,7 +82,6 @@ if CHECK_LOCALES:
                         )
                 check(v, localepath + "." + k)
                 continue
-
 
     check(LOCALISATIONS, "root")
 
