@@ -8,11 +8,8 @@ except ImportError:
 
 
 DEFAULT_LOCALE = CONFIG["locale"]
-
 LOCALES = ["en-US", "ru"]
-
-check_locales = False
-
+CHECK_LOCALES = False
 LOCALISATIONS = {}
 
 
@@ -25,10 +22,10 @@ def merge(main_dict, to_merge):
             main_dict[key] = item
 
 
-def prepare_locale(loc, lang):
-    for k, v in loc.items():
+def prepare_locale(loc_, lang):
+    for k, v in loc_.items():
         if isinstance(v, str):
-            loc[k] = {lang: v}
+            loc_[k] = {lang: v}
             continue
         prepare_locale(v, lang)
 
@@ -36,6 +33,7 @@ def prepare_locale(loc, lang):
 for l in LOCALES:
     with open("localisation/" + l + "/locale.txt", "r", encoding="utf-8") as f:
         filelist = [i.strip() for i in f.readlines()]
+    file = ""
     for file in filelist:
         with open("localisation/" + l + "/strings/" + file, "r", encoding="utf-8") as f:
             loc = json.loads(f.read())
@@ -64,7 +62,7 @@ def localise(string, locale=None):
         locale, localisations.get(DEFAULT_LOCALE, string + "." + locale)
     )
 
-if check_locales:
+if CHECK_LOCALES:
     def diff(source, diff_):
         has = []
         for i in source:
@@ -94,6 +92,6 @@ if check_locales:
 
 del json
 del CONFIG
-del check_locales
+del CHECK_LOCALES
 del merge
 del prepare_locale
