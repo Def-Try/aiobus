@@ -247,11 +247,11 @@ class Interchat(commands.Cog, name="interchat"):
         if not tunnel["whookless"] and not tunnel["hub_addr"]:
             try:
                 await tunnel["outwhook"].delete()
-            except:
+            except Exception:
                 pass
             try:
                 await tunnel["inwhook"].delete()
-            except:
+            except Exception:
                 pass
         elif not tunnel["whookless"] and tunnel["hub_addr"]:
             hub = self.get_hub(addr=tunnel["hub_addr"], create=False)
@@ -259,11 +259,11 @@ class Interchat(commands.Cog, name="interchat"):
             if not hub or (hub and len(hub["channels"]) == 1):
                 try:
                     await tunnel["outwhook"].delete()
-                except:
+                except Exception:
                     pass
                 try:
                     await tunnel["inwhook"].delete()
-                except:
+                except Exception:
                     pass
         q = Query()
         self.tdb.remove(
@@ -543,7 +543,7 @@ class Interchat(commands.Cog, name="interchat"):
                 itunnel["inwhook"].id,
             ):
                 return
-            if not message.channel.id in (itunnel["out"].id, itunnel["in"].id):
+            if message.channel.id not in (itunnel["out"].id, itunnel["in"].id):
                 continue
             channel = None
             if not itunnel["whookless"]:

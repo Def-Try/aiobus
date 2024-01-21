@@ -1,6 +1,6 @@
 import asyncio
 import random
-
+import io
 import discord
 from discord.ext import commands
 from localisation import localise, DEFAULT_LOCALE
@@ -116,9 +116,7 @@ class Fun(commands.Cog):
                 ),
                 ephemeral=True,
             )
-        except:
-            import io
-
+        except Exception:
             f = io.StringIO(translated)
             await ctx.respond(
                 localise(
