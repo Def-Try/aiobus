@@ -61,17 +61,17 @@
                                         "name": "Действие",
                                         "pat": {
                                                 "other": "{member} гладит {other}",
-                                                "self": "{member} гладит самого себя",
+                                                "self": "{member} гладит самого(у) себя",
                                                 "bot": "{member} гладит меня"
                                         },
                                         "hug": {
                                                 "other": "{member} обнимает {other}",
-                                                "self": "{member} обнимает самих себя",
+                                                "self": "{member} обнимает самого(у) себя",
                                                 "bot": "{member} обнимает меня"
                                         },
                                         "cuddle": {
                                                 "other": "{member} прижимается к {other}",
-                                                "self": "{member} прижимается к самому себе",
+                                                "self": "{member} прижимается к самому(ой) себе",
                                                 "bot": "{member} прижимается ко мне"
                                         },
                                         "handshake": {
@@ -81,63 +81,63 @@
                                         },
                                         "bite": {
                                                 "other": "{member} кусает {other}",
-                                                "self": "{member} кусает самого себя",
+                                                "self": "{member} кусает самого(у) себя",
                                                 "bot": "{member} кусает меня"
                                         },
                                         "highfive": {
                                                 "other": "{member} даёт пять {other}",
-                                                "self": "{member} даёт самому себе пять",
+                                                "self": "{member} даёт самому(ой) себе пять",
                                                 "bot": "{member} даёт пять мне"
                                         },
                                         "kiss": {
                                                 "other": "{member} целует {other}",
-                                                "self": "{member} целует самого себя",
+                                                "self": "{member} целует самого(у) себя",
                                                 "bot": "{member} целует меня"
                                         },
                                         "poke": {
                                                 "other": "{member} тыкает в {other}",
-                                                "self": "{member} тыкает в самого себя",
+                                                "self": "{member} тыкает в самого(у) себя",
                                                 "bot": "{member} тыкает в меня"
                                         },
                                         "slap": {
                                                 "other": "{member} шлёпает {other}",
-                                                "self": "{member} шлёпает самого себя",
+                                                "self": "{member} шлёпает самого(у) себя",
                                                 "bot": "{member} шлёпает меня"
                                         },
                                         "handhold": {
                                                 "other": "{member} держит руку {other}",
                                                 "self": "{member} держит свою руку",
-                                                "bot": "{member} дерэит мою руку"
+                                                "bot": "{member} держит мою руку"
                                         },
                                         "kick": {
                                                 "other": "{member} пинает {other}",
-                                                "self": "{member} пинает самого себя",
+                                                "self": "{member} пинает самого(у) себя",
                                                 "bot": "{member} пинает меня"
                                         },
                                         "punch": {
                                                 "other": "{member} ударяет {other}",
-                                                "self": "{member} ударяет самого себя",
+                                                "self": "{member} ударяет самого(у) себя",
                                                 "bot": "{member} ударяет меня"
                                         },
                                         "tickle": {
                                                 "other": "{member} щекочет {other}",
-                                                "self": "{member} щекочет самого себя",
+                                                "self": "{member} щекочет самого(у) себя",
                                                 "bot": "{member} щекочет меня"
                                         },
                                         "feed": {
                                                 "other": "{member} кормит {other}",
-                                                "self": "{member} кормит самого себя",
+                                                "self": "{member} кормит самого(у) себя",
                                                 "bot": "{member} кормит меня"
                                         },
                                         "stare": {
                                                 "other": "{member} смотрит на {other}",
-                                                "self": "{member} смотрит на самого себя",
+                                                "self": "{member} смотрит на самого(у) себя",
                                                 "bot": "{member} смотрит на меня",
                                                 "none": "{member} смотрит на что-то"
                                         },
                                         "wave": {
                                                 "other": "{member} машет рукой {other}",
-                                                "self": "{member} машет рукой самому себе",
+                                                "self": "{member} машет рукой самому(ой) себе",
                                                 "bot": "{member} машет мне рукой",
                                                 "none": "{member} машет"
                                         },
@@ -151,7 +151,7 @@
                                                 "self": "{member} танцует"
                                         },
                                         "happy": {
-                                                "self": "{member} просто рад"
+                                                "self": "{member} просто рад(а)"
                                         },
                                         "laugh": {
                                                 "self": "{member} смеётся"

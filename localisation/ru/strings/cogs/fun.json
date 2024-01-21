@@ -16,7 +16,7 @@
                                 },
                                 "translate": {
                                         "name": "перевести",
-                                        "desc": "Перевести текс.",
+                                        "desc": "Перевести текст.",
                                         "options": {
                                                 "mode": {
                                                         "name": "режим",
@@ -46,10 +46,13 @@
                         "answers": {
                                 "crash_server": {
                                         "progress": "Сбор информации... {percent}% готово...",
-                                        "error": "Сбой из-за ошиюки: ITZ_A_J0K3"
+                                        "error": "Сбой из-за ошибки: ITZ_A_J0K3"
                                 },
                                 "translate": {
-                                        "done": "Перевели `{text}` {way} {language}: `{translated}`",
+                                        "done": {
+                                            "text": "Перевели `{text}` {way} {language}: `{translated}`",
+                                            "file": "Перевели `{text}` {way} {language}."
+                                        },
                                         "to": "в",
                                         "from": "из"
                                 },

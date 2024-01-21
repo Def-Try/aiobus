@@ -49,7 +49,10 @@
                                         "error": "Failed due to the error: ITZ_A_J0K3"
                                 },
                                 "translate": {
-                                        "done": "Translated `{text}` {way} {language}: `{translated}`",
+                                        "done": {
+                                            "text": "Translated `{text}` {way} {language}: `{translated}`",
+                                            "file": "Translated `{text}` {way} {language}."
+                                        },
                                         "to": "into",
                                         "from": "from"
                                 },

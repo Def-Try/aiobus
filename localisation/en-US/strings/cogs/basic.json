@@ -33,7 +33,7 @@
                                 "help": {
                                         "hidden": "...{amount} more command(s) hidden...",
                                         "title": "Bot Help",
-                                        "desc": "{mention}, formely known as `googer's random things bot` is a bot based on modularity. Most of it's components can be removed or replaced without need for code editing, which makes it perfect for implementing both small and big commands without affecting others, partly which is why it's named `random things` bot.",
+                                        "desc": "AIOBus is a bot designed to fulfill basically ALL of server needs, from funny things to server dumping and restoration, from message boards to interchat communication, etc...",
                                         "command": "Command `/{command}`",
                                         "elements": {
                                                 "desc": "Description",

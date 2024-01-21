@@ -176,14 +176,22 @@ class interchat(commands.Cog, name="interchat"):
 
     async def end_interchat(self, tunnel):
         if not tunnel["whookless"] and not tunnel["hub_addr"]:
-            await tunnel["outwhook"].delete()
-            await tunnel["inwhook"].delete()
+            try:
+                await tunnel["outwhook"].delete()
+            except: pass
+            try:
+                await tunnel["inwhook"].delete()
+            except: pass
         elif not tunnel["whookless"] and tunnel["hub_addr"]:
             hub = self.get_hub(addr=tunnel["hub_addr"], create=False)
 
             if not hub or (hub and len(hub["channels"]) == 1):
-                await tunnel["outwhook"].delete()
-                await tunnel["inwhook"].delete()
+                try:
+                    await tunnel["outwhook"].delete()
+                except: pass
+                try:
+                    await tunnel["inwhook"].delete()
+                except: pass
         q = Query()
         self.tdb.remove(q["in"] == tunnel["in"].id and q["out"] == tunnel["out"].id and q["hub_addr"] == tunnel["hub_addr"])
         self.tunnels.pop(self.tunnels.index(tunnel))
@@ -368,7 +376,7 @@ class interchat(commands.Cog, name="interchat"):
             if not itunnel["whookless"]:
                 channel = itunnel["inwhook" if message.channel.id == itunnel["out"].id else "outwhook"]
             else:
-                channel = itunnel["in" if message.channel.id == itunnel["out"] else "out"]
+                channel = itunnel["in" if message.channel.id == itunnel["out"].id else "out"]
             await (await channel.fetch_message(itunnel["messages"][itunnel["rmessages"].index(message.id)])).delete()
             itunnel["messages"].pop(itunnel["rmessages"].index(message.id))
             itunnel["rmessages"].pop(itunnel["rmessages"].index(message.id))
