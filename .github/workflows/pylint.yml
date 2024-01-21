@@ -41,7 +41,7 @@ jobs:
           --disable=too-many-locals \
           --disable=too-many-statements \
           --disable=logging-fstring-interpolation \
-          --disable=too-many-branches
+          --disable=too-many-branches \
           $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
   
     - uses: actions/upload-artifact@v4
