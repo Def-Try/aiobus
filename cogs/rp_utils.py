@@ -1,11 +1,10 @@
+import datetime
+import re
 import discord
 from discord.ext import commands, tasks
-import datetime
 from localisation import localise, DEFAULT_LOCALE
-import json
 from tinydb import TinyDB, Query
 from config import CONFIG
-import re
 
 OFFTOPIC_PREFIXES = ["//", "(("]
 ACTION_INDICATORS = [r"\*\*\*", r"\*\*", r"\*"]
@@ -13,7 +12,8 @@ AWAY_KEYWORDS = [
     "ушёл",
     "ушел",
     "телепортировался",
-    "пропал" "went away",
+    "пропал",
+    "went away",
     "teleports",
     "teleported",
     "disappeared",
@@ -21,7 +21,7 @@ AWAY_KEYWORDS = [
 ]
 
 
-class rp_utils(commands.Cog):
+class RpUtils(commands.Cog):
     author = "googer_"
 
     def __init__(self, bot):
@@ -48,14 +48,12 @@ class rp_utils(commands.Cog):
     async def clean_offtopic(self, ctx: discord.ApplicationContext):
         await ctx.response.defer()
         locale = ctx.interaction.locale
-        messages = list()
+        messages = []
         async for message in ctx.channel.history(limit=1000):
             if (
                 any(
-                    [
-                        message.content.startswith(offtopic_start)
-                        for offtopic_start in OFFTOPIC_PREFIXES
-                    ]
+                    message.content.startswith(offtopic_start)
+                    for offtopic_start in OFFTOPIC_PREFIXES
                 )
                 and datetime.datetime.now(message.created_at.tzinfo)
                 - message.created_at
@@ -129,10 +127,8 @@ class rp_utils(commands.Cog):
                 continue
             for message in reversed(await ch.history(limit=100).flatten()):
                 if any(
-                    [
-                        message.content.startswith(offtopic_start)
-                        for offtopic_start in OFFTOPIC_PREFIXES
-                    ]
+                    message.content.startswith(offtopic_start)
+                    for offtopic_start in OFFTOPIC_PREFIXES
                 ):
                     continue
                 if message.author == self.bot.user:
@@ -151,10 +147,8 @@ class rp_utils(commands.Cog):
                     went_away.append(message.author.id)
                     continue
                 if any(
-                    [
-                        away_act in ";".join(parse_actions(message.content))
-                        for away_act in AWAY_KEYWORDS
-                    ]
+                    away_act in ";".join(parse_actions(message.content))
+                    for away_act in AWAY_KEYWORDS
                 ):
                     went_away.append(message.author.id)
                     continue
@@ -174,4 +168,4 @@ class rp_utils(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(rp_utils(bot))
+    bot.add_cog(RpUtils(bot))

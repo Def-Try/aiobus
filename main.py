@@ -88,9 +88,9 @@ if __name__ == "__main__":
 
     @discord_bot.event
     async def on_ready():
-        discord_bot.logger.info(f"We have logged in as {bot.user}")
+        discord_bot.logger.info(f"We have logged in as {discord_bot.user}")
 
-    bot.loaded_cogs = []
+    discord_bot.loaded_cogs = []
     _, _, _ = discord_bot.reload_cogs(discord_bot)
 
     discord_bot.run(TOKEN)
