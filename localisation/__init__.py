@@ -42,7 +42,6 @@ for l in LOCALES:
             del loc
         del f
     del filelist
-
     # pylint: disable=undefined-loop-variable
     del file
     # pylint: enable=undefined-loop-variable
