@@ -135,7 +135,7 @@ class Starboard(commands.Cog):
                     )
                 ).delete()
                 del server_starboard["messages"][str(message.id)]
-                self.db.update(starboard, Query().guild == message.guild.id)
+                self.db.update(server_starboard, Query().guild == message.guild.id)
                 continue
             content = f"{star_amount}{self.emoji}"
             embed = discord.Embed(
@@ -155,7 +155,7 @@ class Starboard(commands.Cog):
                 if not message.channel.nsfw
                 else []
             )
-            if str(message.id) in starboard["messages"].keys():
+            if str(message.id) in server_starboard["messages"].keys():
                 starmessage = await self.bot.get_channel(
                     server_starboard["channel"]
                 ).fetch_message(server_starboard["messages"][str(message.id)])

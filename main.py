@@ -23,11 +23,14 @@ logging.basicConfig(format=FORMAT)
 logger = logging.getLogger("root")
 logger.setLevel(logging.INFO)
 
+# pylint: disable=unused-import
+# This is used to check localisation, but is not used in main.
 try:
     import localisation
 except json.JSONDecodeError as e:
-    logger.error(f"Localisation error: Json could not be decoded: {e}")
+    logger.error(f"Localisation error: JSON could not be decoded: {e}")
     exit(1)
+# pylint: enable=unused-import
 
 bot = commands.Bot(intents=discord.Intents.all())
 
