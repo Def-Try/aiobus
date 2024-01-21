@@ -155,10 +155,9 @@ class Interchat(commands.Cog, name="interchat"):
         outwhook = None
         inwhook = None
 
-        whookless = (
-            isinstance(fromch, (discord.abc.PrivateChannel, discord.PartialMessageable))
-            or isinstance(toch, (discord.abc.PrivateChannel, discord.PartialMessageable))
-        )
+        whookless = isinstance(
+            fromch, (discord.abc.PrivateChannel, discord.PartialMessageable)
+        ) or isinstance(toch, (discord.abc.PrivateChannel, discord.PartialMessageable))
 
         for tunnel in self.tunnels:
             if tunnel["out"] == fromch and not hub:
@@ -299,9 +298,7 @@ class Interchat(commands.Cog, name="interchat"):
                 message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
             ):
                 return
-            if not (
-                message.channel.id in (itunnel["out"].id, itunnel["in"].id)
-            ):
+            if not (message.channel.id in (itunnel["out"].id, itunnel["in"].id)):
                 continue
             embeds = []
             if message.reference:
@@ -414,9 +411,7 @@ class Interchat(commands.Cog, name="interchat"):
                 message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id)
             ):
                 return
-            if not (
-                message.channel.id in (itunnel["out"].id, itunnel["in"].id)
-            ):
+            if not (message.channel.id in (itunnel["out"].id, itunnel["in"].id)):
                 continue
             embeds = []
             if message.reference:
