@@ -26,6 +26,8 @@ jobs:
         pip install aiohttp==3.6.2
         pip install nekosbest
         pip install --upgrade aiohttp
+        pip install termcolor
+        pip install colorama
     - name: Create log files
       run: |
         mkdir lint-logs
