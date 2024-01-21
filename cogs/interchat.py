@@ -294,8 +294,10 @@ class Interchat(commands.Cog, name="interchat"):
         ):
             return
         for itunnel in self.tunnels:
-            if not itunnel["whookless"] and \
-                message.author.id in (itunnel["outwhook"].id, itunnel["inwhook"].id):
+            if not itunnel["whookless"] and message.author.id in (
+                itunnel["outwhook"].id,
+                itunnel["inwhook"].id,
+            ):
                 return
             if not message.channel.id in (itunnel["out"].id, itunnel["in"].id):
                 continue
@@ -473,7 +475,7 @@ class Interchat(commands.Cog, name="interchat"):
                     allowed_mentions=discord.AllowedMentions.none(),
                 )
             else:
-               await old_message.edit(
+                await old_message.edit(
                     (
                         message.author.name
                         if isinstance(message.author, discord.User)
@@ -524,9 +526,12 @@ class Interchat(commands.Cog, name="interchat"):
         for itunnel in self.tunnels:
             if message_is_id and message.id not in itunnel["rmessages"]:
                 continue
-            if not itunnel["whookless"] and message.author.id in (itunnel['outwhook'].id, itunnel['inwhook'].id):
+            if not itunnel["whookless"] and message.author.id in (
+                itunnel["outwhook"].id,
+                itunnel["inwhook"].id,
+            ):
                 return
-            if not message.channel.id in (itunnel['out'].id, itunnel['in'].id):
+            if not message.channel.id in (itunnel["out"].id, itunnel["in"].id):
                 continue
             channel = None
             if not itunnel["whookless"]:
