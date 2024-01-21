@@ -2,8 +2,8 @@ import datetime
 import re
 import discord
 from discord.ext import commands, tasks
-from localisation import localise, DEFAULT_LOCALE
 from tinydb import TinyDB, Query
+from localisation import localise, DEFAULT_LOCALE
 from config import CONFIG
 
 OFFTOPIC_PREFIXES = ["//", "(("]
@@ -47,7 +47,6 @@ class RpUtils(commands.Cog):
     )
     async def clean_offtopic(self, ctx: discord.ApplicationContext):
         await ctx.response.defer()
-        locale = ctx.interaction.locale
         messages = []
         async for message in ctx.channel.history(limit=1000):
             if (
@@ -80,7 +79,7 @@ class RpUtils(commands.Cog):
             await ctx.channel.delete_messages(
                 messages[i : i + 100],
                 reason=localise(
-                    f"cog.rp_utils.answers.clean_offtopic.audit", ctx.interaction.locale
+                    "cog.rp_utils.answers.clean_offtopic.audit", ctx.interaction.locale
                 ).format(prefixes=OFFTOPIC_PREFIXES),
             )
 
