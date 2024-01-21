@@ -130,9 +130,9 @@ class Starboard(commands.Cog):
                 continue
             if star_amount < server_starboard["limit"]:
                 await (
-                    await self.bot.get_channel(server_starboard["channel"]).fetch_message(
-                        server_starboard["messages"][str(message.id)]
-                    )
+                    await self.bot.get_channel(
+                        server_starboard["channel"]
+                    ).fetch_message(server_starboard["messages"][str(message.id)])
                 ).delete()
                 del server_starboard["messages"][str(message.id)]
                 self.db.update(starboard, Query().guild == message.guild.id)
