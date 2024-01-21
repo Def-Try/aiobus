@@ -1,5 +1,5 @@
 <div align="center">
-    <h1>Random Things Bot</h1>
+    <h1>AiOBus</h1>
     <p>le bot from le googer</p>
 </div>
 some bot that i made because i was bored.

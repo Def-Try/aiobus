@@ -1,24 +1,24 @@
-import discord
-from discord.ext import commands
-from localisation import localise
-from config import CONFIG
-
 """
 template cog
 aka How To Make Your Own Module
 """
 
-class template(commands.Cog):
+import discord
+from discord.ext import commands
+from localisation import localise
+from config import CONFIG
+
+
+class Template(commands.Cog):
     """
     first, Class Name.
     it should describe your cog in literally 1 to 2 words.
     also it usually is used in localisation strings, soo...
-    """
 
-    """
     author field in cog is used for Help commands coghelp.
     usually should be your nickname
     """
+
     author = "googer_"
 
     def __init__(self, bot):
@@ -39,16 +39,18 @@ class template(commands.Cog):
         cog init after bot is ready.
         is async and bot has connected to the Gateway
         """
-        pass
+        self.bot.logger.info("Template cog loading!")
 
-    cmds = discord.SlashCommandGroup("template", "",
+    cmds = discord.SlashCommandGroup(
+        "template",
+        "",
         name_localizations=localise("cog.template.command_group.name"),
-        description_localizations=localise("cog.template.command_group.desc"))
+        description_localizations=localise("cog.template.command_group.desc"),
+    )
     """
     cog's command group. PLEASE, use it instead of straight
     making command instead of putting it in a group
-    """
-    """
+
     also, about localise(localistring, locale=None)
     localistring is a json path, where dot is the divider.
     a.b.c.d path maps to json 
@@ -65,11 +67,16 @@ class template(commands.Cog):
     ask me (googer_) for more info on that, idk how to explain it
     """
 
-    @cmds.command(guild_ids=CONFIG["g_ids"],
+    @cmds.command(
+        guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.template.commands.cmd.name"),
-        description_localizations=localise("cog.template.commands.cmd.desc"))
+        description_localizations=localise("cog.template.commands.cmd.desc"),
+    )
     async def cmd(self, ctx: discord.ApplicationContext):
-        await ctx.respond(localise("cog.template.answers.cmd.text", ctx.interaction.locale))
+        await ctx.respond(
+            localise("cog.template.answers.cmd.text", ctx.interaction.locale)
+        )
+
 
 def setup(bot):
-    bot.add_cog(template(bot))
+    bot.add_cog(Template(bot))

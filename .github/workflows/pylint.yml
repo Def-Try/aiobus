@@ -1,0 +1,55 @@
+name: Pylint code check
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+        pip install py-cord
+        pip install simpleeval
+        pip install tinydb
+        pip install aiohttp==3.6.2
+        pip install nekosbest
+        pip install --upgrade aiohttp
+        pip install termcolor
+        pip install colorama
+    - name: Create log files
+      run: |
+        mkdir lint-logs
+        touch lint-logs/pylint.txt
+        echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
+    - name: Analysing the code with pylint
+      run: |
+        pylint --disable=missing-docstring \
+          --disable=no-member \
+          --disable=too-many-public-methods \
+          --disable=too-few-public-methods \
+          --disable=too-many-locals \
+          --disable=too-many-statements \
+          --disable=logging-fstring-interpolation \
+          --disable=too-many-branches \
+          $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
+        cat lint-logs/pylint.txt
+  
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{env.LOGFILE_NAME}}
+        path: lint-logs/
+    - name: Remove log files
+      run: |
+        rm -r lint-logs
