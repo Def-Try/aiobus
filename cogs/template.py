@@ -9,7 +9,7 @@ from localisation import localise
 from config import CONFIG
 
 
-class template(commands.Cog):
+class Template(commands.Cog):
     """
     first, Class Name.
     it should describe your cog in literally 1 to 2 words.
@@ -39,7 +39,7 @@ class template(commands.Cog):
         cog init after bot is ready.
         is async and bot has connected to the Gateway
         """
-        pass
+        self.bot.logger.info("Template cog loading!")
 
     cmds = discord.SlashCommandGroup(
         "template",
@@ -79,4 +79,4 @@ class template(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(template(bot))
+    bot.add_cog(Template(bot))

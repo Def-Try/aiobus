@@ -243,7 +243,7 @@ class Squirrelatin(Language):
         return "0" * max(0, p - len(cv)) + cv
 
     def initdict(self):
-        doupper = False
+        self.doupper = False
         alphabet = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя"
         pad = math.ceil(math.log(len(alphabet), 4))
         for i, letter in enumerate(alphabet):

@@ -16,12 +16,18 @@ LOCALISATIONS = {}
 
 def merge(main_dict, to_merge):
     for key, item in to_merge.items():
-        if type(main_dict.get(key)) is dict:
-            merge(main_dict.get(key), to_merge.get(key))
+        if isinstance(main_dict.get(key), dict):
+            merge(main_dict.get(key), item)
             continue
         if not main_dict.get(key):
-            main_dict[key] = to_merge.get(key)
+            main_dict[key] = item
 
+def prepare_locale(loc, lang):
+    for k, v in loc.items():
+        if isinstance(v, str):
+            loc[k] = {lang: v}
+            continue
+        prepare_locale(v, lang)
 
 for l in LOCALES:
     with open("localisation/" + l + "/locale.txt", "r", encoding="utf-8") as f:
@@ -29,13 +35,6 @@ for l in LOCALES:
     for file in filelist:
         with open("localisation/" + l + "/strings/" + file, "r", encoding="utf-8") as f:
             locale = json.loads(f.read())
-
-            def prepare_locale(locale, lang):
-                for k, v in locale.items():
-                    if type(v) == str:
-                        locale[k] = {lang: v}
-                        continue
-                    prepare_locale(v, lang)
 
             prepare_locale(locale, l)
             merge(LOCALISATIONS, locale)
