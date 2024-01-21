@@ -1,6 +1,6 @@
 name: Pylint code check
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
   lint:
