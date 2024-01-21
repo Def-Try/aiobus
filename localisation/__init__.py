@@ -24,12 +24,14 @@ def merge(main_dict, to_merge):
         if not main_dict.get(key):
             main_dict[key] = item
 
+
 def prepare_locale(loc, lang):
     for k, v in loc.items():
         if isinstance(v, str):
             loc[k] = {lang: v}
             continue
         prepare_locale(v, lang)
+
 
 for l in LOCALES:
     with open("localisation/" + l + "/locale.txt", "r", encoding="utf-8") as f:
