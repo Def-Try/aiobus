@@ -1,13 +1,11 @@
-import discord
-from discord.ext import commands
-from config import CONFIG
-from localisation import localise, DEFAULT_LOCALE
-from tinydb import TinyDB, Query
-import json
 import time
 import random
 import string
-import aiohttp
+import discord
+from discord.ext import commands
+from tinydb import TinyDB, Query
+from config import CONFIG
+from localisation import localise, DEFAULT_LOCALE
 
 # interchat bans.
 # michaai / UID 629999906429337600: opening, ending, and in general interacting with interchats.
@@ -126,10 +124,26 @@ class interchat(commands.Cog, name="interchat"):
         )
 
     def address_string(self, channel):
-        return f"`{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'}, {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}`, `{self.get_address(channel)}`"
+        guild_name = 'PartialMessageable'
+        channel_name = '???'
+        if not isinstance(channel, discord.abc.PrivateChannel) and\
+            not isinstance(channel, discord.PartialMessageable):
+            guild_name = channel.guild.name
+        if not isinstance(channel, discord.abc.PrivateChannel) and\
+            not isinstance(channel, discord.PartialMessageable):
+            channel_name = channel.name
+        return f"`{guild_name}, {channel_name}`, `{self.get_address(channel)}`"
 
     def address_string_hub(self, channel):
-        return f"`{channel.guild.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else 'DM'}, {channel.name if not isinstance(channel, discord.abc.PrivateChannel) and not isinstance(channel, discord.PartialMessageable) else '???'}`, `{self.get_hub(channel=channel)['address']}`"
+        guild_name = 'PartialMessageable'
+        channel_name = '???'
+        if not isinstance(channel, discord.abc.PrivateChannel) and\
+            not isinstance(channel, discord.PartialMessageable):
+            guild_name = channel.guild.name
+        if not isinstance(channel, discord.abc.PrivateChannel) and\
+            not isinstance(channel, discord.PartialMessageable):
+            channel_name = channel.name
+        return f"`{guild_name}, {channel_name}`, `{self.get_hub(channel=channel)['address']}`"
 
     async def start_interchat(self, fromch, toch, hub=None):
         outwhook = None
