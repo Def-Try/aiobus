@@ -61,7 +61,9 @@ def localise(string, locale=None):
         locale, localisations.get(DEFAULT_LOCALE, string + "." + locale)
     )
 
+
 if CHECK_LOCALES:
+
     def diff(source, diff_):
         has = []
         for i in source:
