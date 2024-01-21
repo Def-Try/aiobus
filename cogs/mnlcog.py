@@ -9,12 +9,11 @@ except ImportError:
     from MnLEsolang.mnlcore.engine_v4 import MnLEngine
     from MnLEsolang.mnlcore.exceptions import BaseError
     from MnLEsolang.mnlcore.libs import FakeIO
-import json
 from localisation import localise
 from config import CONFIG
 
 
-class mnlcog(commands.Cog):
+class MnLCog(commands.Cog):
     author = "googer_"
 
     def __init__(self, bot):
@@ -34,7 +33,7 @@ class mnlcog(commands.Cog):
         description_localizations=localise("cog.mnlcog.commands.init.desc"),
     )
     async def init(self, ctx: discord.ApplicationContext):
-        if ctx.author.id in self.engines.keys():
+        if ctx.author.id in self.engines:
             await ctx.respond(
                 localise(
                     "cog.mnlcog.answers.init.already_initialised",
@@ -62,7 +61,7 @@ class mnlcog(commands.Cog):
         cfgname: discord.Option(str, choices=["persistent"]),
         cfgval: str,
     ):
-        if not ctx.author.id in self.engines.keys():
+        if not ctx.author.id in self.engines:
             await ctx.respond(
                 localise("cog.mnlcog.answers.not_ready", ctx.interaction.locale)
             )
@@ -70,7 +69,7 @@ class mnlcog(commands.Cog):
         engine = self.engines[ctx.author.id]
         if cfgname == "persistent":
             engine.persisting_globals = (
-                True if cfgval in ["T", "True", "true", "t", "1", "yes", "y"] else False
+                cfgval in ["T", "True", "true", "t", "1", "yes", "y"]
             )
             if engine.persisting_globals:
                 await ctx.respond(
@@ -94,7 +93,7 @@ class mnlcog(commands.Cog):
         description_localizations=localise("cog.mnlcog.commands.run.desc"),
     )
     async def run(self, ctx: discord.ApplicationContext, code: str):
-        if not ctx.author.id in self.engines.keys():
+        if not ctx.author.id in self.engines:
             await ctx.respond(
                 localise("cog.mnlcog.answers.not_ready", ctx.interaction.locale)
             )
@@ -102,6 +101,7 @@ class mnlcog(commands.Cog):
         await ctx.response.defer()
         engine = self.engines[ctx.author.id]
         timeout = 10
+        # pylint: disable=broad-exception-caught
         try:
             await engine.run_nonblocking(code, timeout)
         except BaseError as e:
@@ -113,7 +113,7 @@ class mnlcog(commands.Cog):
                 ).format(error=str(e), output=output)
             )
             return
-        except TimeoutError as e:
+        except TimeoutError:
             output = engine.fio.read_output()
             await ctx.followup.send(
                 localise(
@@ -125,11 +125,12 @@ class mnlcog(commands.Cog):
         except Exception as e:
             await ctx.followup.send(
                 localise(
-                    f"cog.mnlcog.answers.run.fatal_error.{(('with' if output else 'no')+'_output')}",
+                    "cog.mnlcog.answers.run.fatal_error."+(('with' if output else 'no')+'_output'),
                     ctx.interaction.locale,
                 ).format(error=str(e), output=output)
             )
             return
+        # pylint: enable=broad-exception-caught
         output = engine.fio.read_output()
         await ctx.followup.send(
             localise(
@@ -140,4 +141,4 @@ class mnlcog(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(mnlcog(bot))
+    bot.add_cog(MnLCog(bot))
