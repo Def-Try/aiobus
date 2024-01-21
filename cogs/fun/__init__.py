@@ -102,6 +102,7 @@ class Fun(commands.Cog):
         ),
     ):
         translated = languages.languages[language].translate(mode, text)
+        # pylint: disable=broad-exception-caught
         try:
             await ctx.respond(
                 localise(
@@ -132,6 +133,7 @@ class Fun(commands.Cog):
                 file=discord.File(f),
             )
             f.close()
+        # pylint: enable=broad-exception-caught
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],

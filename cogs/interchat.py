@@ -244,6 +244,7 @@ class Interchat(commands.Cog, name="interchat"):
         return -3
 
     async def end_interchat(self, tunnel):
+        # pylint: disable=broad-exception-caught
         if not tunnel["whookless"] and not tunnel["hub_addr"]:
             try:
                 await tunnel["outwhook"].delete()
@@ -265,6 +266,7 @@ class Interchat(commands.Cog, name="interchat"):
                     await tunnel["inwhook"].delete()
                 except Exception:
                     pass
+        # pylint: enable=broad-exception-caught
         q = Query()
         self.tdb.remove(
             q["in"] == tunnel["in"].id
