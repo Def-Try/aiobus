@@ -1,10 +1,10 @@
+import asyncio
+import random
+
 import discord
 from discord.ext import commands
 from localisation import localise, DEFAULT_LOCALE
 from config import CONFIG
-
-import asyncio
-import random
 
 from . import languages
 
@@ -183,6 +183,7 @@ class Fun(commands.Cog):
                     i = i + 1
                     return i
                 i = i + 1
+            return i
 
         def upperfirst(x):
             i = sliceindex(x)

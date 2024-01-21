@@ -1,7 +1,5 @@
 import string
-import transliterate
 import math
-
 
 class Language:
     def initdict(self):
@@ -23,13 +21,11 @@ class Language:
     def translate(self, mode, text):
         if not self.doupper:
             text = text.lower()
+        st = ""
         if mode == "to":
-            st = ""
             for ch in text:
                 st += self.dictionary.get(ch, ch)
-            return st
         if mode == "from":
-            st = ""
             ptr = 0
             ptr_ = 0
             while ptr < len(text):
@@ -48,7 +44,7 @@ class Language:
                 st += text[ptr]
                 ptr += 1
                 ptr_ = ptr
-            return st
+        return st
 
 
 class Nekomimetic(Language):
@@ -99,7 +95,6 @@ class Nekomimetic(Language):
             "п": "ик",
             "р": "ха",
             "с": "ан",
-            "ф": "заа",
             "у": "то",
             "ф": "ори",
             "х": "мю",
@@ -188,7 +183,7 @@ class Uncommon(Language):
 
 class Standart(Language):
     def initdict(self):
-        doupper = False
+        self.doupper = False
         self.dictionary = {
             "a": "ᔑ",
             "b": "ʖ",
@@ -221,7 +216,7 @@ class Standart(Language):
 
 class DroneLang(Language):
     def initdict(self):
-        doupper = False
+        self.doupper = False
         alphabet = string.printable + "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
         for i, letter in enumerate(alphabet):
             self.dictionary[letter] = "." + format(
@@ -239,10 +234,9 @@ class Squirrelatin(Language):
         q = n % b
         if n == 0:
             return "0"
-        elif e == 0:
+        if e == 0:
             return str(q)
-        else:
-            return self._tobase(b, e) + str(q)
+        return self._tobase(b, e) + str(q)
 
     def tobase(self, b, n, p):
         cv = self._tobase(b, n)
