@@ -42,7 +42,7 @@ for l in LOCALES:
             del loc
         del f
     del filelist
-    if 'file' in locals():
+    if "file" in locals():
         del file
 del l
 
