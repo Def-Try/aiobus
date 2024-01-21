@@ -104,16 +104,35 @@ class Fun(commands.Cog):
         translated = languages.languages[language].translate(mode, text)
         try:
             await ctx.respond(
-                localise("cog.fun.answers.translate.done.text", ctx.interaction.locale).format(
-                    text=text, language=language, translated=translated, way = localise(f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
-                    ), ephemeral=True)
+                localise(
+                    "cog.fun.answers.translate.done.text", ctx.interaction.locale
+                ).format(
+                    text=text,
+                    language=language,
+                    translated=translated,
+                    way=localise(
+                        f"cog.fun.answers.translate.{mode}", ctx.interaction.locale
+                    ),
+                ),
+                ephemeral=True,
+            )
         except:
             import io
+
             f = io.StringIO(translated)
             await ctx.respond(
-                localise("cog.fun.answers.translate.done.file", ctx.interaction.locale).format(
-                    text=text, language=language, way = localise(f"cog.fun.answers.translate.{mode}", ctx.interaction.locale)
-                    ), ephemeral=True, file=discord.File(f))
+                localise(
+                    "cog.fun.answers.translate.done.file", ctx.interaction.locale
+                ).format(
+                    text=text,
+                    language=language,
+                    way=localise(
+                        f"cog.fun.answers.translate.{mode}", ctx.interaction.locale
+                    ),
+                ),
+                ephemeral=True,
+                file=discord.File(f),
+            )
             f.close()
 
     @cmds.command(
@@ -171,9 +190,13 @@ class Fun(commands.Cog):
                 doing_action = True
                 doing_text = False
                 continue
-            if doing_action: action += ch
-            if doing_text: text += ch
-        if text and text[-1] not in ".!?": text += "."
+            if doing_action:
+                action += ch
+            if doing_text:
+                text += ch
+        if text and text[-1] not in ".!?":
+            text += "."
+
         def sliceindex(x):
             i = 0
             for c in x:
@@ -188,9 +211,36 @@ class Fun(commands.Cog):
             return x[:i].upper() + x[i:]
 
         text = upperfirst(text.strip())
-        name = ctx.author.display_name if ctx.author.display_name else ctx.author.name if not ctx.autthor.nick else ctx.author.nick
-        ending = "no" if not text else "ask" if text[-1] == "?" else "exclaim" if text[-1] == "!" else "say"
-        await ctx.respond(localise("cog.fun.answers.parse_rpd."+ending+"."+("w" if radio else "n")+"radio."+("w" if action else "n")+"act", ctx.interaction.locale).format(nick=name, text=text, action=action, channel=upperfirst(radio_channel)))
+        name = (
+            ctx.author.display_name
+            if ctx.author.display_name
+            else ctx.author.name
+            if not ctx.autthor.nick
+            else ctx.author.nick
+        )
+        ending = (
+            "no"
+            if not text
+            else "ask"
+            if text[-1] == "?"
+            else "exclaim"
+            if text[-1] == "!"
+            else "say"
+        )
+        await ctx.respond(
+            localise(
+                "cog.fun.answers.parse_rpd."
+                + ending
+                + "."
+                + ("w" if radio else "n")
+                + "radio."
+                + ("w" if action else "n")
+                + "act",
+                ctx.interaction.locale,
+            ).format(
+                nick=name, text=text, action=action, channel=upperfirst(radio_channel)
+            )
+        )
 
 
 def setup(bot):
