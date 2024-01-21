@@ -37,6 +37,7 @@ jobs:
           --disable=no-member \
           --disable=too-many-public-methods \
           --disable=too-many-locals \
+          --disable=too-many-statements \
           $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
   
     - uses: actions/upload-artifact@v4
