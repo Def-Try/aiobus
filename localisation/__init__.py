@@ -33,7 +33,6 @@ def prepare_locale(loc_, lang):
 for l in LOCALES:
     with open("localisation/" + l + "/locale.txt", "r", encoding="utf-8") as f:
         filelist = [i.strip() for i in f.readlines()]
-    file = ""
     for file in filelist:
         with open("localisation/" + l + "/strings/" + file, "r", encoding="utf-8") as f:
             loc = json.loads(f.read())

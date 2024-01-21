@@ -1,12 +1,11 @@
 import discord
 from discord.ext import commands
+from tinydb import TinyDB, Query
 from config import CONFIG
 from localisation import localise, DEFAULT_LOCALE
-from tinydb import TinyDB, Query
-import json
 
 
-class starboard(commands.Cog):
+class Starboard(commands.Cog):
     author = "googer_"
     emoji = "⭐"
 
@@ -96,8 +95,8 @@ class starboard(commands.Cog):
             ),
         ),
     ):
-        starboard = self.db.search(Query().channel == channel.id)
-        if not starboard:
+        server_starboard = self.db.search(Query().channel == channel.id)
+        if not server_starboard:
             await ctx.respond(
                 localise(
                     "cog.starboard.answers.destroy.not_found", ctx.interaction.locale
@@ -123,24 +122,24 @@ class starboard(commands.Cog):
             star_amount = 0
         else:
             star_amount = stars[0].count
-        for starboard in starboards:
+        for server_starboard in starboards:
             if (
-                star_amount < starboard["limit"]
-                and str(message.id) not in starboard["messages"].keys()
+                star_amount < server_starboard["limit"]
+                and str(message.id) not in server_starboard["messages"].keys()
             ):
                 continue
-            if star_amount < starboard["limit"]:
+            if star_amount < server_starboard["limit"]:
                 await (
-                    await self.bot.get_channel(starboard["channel"]).fetch_message(
-                        starboard["messages"][str(message.id)]
+                    await self.bot.get_channel(server_starboard["channel"]).fetch_message(
+                        server_starboard["messages"][str(message.id)]
                     )
                 ).delete()
-                del starboard["messages"][str(message.id)]
+                del server_starboard["messages"][str(message.id)]
                 self.db.update(starboard, Query().guild == message.guild.id)
                 continue
             content = f"{star_amount}{self.emoji}"
             embed = discord.Embed(
-                title=f"Jump!", description=message.content, url=message.jump_url
+                title="Jump!", description=message.content, url=message.jump_url
             )
             embed.set_author(
                 name=message.author.name
@@ -158,17 +157,17 @@ class starboard(commands.Cog):
             )
             if str(message.id) in starboard["messages"].keys():
                 starmessage = await self.bot.get_channel(
-                    starboard["channel"]
-                ).fetch_message(starboard["messages"][str(message.id)])
+                    server_starboard["channel"]
+                ).fetch_message(server_starboard["messages"][str(message.id)])
                 await starmessage.edit(content=content, embeds=embeds, files=files)
             else:
-                starboard["messages"][str(message.id)] = (
-                    await self.bot.get_channel(starboard["channel"]).send(
+                server_starboard["messages"][str(message.id)] = (
+                    await self.bot.get_channel(server_starboard["channel"]).send(
                         content=content, embeds=embeds, files=files
                     )
                 ).id
-            self.db.update(starboard, Query().guild == message.guild.id)
+            self.db.update(server_starboard, Query().guild == message.guild.id)
 
 
 def setup(bot):
-    bot.add_cog(starboard(bot))
+    bot.add_cog(Starboard(bot))
