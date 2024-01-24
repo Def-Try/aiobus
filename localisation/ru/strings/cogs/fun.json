@@ -84,7 +84,7 @@
                                 		},
                                 		"nradio": {
                                 			"wact": "{nick} {action}, и восклицает \"{text}\"",
-                                			"nact": "{nick} воскоицает \"{text}\""
+                                			"nact": "{nick} восклицает \"{text}\""
                                 		}
                                 	},
                                 	"ask": {

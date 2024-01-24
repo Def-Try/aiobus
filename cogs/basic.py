@@ -356,7 +356,7 @@ class Basic(commands.Cog):
         msg = await ctx.respond(
             localise(
                 "cog.basic.answers.reload_cogs.in_progress", ctx.interaction.locale
-            )
+            ), ephemeral=True
         )
         failed_to_reload, ok_reload, timings = self.bot.reload_cogs(self.bot)
         embed = discord.Embed(
