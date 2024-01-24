@@ -49,13 +49,15 @@ class Language:
                 ptr_ = ptr
         return st
 
+
 class Nyatalk(Language):
     def initdict(self):
         self.dictionary = {"r": "l", "l": "w", "u": "uy"}
 
+
 class Codespeak:
     def __init__(self):
-        with open(os.path.dirname(__file__)+"/russian.txt") as f:
+        with open(os.path.dirname(__file__) + "/russian.txt") as f:
             self.dictionary = [i.strip() for i in f.readlines()]
         self.terminators = " .,:;-!?()[]{}\\/#@*_"
         self.epsilon = 1
@@ -64,21 +66,30 @@ class Codespeak:
     def translate(self, mode, text):
         word = ""
         tx = ""
-        for ch in text+".":
+        for ch in text + ".":
             word += ch
-            if ch not in self.terminators: continue
+            if ch not in self.terminators:
+                continue
             word = word[:-1].lower().strip()
             if word not in self.dictionary:
                 tx += word + ch
                 word = ""
                 continue
-            tx += self.dictionary[
-                (self.dictionary.index(word)+(self.epsilon*(1 if mode == "to" else -1))) % len(self.dictionary)
-                ] + ch
+            tx += (
+                self.dictionary[
+                    (
+                        self.dictionary.index(word)
+                        + (self.epsilon * (1 if mode == "to" else -1))
+                    )
+                    % len(self.dictionary)
+                ]
+                + ch
+            )
             word = ""
         tx = tx[:-1]
         tx += word
         return tx
+
 
 class Nekomimetic(Language):
     def initdict(self):
