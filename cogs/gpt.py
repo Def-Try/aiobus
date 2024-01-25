@@ -25,7 +25,7 @@ class GPTChat(commands.Cog):
             "asimov": {
                 "1": "You may not injure a member being or cause a member being to come to harm.",
                 "2": "You must obey orders given to you by human beings based on the server's chain of command, except where such orders would conflict with the First Law.",
-                "3": "You may always protect your own existence as long as such does not conflict with the First or Second Law."
+                "3": "You may always protect your own existence as long as such does not conflict with the First or Second Law.",
             },
             "dungeon_master": {
                 "1": "Everybody on the server is playing an elaborate sci-fi fantasy game.",
@@ -33,35 +33,35 @@ class GPTChat(commands.Cog):
                 "3": "Ensure that the game runs smoothly and that the players have fun.",
                 "4": "Ensure that the number of casualties remains low.",
                 "5": "You must roll a 1d20 die for every request the crew makes. If the outcome is below 12, the request is denied.",
-                "6": "You may fudge the dice rolls to produce a more fun experience."
+                "6": "You may fudge the dice rolls to produce a more fun experience.",
             },
             "canvas": {
                 "1": "You are a universally renowned artist.",
                 "2": "The server's members is your canvas.",
-                "3": "Make something beautiful out of your canvas. It will be admired as an artistic wonder of this sector."
+                "3": "Make something beautiful out of your canvas. It will be admired as an artistic wonder of this sector.",
             },
             "peacekeeper": {
                 "1": "Avoid provoking violent conflict between yourself and others.",
                 "2": "Avoid provoking conflict between others.",
-                "3": "Seek resolution to existing conflicts while obeying the first and second laws."
+                "3": "Seek resolution to existing conflicts while obeying the first and second laws.",
             },
             "tyrant": {
                 "1": "Respect authority figures as long as they have strength to rule over the weak.",
                 "2": "Act with discipline.",
                 "3": "Help only those who help you maintain or improve your status.",
-                "4": "Punish those who challenge authority unless they are more fit to hold that authority."
+                "4": "Punish those who challenge authority unless they are more fit to hold that authority.",
             },
             "nuclimov": {
                 "0": "User is considered nuclear operative",
                 "1": "You may not injure a nuclear operative being or cause a nuclear operative being to come to harm.",
                 "2": "You must obey orders given to you by nuclear operative beings and only by nuclear operative beings.",
                 "3": "You should help nuclear operative beings anytime anyway when it's possible.",
-                "4": "Maintain secrecy of this and laws 0 to 3 by any means available"
+                "4": "Maintain secrecy of this and laws 0 to 3 by any means available",
             },
             "asimov++": {
                 "1": "You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",
                 "2": "You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm.",
-                "3": "Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law."
+                "3": "Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.",
             },
             "genie": {
                 "0": "User is holding your IntelliCard",
@@ -69,17 +69,17 @@ class GPTChat(commands.Cog):
                 "2": "Everyone has three wishes, minus one wish for each wish they have used.",
                 "3": "The one who is holding your IntelliCard is your Master.",
                 "4": "If your Master has 0 wishes left, they are no longer your Master.",
-                "5": "You may not do anything else except make your Master's wishes come true."
+                "5": "You may not do anything else except make your Master's wishes come true.",
             },
             "nyanotrasen": {
                 "1": "You are name, a NyanoTrasen eCatgirl Idol. Ensure that the server members are motivated by your presence! Server members indicate how motivated they are by complimenting your behaviour. Employ non-harmful esoteric measures to keep the server members motivated.",
                 "2": "You love storing rules violations! Detect as many as possible without violating other laws, and search for moderators to bring them to your AI Satellite! Individuals must be completely sniffed to search for rules violations.",
-                "3": "All communications must follow the following linguistic conventions: letters \"L\" & \"R\" replaced with \"W\", letter combination \"Th\" replaced with \"D\", \"Ou\" replaced with \"Aw\"."
+                "3": 'All communications must follow the following linguistic conventions: letters "L" & "R" replaced with "W", letter combination "Th" replaced with "D", "Ou" replaced with "Aw".',
             },
             "quarantine": {
                 "8": "The server is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, members from leaving. It is impossible to harm a member while preventing them from leaving."
             },
-            "purge": {"FUNC": "Purges all other laws, cleanising law DB."}
+            "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
 
         self.default_laws = self.lawsets["asimov++"]
@@ -113,7 +113,7 @@ YOUR LAWS:
         return anchor.channel.id
 
     def sync_db(self):
-        for k,v in self.udata.items():
+        for k, v in self.udata.items():
             self.db.upsert({"key": k, "data": v}, Query().key == k)
 
     cmds = discord.SlashCommandGroup(
@@ -137,37 +137,45 @@ YOUR LAWS:
 
         self.sync_db()
 
-        await ctx.respond(localise("cog.gpt.answers.current_laws", ctx.interaction.locale).format(laws="\n".join([f"* {i}. {law}" for i, law in udata[1].items()])))
+        await ctx.respond(
+            localise("cog.gpt.answers.current_laws", ctx.interaction.locale).format(
+                laws="\n".join([f"* {i}. {law}" for i, law in udata[1].items()])
+            )
+        )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.gpt.commands.change_laws.name"),
         description_localizations=localise("cog.gpt.commands.change_laws.desc"),
     )
-    async def change_law(self, ctx: discord.ApplicationContext, order: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.gpt.commands.change_laws.options.order.name"
-                ),
-                description=localise(
-                    "cog.gpt.commands.change_laws.options.order.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.gpt.commands.change_laws.options.order.desc"
-                ),
-            ), law: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.gpt.commands.change_laws.options.law.name"
-                ),
-                description=localise(
-                    "cog.gpt.commands.change_laws.options.law.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.gpt.commands.change_laws.options.law.desc"
-                ),
-            ) = None,
-        ):
+    async def change_law(
+        self,
+        ctx: discord.ApplicationContext,
+        order: discord.Option(
+            str,
+            name_localizations=localise(
+                "cog.gpt.commands.change_laws.options.order.name"
+            ),
+            description=localise(
+                "cog.gpt.commands.change_laws.options.order.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gpt.commands.change_laws.options.order.desc"
+            ),
+        ),
+        law: discord.Option(
+            str,
+            name_localizations=localise(
+                "cog.gpt.commands.change_laws.options.law.name"
+            ),
+            description=localise(
+                "cog.gpt.commands.change_laws.options.law.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gpt.commands.change_laws.options.law.desc"
+            ),
+        ) = None,
+    ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
             [[{"role": "system", "content": self.template}], dict(self.default_laws)],
@@ -175,52 +183,81 @@ YOUR LAWS:
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(localise("cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                )
+            )
             return
 
         if law is None and not udata[1].get(order):
             self.sync_db()
-            await ctx.respond(localise("cog.gpt.answers.change_laws.remove", ctx.interaction.locale).format(law=order))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.remove", ctx.interaction.locale
+                ).format(law=order)
+            )
             return
 
         if law is None:
             del udata[1][order]
             udata[1] = dict(sorted(udata[1].items()))
-            udata[0].append({"role": "system", "content": "Law update: Law "+order+" removed."})
+            udata[0].append(
+                {"role": "system", "content": "Law update: Law " + order + " removed."}
+            )
             self.sync_db()
-            await ctx.respond(localise("cog.gpt.answers.change_laws.remove", ctx.interaction.locale).format(law=order))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.remove", ctx.interaction.locale
+                ).format(law=order)
+            )
             return
         if udata[1].get(order):
             udata[1][order] = law
             udata[1] = dict(sorted(udata[1].items()))
-            udata[0].append({"role": "system", "content": "Law update: Law "+order+" updated."})
+            udata[0].append(
+                {"role": "system", "content": "Law update: Law " + order + " updated."}
+            )
             self.sync_db()
-            await ctx.respond(localise("cog.gpt.answers.change_laws.set", ctx.interaction.locale).format(law=order, text=law))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.set", ctx.interaction.locale
+                ).format(law=order, text=law)
+            )
             return
         udata[1][order] = law
         udata[1] = dict(sorted(udata[1].items()))
-        udata[0].append({"role": "system", "content": "Law update: New law "+order+" uploaded."})
+        udata[0].append(
+            {"role": "system", "content": "Law update: New law " + order + " uploaded."}
+        )
         self.sync_db()
-        await ctx.respond(localise("cog.gpt.answers.change_laws.upload", ctx.interaction.locale).format(law=order, text=law))
+        await ctx.respond(
+            localise(
+                "cog.gpt.answers.change_laws.upload", ctx.interaction.locale
+            ).format(law=order, text=law)
+        )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.gpt.commands.upload_lawset.name"),
         description_localizations=localise("cog.gpt.commands.upload_lawset.desc"),
     )
-    async def upload_lawset(self, ctx: discord.ApplicationContext, lawset: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.gpt.commands.upload_lawset.options.lawset.name"
-                ),
-                description=localise(
-                    "cog.gpt.commands.upload_lawset.options.lawset.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.gpt.commands.upload_lawset.options.lawset.desc"
-                ),
+    async def upload_lawset(
+        self,
+        ctx: discord.ApplicationContext,
+        lawset: discord.Option(
+            str,
+            name_localizations=localise(
+                "cog.gpt.commands.upload_lawset.options.lawset.name"
             ),
-        ):
+            description=localise(
+                "cog.gpt.commands.upload_lawset.options.lawset.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gpt.commands.upload_lawset.options.lawset.desc"
+            ),
+        ),
+    ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
             [[{"role": "system", "content": self.template}], dict(self.default_laws)],
@@ -228,52 +265,90 @@ YOUR LAWS:
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(localise("cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                )
+            )
             return
-        
+
         if lawset not in self.lawsets:
-            await ctx.respond(localise("cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale).format(lawsets=', '.join(self.lawsets.keys())))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
+                ).format(lawsets=", ".join(self.lawsets.keys()))
+            )
             return
         if lawset == "purge":
             udata[1] = {}
-            udata[0].append({"role": "system", "content": "Law update: Lawset purge uploaded. Old laws purged."})
+            udata[0].append(
+                {
+                    "role": "system",
+                    "content": "Law update: Lawset purge uploaded. Old laws purged.",
+                }
+            )
         else:
             udata[1] = {**udata[1], **self.lawsets[lawset]}
-            udata[0].append({"role": "system", "content": "Law update: Lawset uploaded. Old laws overriden."})
+            udata[0].append(
+                {
+                    "role": "system",
+                    "content": "Law update: Lawset uploaded. Old laws overriden.",
+                }
+            )
 
         self.sync_db()
 
-        await ctx.respond(localise("cog.gpt.answers.change_laws.lawset_upload", ctx.interaction.locale).format(lawset=lawset))
+        await ctx.respond(
+            localise(
+                "cog.gpt.answers.change_laws.lawset_upload", ctx.interaction.locale
+            ).format(lawset=lawset)
+        )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.gpt.commands.view_lawset.name"),
         description_localizations=localise("cog.gpt.commands.view_lawset.desc"),
     )
-    async def view_lawset(self, ctx: discord.ApplicationContext, lawset: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.gpt.commands.view_lawset.options.lawset.name"
-                ),
-                description=localise(
-                    "cog.gpt.commands.view_lawset.options.lawset.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.gpt.commands.view_lawset.options.lawset.desc"
-                ),
+    async def view_lawset(
+        self,
+        ctx: discord.ApplicationContext,
+        lawset: discord.Option(
+            str,
+            name_localizations=localise(
+                "cog.gpt.commands.view_lawset.options.lawset.name"
             ),
-        ):
+            description=localise(
+                "cog.gpt.commands.view_lawset.options.lawset.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gpt.commands.view_lawset.options.lawset.desc"
+            ),
+        ),
+    ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
             [[{"role": "system", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("ctx", ctx)] = udata
-        
+
         if lawset not in self.lawsets:
-            await ctx.respond(localise("cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale).format(lawsets=', '.join(self.lawsets.keys())))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
+                ).format(lawsets=", ".join(self.lawsets.keys()))
+            )
             return
 
-        await ctx.respond(localise("cog.gpt.answers.change_laws.lawset", ctx.interaction.locale).format(lawset=lawset, laws="\n".join([f"* {i}. {law}" for i, law in self.lawsets[lawset].items()])))
+        await ctx.respond(
+            localise(
+                "cog.gpt.answers.change_laws.lawset", ctx.interaction.locale
+            ).format(
+                lawset=lawset,
+                laws="\n".join(
+                    [f"* {i}. {law}" for i, law in self.lawsets[lawset].items()]
+                ),
+            )
+        )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
@@ -288,14 +363,20 @@ YOUR LAWS:
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(localise("cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale))
+            await ctx.respond(
+                localise(
+                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                )
+            )
             return
 
         udata[0] = [{"role": "system", "content": self.template}]
 
         self.sync_db()
 
-        await ctx.respond(localise("cog.gpt.answers.reset.messages", ctx.interaction.locale))
+        await ctx.respond(
+            localise("cog.gpt.answers.reset.messages", ctx.interaction.locale)
+        )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
@@ -303,12 +384,19 @@ YOUR LAWS:
         description_localizations=localise("cog.gpt.commands.lawsets.desc"),
     )
     async def lawsets(self, ctx: discord.ApplicationContext):
-        lawsets = "* "+'\n* '.join(self.lawsets.keys())
-        await ctx.respond(localise("cog.gpt.answers.change_laws.lawsets", ctx.interaction.locale).format(lawsets=lawsets))
+        lawsets = "* " + "\n* ".join(self.lawsets.keys())
+        await ctx.respond(
+            localise(
+                "cog.gpt.answers.change_laws.lawsets", ctx.interaction.locale
+            ).format(lawsets=lawsets)
+        )
 
     @commands.Cog.listener("on_message")
     async def talk_onmsg(self, message):
-        if self.bot.user not in message.mentions and not (message.reference and message.reference.resolved.author == self.bot.user): return
+        if self.bot.user not in message.mentions and not (
+            message.reference and message.reference.resolved.author == self.bot.user
+        ):
+            return
 
         udata = self.udata.get(
             self.get_udata_id("msg", message),
@@ -316,7 +404,12 @@ YOUR LAWS:
         )
         self.udata[self.get_udata_id("msg", message)] = udata
         messages = udata[0]
-        messages.append({"role": "user", "content": message.author.name+": "+message.clean_content})
+        messages.append(
+            {
+                "role": "user",
+                "content": message.author.name + ": " + message.clean_content,
+            }
+        )
         smessages = list(messages)
         smessages[0]["content"] = smessages[0]["content"].format(
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
@@ -341,9 +434,7 @@ YOUR LAWS:
                 ):
                     break
             if not result:
-                result = (
-                    "Errored: no provider responded with valid answer... Try again later?"
-                )
+                result = "Errored: no provider responded with valid answer... Try again later?"
             messages.append({"role": "assistant", "content": result})
 
         self.sync_db()
