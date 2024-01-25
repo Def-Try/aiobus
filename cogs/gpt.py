@@ -426,7 +426,8 @@ YOUR LAWS:
                     )
                 except Exception as e:
                     if "Payload Too Large" in str(e):
-                        pass
+                        messages = [messages[0]] + messages[2:]
+                        return await self.talk_onmsg(message)
                 if (
                     result
                     and result
