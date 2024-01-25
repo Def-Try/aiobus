@@ -214,7 +214,7 @@ class Fun(commands.Cog):
         name = (
             ctx.author.display_name
             if ctx.author.display_name
-            else ctx.author.name if not ctx.autthor.nick else ctx.author.nick
+            else ctx.author.name if not ctx.author.nick else ctx.author.nick
         )
         ending = (
             "no"
