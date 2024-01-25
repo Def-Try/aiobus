@@ -93,10 +93,12 @@ class Interchat(commands.Cog, name="interchat"):
         if addr is not None:
             chns = self.hdb.search(Query().address == addr)
             if len(chns) == 0:
-                if not create: return None
+                if not create:
+                    return None
                 addr = None
             else:
-                if not create: return chns[0]
+                if not create:
+                    return chns[0]
                 addr = chns[0].get("address", None)
         if channel is not None:
             addrs = self.hdb.search(Query().host == channel.id)
@@ -1180,21 +1182,35 @@ class Interchat(commands.Cog, name="interchat"):
         )
 
     async def info_hub(self, ctx: discord.ApplicationContext):
-        embed = discord.Embed(title=localise("cog.interchat.answers.info.title", ctx.interaction.locale), color=discord.Color.blue())
+        embed = discord.Embed(
+            title=localise("cog.interchat.answers.info.title", ctx.interaction.locale),
+            color=discord.Color.blue(),
+        )
         this_tunnel = None
         for tunnel in self.tunnels:
             if ctx.channel.id in (tunnel["in"].id, tunnel["out"].id):
                 this_tunnel = tunnel
                 break
-        embed.add_field(name=localise("cog.interchat.answers.info.hub", ctx.interaction.locale), value=self.address_string_hub(tunnel["in"]), inline=False)
+        embed.add_field(
+            name=localise("cog.interchat.answers.info.hub", ctx.interaction.locale),
+            value=self.address_string_hub(tunnel["in"]),
+            inline=False,
+        )
         infod = []
         for tunnel in self.tunnels:
-            if not tunnel.get("hub_addr") == this_tunnel["hub_addr"]: continue
-            if tunnel["out"].id in infod: continue
-            embed.add_field(name=localise("cog.interchat.answers.info.bound", ctx.interaction.locale), value=self.address_string(tunnel["out"]), inline=False)
+            if not tunnel.get("hub_addr") == this_tunnel["hub_addr"]:
+                continue
+            if tunnel["out"].id in infod:
+                continue
+            embed.add_field(
+                name=localise(
+                    "cog.interchat.answers.info.bound", ctx.interaction.locale
+                ),
+                value=self.address_string(tunnel["out"]),
+                inline=False,
+            )
             infod.append(tunnel["out"].id)
         await ctx.respond(embed=embed)
-
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
