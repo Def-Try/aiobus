@@ -57,7 +57,7 @@ class Nyatalk(Language):
 
 class Codespeak:
     def __init__(self):
-        with open(os.path.dirname(__file__) + "/russian.txt") as f:
+        with open(os.path.dirname(__file__) + "/russian.txt", encoding="utf-8") as f:
             self.dictionary = [i.strip() for i in f.readlines()]
         self.terminators = " .,:;-!?()[]{}\\/#@*_"
         self.epsilon = 1

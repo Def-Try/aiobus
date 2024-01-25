@@ -1,0 +1,78 @@
+{
+        "cog": {
+                "gpt": {
+                        "info": {
+                                "desc": "Cog with AI hooks and commands",
+                                "brief": "AI commands"
+                        },
+                        "command_group": {
+                                "name": "ai",
+                                "desc": "AI commands"
+                        },
+                        "commands": {
+                                "laws": {
+                                        "name": "laws",
+                                        "desc": "Directly view AI laws."
+                                },
+                                "change_laws": {
+                                        "name": "change_laws",
+                                        "desc": "Upload, purge, or update AI laws. Available only to operators.",
+                                        "options": {
+                                                "order": {
+                                                        "name": "order",
+                                                        "desc": "Order, aka ID of law. Usually should be a number."
+                                                },
+                                                "law": {
+                                                        "name": "law",
+                                                        "desc": "Text to put into laws. If not specified, law ID will be purged."
+                                                }
+                                        }
+                                },
+                                "upload_lawset": {
+                                        "name": "upload_lawset",
+                                        "desc": "Upload AI lawset. Available only to operators.",
+                                        "options": {
+                                                "lawset": {
+                                                        "name": "lawset",
+                                                        "desc": "Lawset name to be uploaded into AI"
+                                                }
+                                        }
+                                },
+                                "view_lawset": {
+                                        "name": "view_lawset",
+                                        "desc": "Examine laws in specified lawset.",
+                                        "options": {
+                                                "lawset": {
+                                                        "name": "lawset",
+                                                        "desc": "Lawset name to be examined."
+                                                }
+                                        }
+                                },
+                                "reset_messages": {
+                                        "name": "reset_messages",
+                                        "desc": "Reset messages in conversation. Available only to operators."
+                                },
+                                "lawsets": {
+                                        "name": "lawsets",
+                                        "desc": "View all available lawsets."
+                                }
+                        },
+                        "answers": {
+                                "current_laws": "Current AI laws:\n{laws}",
+                                "change_laws": {
+                                        "not_allowed": "Sorry, you are not allowed to perform this action.",
+                                        "remove": "Purged law {law}",
+                                        "set": "Updated law {law}: \"{text}\"",
+                                        "upload": "Uploaded new law {law}: \"{text}\"",
+                                        "wrong_lawset": "Wrong lawset specified. Must be one of the following: {lawsets}",
+                                        "lawset_upload": "Lawset \"{lawset}\" uploaded.",
+                                        "lawset": "Lawset \"{lawset}\":\n{laws}",
+                                        "lawsets": "Lawsets:\n{lawsets}"
+                                },
+                                "reset": {
+                                        "messages": "Messages reset."
+                                }
+                        }
+                }
+        }
+}
