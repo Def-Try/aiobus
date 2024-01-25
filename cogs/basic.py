@@ -254,11 +254,13 @@ class Basic(commands.Cog):
                     not parameter.annotation.name
                     and not parameter.annotation.name_localizations
                 )
-                else parameter.annotation.name
-                if isinstance(parameter.annotation, discord.Option)
-                and not parameter.annotation.name_localizations
-                else parameter.annotation.name_localizations.get(
-                    ctx.interaction.locale, parameter.annotation.name
+                else (
+                    parameter.annotation.name
+                    if isinstance(parameter.annotation, discord.Option)
+                    and not parameter.annotation.name_localizations
+                    else parameter.annotation.name_localizations.get(
+                        ctx.interaction.locale, parameter.annotation.name
+                    )
                 )
             )
             parameters += (

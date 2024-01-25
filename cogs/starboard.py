@@ -142,12 +142,16 @@ class Starboard(commands.Cog):
                 title="Jump!", description=message.content, url=message.jump_url
             )
             embed.set_author(
-                name=message.author.name
-                if not hasattr(message.author, "nick") or not message.author.nick
-                else message.author.nick,
-                icon_url=message.author.avatar.url
-                if message.author.avatar
-                else message.author.default_avatar.url,
+                name=(
+                    message.author.name
+                    if not hasattr(message.author, "nick") or not message.author.nick
+                    else message.author.nick
+                ),
+                icon_url=(
+                    message.author.avatar.url
+                    if message.author.avatar
+                    else message.author.default_avatar.url
+                ),
             )
             embeds = [embed] + message.embeds if not message.channel.nsfw else []
             files = (

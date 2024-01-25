@@ -81,10 +81,12 @@ class Interchat(commands.Cog, name="interchat"):
                 {
                     "chid": channel.id,
                     "address": addr,
-                    "guid": channel.guild.id
-                    if not isinstance(channel, discord.abc.PrivateChannel)
-                    and not isinstance(channel, discord.PartialMessageable)
-                    else -1,
+                    "guid": (
+                        channel.guild.id
+                        if not isinstance(channel, discord.abc.PrivateChannel)
+                        and not isinstance(channel, discord.PartialMessageable)
+                        else -1
+                    ),
                 }
             )
         return addr
@@ -328,9 +330,11 @@ class Interchat(commands.Cog, name="interchat"):
                         description=(
                             resolved.content
                             if resolved.content and len(resolved.content) < 30
-                            else resolved.content[:27] + "..."
-                            if resolved.content
-                            else discord.Embed.Empty
+                            else (
+                                resolved.content[:27] + "..."
+                                if resolved.content
+                                else discord.Embed.Empty
+                            )
                         ),
                     )
                 )
@@ -441,9 +445,11 @@ class Interchat(commands.Cog, name="interchat"):
                         description=(
                             resolved.content
                             if resolved.content and len(resolved.content) < 30
-                            else resolved.content[:27] + "..."
-                            if resolved.content
-                            else discord.Embed.Empty
+                            else (
+                                resolved.content[:27] + "..."
+                                if resolved.content
+                                else discord.Embed.Empty
+                            )
                         ),
                     )
                 )

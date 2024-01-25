@@ -214,18 +214,12 @@ class Fun(commands.Cog):
         name = (
             ctx.author.display_name
             if ctx.author.display_name
-            else ctx.author.name
-            if not ctx.autthor.nick
-            else ctx.author.nick
+            else ctx.author.name if not ctx.autthor.nick else ctx.author.nick
         )
         ending = (
             "no"
             if not text
-            else "ask"
-            if text[-1] == "?"
-            else "exclaim"
-            if text[-1] == "!"
-            else "say"
+            else "ask" if text[-1] == "?" else "exclaim" if text[-1] == "!" else "say"
         )
         await ctx.respond(
             localise(

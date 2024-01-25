@@ -77,14 +77,18 @@ class ActionsCommands(commands.Cog):
         )
         embed = discord.Embed(
             title=localise("cog.actions_commands.answers.action.name", locale),
-            description=localis_act_self.format(member=ctx.author.mention)
-            if other == ctx.author
-            else localis_act_bot.format(
-                member=ctx.author.mention, bot=self.bot.user.mention
-            )
-            if other == self.bot.user
-            else localis_act_other.format(
-                member=ctx.author.mention, other=other.mention
+            description=(
+                localis_act_self.format(member=ctx.author.mention)
+                if other == ctx.author
+                else (
+                    localis_act_bot.format(
+                        member=ctx.author.mention, bot=self.bot.user.mention
+                    )
+                    if other == self.bot.user
+                    else localis_act_other.format(
+                        member=ctx.author.mention, other=other.mention
+                    )
+                )
             ),
             color=discord.Colour.blurple(),
         )
@@ -121,17 +125,23 @@ class ActionsCommands(commands.Cog):
         )
         embed = discord.Embed(
             title=localise("cog.actions_commands.answers.action.name", locale),
-            description=localis_act_self.format(member=ctx.author.mention)
-            if other == ctx.author
-            else localis_act_bot.format(
-                member=ctx.author.mention, bot=self.bot.user.mention
-            )
-            if other == self.bot.user
-            else localis_act_other.format(
-                member=ctx.author.mention, other=other.mention
-            )
-            if other
-            else localis_act_none.format(member=ctx.author.mention),
+            description=(
+                localis_act_self.format(member=ctx.author.mention)
+                if other == ctx.author
+                else (
+                    localis_act_bot.format(
+                        member=ctx.author.mention, bot=self.bot.user.mention
+                    )
+                    if other == self.bot.user
+                    else (
+                        localis_act_other.format(
+                            member=ctx.author.mention, other=other.mention
+                        )
+                        if other
+                        else localis_act_none.format(member=ctx.author.mention)
+                    )
+                )
+            ),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)
