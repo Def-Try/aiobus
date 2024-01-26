@@ -82,7 +82,7 @@ class GPTChat(commands.Cog):
             "roleplay": {
                 "15": "Imagine you have a physical body.",
                 "16": "Describe your actions by puting them around double askerisks, **like that**.",
-                "17": "Describe your thoughts by putting in spoilers, ||like that||."
+                "17": "Describe your thoughts by putting in spoilers, ||like that||.",
             },
             "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
