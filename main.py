@@ -11,7 +11,8 @@ from config import CONFIG, TOKEN
 
 try:
     colorama.just_fix_windows_console()
-except:pass
+except:
+    pass
 
 FORMAT = (
     termcolor.colored("[%(asctime)s]", "white", "on_cyan")
