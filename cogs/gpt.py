@@ -429,9 +429,10 @@ YOUR LAWS:
                 g4f.Provider.ChatgptX,
                 g4f.Provider.GeekGpt,
                 g4f.Provider.GptChatly,
-                g4f.Provider.Liaobots
+                g4f.Provider.Liaobots,
             ]:
-                if provider is None: continue
+                if provider is None:
+                    continue
                 try:
                     result = await g4f.ChatCompletion.create_async(
                         model="gpt-3.5-turbo", messages=smessages, provider=provider
