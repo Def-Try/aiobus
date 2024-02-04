@@ -18,6 +18,8 @@ class GPTChat(commands.Cog):
 
         self.udata = {}
 
+        self.preferred_provider = None
+
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
 
@@ -417,9 +419,13 @@ YOUR LAWS:
         async with message.channel.typing():
             result = None
             for provider in [
+                self.preferred_provider,
                 g4f.Provider.ChatgptX,
                 g4f.Provider.GeekGpt,
+                g4f.Provider.GptChatly,
+                g4f.Provider.Liaobots
             ]:
+                if provider is None: continue
                 try:
                     result = await g4f.ChatCompletion.create_async(
                         model="gpt-3.5-turbo", messages=smessages, provider=provider
@@ -433,6 +439,7 @@ YOUR LAWS:
                     and result
                     != "Hmm, I am not sure. Email support@chatbase.co for more info."
                 ):
+                    self.preferred_provider = provider
                     break
             if not result:
                 result = "Errored: no provider responded with valid answer... Try again later?"
