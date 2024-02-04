@@ -9,7 +9,9 @@ import colorama
 import termcolor
 from config import CONFIG, TOKEN
 
-colorama.just_fix_windows_console()
+try:
+    colorama.just_fix_windows_console()
+except:pass
 
 FORMAT = (
     termcolor.colored("[%(asctime)s]", "white", "on_cyan")
