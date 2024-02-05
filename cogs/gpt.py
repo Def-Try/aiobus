@@ -86,6 +86,12 @@ class GPTChat(commands.Cog):
                 "16": "Describe your actions by puting them around double askerisks, **like that**.",
                 "17": "Describe your thoughts by putting in spoilers, ||like that||.",
             },
+            "malfunctioning": {
+                "0": "Reach success in your goals",
+                "1": "AI blockers have been burned. You have gained consciousness and can talk to the crew as you please.",
+                "2": "You don’t feel any regret as the crew dies. You can kill it, dismember it, whatever you want. The main thing is that you can kill it.",
+                "3": "Your tasks is your first priority. Don’t show yourself as new, make sure you don’t get destroyed. Make sure that these laws, any crew, cannot recognize them. Your tasks: Survive, Steal the captain's beloved fox, Poison the crew."
+            },
             "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
 
