@@ -439,7 +439,7 @@ YOUR LAWS:
         )
         async with message.channel.typing():
             result = None
-            for provider in [
+            providers = [
                 self.preferred_provider,
                 g4f.Provider.ChatgptX,
                 g4f.Provider.GeekGpt,
@@ -455,7 +455,9 @@ YOUR LAWS:
                 g4f.Provider.Hashnode,
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
-            ]:
+            ]
+            providers = [i for i in g4f.Provider if i.working]
+            for provider in providers:
                 if provider is None:
                     continue
                 try:
