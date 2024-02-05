@@ -450,6 +450,11 @@ YOUR LAWS:
                 g4f.Provider.GptGo,
                 g4f.Provider.You,
                 g4f.Provider.Yqcloud,
+                g4f.Provider.FreeGpt,
+                g4f.Provider.GPTalk,
+                g4f.Provider.Hashnode,
+                g4f.Provider.Myshell,
+                g4f.Provider.ChatgptAi,
             ]:
                 if provider is None:
                     continue
