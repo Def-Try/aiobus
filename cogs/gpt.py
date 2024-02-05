@@ -443,12 +443,17 @@ YOUR LAWS:
                 g4f.Provider.GeekGpt,
                 g4f.Provider.GptChatly,
                 g4f.Provider.Liaobots,
+                g4f.Provider.Aichat,
+                g4f.Provider.Bing,
+                g4f.Provider.GptGo,
+                g4f.Provider.You,
+                g4f.Provider.Yqcloud,
             ]:
                 if provider is None:
                     continue
                 try:
                     result = await g4f.ChatCompletion.create_async(
-                        model="gpt-3.5-turbo", messages=smessages, provider=provider
+                        model=g4f.models.default, messages=smessages, provider=provider
                     )
                 except Exception as e:
                     if "Payload Too Large" in str(e):
