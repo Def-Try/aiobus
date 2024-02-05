@@ -456,7 +456,12 @@ YOUR LAWS:
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
             ]
-            providers = [getattr(g4f.Provider, i) for i in g4f.Provider.__all__ if getattr(g4f.Provider, i).working]
+            ignore_providers = [
+                g4f.Provider.ChatBase,
+                g4f.Provider.AiChatOnline,
+                g4f.Provider.Bing,
+            ]
+            providers = [getattr(g4f.Provider, i) for i in g4f.Provider.__all__ if getattr(g4f.Provider, i).working and getattr(g4f.Provider, i) not in ignore_providers]
             for provider in providers:
                 if provider is None:
                     continue
