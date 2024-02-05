@@ -1,5 +1,7 @@
 import g4f
 
+usable = []
+
 for provider in [
     getattr(g4f.Provider, i)
     for i in g4f.Provider.__all__
@@ -15,5 +17,8 @@ for provider in [
                 messages=[{"role": "user", "content": "Hello"}],
             ),
         )
-    except:
-        print("...Fail")
+        usable.append(provider.__name__)
+    except Exception as e:
+        print("... Fail:", e)
+
+print(*usable)
