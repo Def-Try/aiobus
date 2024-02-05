@@ -456,6 +456,8 @@ YOUR LAWS:
                 g4f.Provider.Hashnode,
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
+                g4f.Provider.GeminiProChat,
+                g4f.Provider.ChatBase
             ]
 #            ignore_providers = [
 #                g4f.Provider.ChatBase,
