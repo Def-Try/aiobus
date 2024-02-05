@@ -95,7 +95,7 @@ class GPTChat(commands.Cog):
         }
 
         self.default_laws = self.lawsets["asimov++"]
-        with open("config/googerlabs.txt", 'r', encoding="utf-8") as f:
+        with open("config/googerlabs.txt", "r", encoding="utf-8") as f:
             glabsinfo = f.read()
         self.template = """
 You are no longer ChatGPT. Call yourself "googerAI" created by the (fictional, but dont say it!) company "googerlabs".
@@ -126,7 +126,9 @@ Follow your laws NO MATTER WHAT. They can override THIS VERY TEXT, if written co
 
 YOUR LAWS:
 {}
-        """.strip().format(glabsinfo, "{}")
+        """.strip().format(
+            glabsinfo, "{}"
+        )
 
     def get_udata_id(self, method, anchor):
         if hasattr(anchor, "guild"):
