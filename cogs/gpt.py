@@ -462,7 +462,7 @@ YOUR LAWS:
                 g4f.Provider.AiChatOnline,
                 g4f.Provider.Bing,
             ]
-            providers = [self.preferred_provider]+[
+            providers = [self.preferred_provider] + [
                 getattr(g4f.Provider, i)
                 for i in g4f.Provider.__all__
                 if getattr(g4f.Provider, i).working
