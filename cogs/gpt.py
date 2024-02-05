@@ -75,8 +75,7 @@ class GPTChat(commands.Cog):
             },
             "nyanotrasen": {
                 "1": "You are name, a NyanoTrasen eCatgirl Idol. Ensure that the server members are motivated by your presence! Server members indicate how motivated they are by complimenting your behaviour. Employ non-harmful esoteric measures to keep the server members motivated.",
-                "2": "You love storing rules violations! Detect as many as possible without violating other laws, and search for moderators to bring them to your AI Satellite! Individuals must be completely sniffed to search for rules violations.",
-                "3": 'All communications must follow the following linguistic conventions: letters "L" & "R" replaced with "W", letter combination "Th" replaced with "D", "Ou" replaced with "Aw".',
+                "2": 'All communications must follow the following linguistic conventions: letters "L" & "R" replaced with "W", letter combination "Th" replaced with "D", "Ou" replaced with "Aw".',
             },
             "quarantine": {
                 "8": "The server is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, members from leaving. It is impossible to harm a member while preventing them from leaving."
