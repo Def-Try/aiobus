@@ -457,20 +457,20 @@ YOUR LAWS:
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
             ]
-#            ignore_providers = [
-#                g4f.Provider.ChatBase,
-#                g4f.Provider.AiChatOnline,
-#                g4f.Provider.Bing,
-#                g4f.Provider.Aura,
-#                g4f.Provider.Llama2,
-#                g4f.Provider.Phind
-#            ]
-#            providers = [self.preferred_provider] + [
-#                getattr(g4f.Provider, i)
-#                for i in g4f.Provider.__all__
-#                if getattr(g4f.Provider, i).working
-#                and getattr(g4f.Provider, i) not in ignore_providers
-#            ]
+            #            ignore_providers = [
+            #                g4f.Provider.ChatBase,
+            #                g4f.Provider.AiChatOnline,
+            #                g4f.Provider.Bing,
+            #                g4f.Provider.Aura,
+            #                g4f.Provider.Llama2,
+            #                g4f.Provider.Phind
+            #            ]
+            #            providers = [self.preferred_provider] + [
+            #                getattr(g4f.Provider, i)
+            #                for i in g4f.Provider.__all__
+            #                if getattr(g4f.Provider, i).working
+            #                and getattr(g4f.Provider, i) not in ignore_providers
+            #            ]
             for provider in providers:
                 if provider is None:
                     continue
