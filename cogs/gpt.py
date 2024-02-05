@@ -469,9 +469,9 @@ YOUR LAWS:
                 if getattr(g4f.Provider, i).working and getattr(g4f.Provider, i) not in ignore_providers
             ]
             for provider in providers:
-                print("Trying provider", provider.__name__)
                 if provider is None:
                     continue
+                print("Trying provider", provider.__name__)
                 try:
                     result = await g4f.ChatCompletion.create_async(
                         model=g4f.models.default, messages=smessages, provider=provider
