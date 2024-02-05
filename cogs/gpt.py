@@ -462,7 +462,8 @@ YOUR LAWS:
                 g4f.Provider.AiChatOnline,
                 g4f.Provider.Bing,
                 g4f.Provider.Aura,
-                g4f.Provider.Llama2
+                g4f.Provider.Llama2,
+                g4f.Provider.Phind
             ]
             providers = [self.preferred_provider] + [
                 getattr(g4f.Provider, i)
