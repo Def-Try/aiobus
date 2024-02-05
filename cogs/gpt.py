@@ -458,7 +458,7 @@ YOUR LAWS:
                         model=g4f.models.default, messages=smessages, provider=provider
                     )
                 except Exception as e:
-                    print("Provider "+provider.__name__, e)
+                    print("Provider " + provider.__name__, e)
                     if "Payload Too Large" in str(e):
                         messages = [messages[0]] + messages[2:]
                         return await self.talk_onmsg(message)
