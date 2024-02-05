@@ -442,7 +442,6 @@ YOUR LAWS:
         async with message.channel.typing():
             result = None
             providers = [
-                self.preferred_provider,
                 g4f.Provider.ChatgptX,
                 g4f.Provider.GeekGpt,
                 g4f.Provider.GptChatly,
@@ -462,6 +461,7 @@ YOUR LAWS:
                 g4f.Provider.ChatBase,
                 g4f.Provider.AiChatOnline,
                 g4f.Provider.Bing,
+                g4f.Provider.Aura
             ]
             providers = [self.preferred_provider] + [
                 getattr(g4f.Provider, i)
