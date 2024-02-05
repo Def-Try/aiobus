@@ -466,7 +466,8 @@ YOUR LAWS:
             providers = [self.preferred_provider] + [
                 getattr(g4f.Provider, i)
                 for i in g4f.Provider.__all__
-                if getattr(g4f.Provider, i).working and getattr(g4f.Provider, i) not in ignore_providers
+                if getattr(g4f.Provider, i).working
+                and getattr(g4f.Provider, i) not in ignore_providers
             ]
             for provider in providers:
                 print("Trying provider", provider.__name__)
