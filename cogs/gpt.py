@@ -475,7 +475,7 @@ YOUR LAWS:
                 print("Trying provider", provider.__name__)
                 try:
                     result = await g4f.ChatCompletion.create_async(
-                        model=g4f.models.default, messages=smessages, provider=provider
+                        model="gpt-3.5-turbo", messages=smessages, provider=provider
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
