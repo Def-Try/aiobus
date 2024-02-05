@@ -456,7 +456,7 @@ YOUR LAWS:
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
             ]
-            providers = [i for i in g4f.Provider if i.working]
+            providers = [getattr(g4f.Provider, i) for i in g4f.Provider.__all__ if getattr(g4f.Provider, i).working]
             for provider in providers:
                 if provider is None:
                     continue
