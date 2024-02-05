@@ -130,6 +130,7 @@ YOUR LAWS:
         """.strip().format(
             glabsinfo, "{}"
         )
+        print(f"GPT First Message Template:\n{self.template}\n")
 
     def get_udata_id(self, method, anchor):
         if hasattr(anchor, "guild"):
