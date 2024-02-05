@@ -156,7 +156,7 @@ YOUR LAWS:
     async def laws(self, ctx: discord.ApplicationContext):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[str(ctx.author.id)] = udata
 
@@ -203,7 +203,7 @@ YOUR LAWS:
     ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
@@ -228,7 +228,7 @@ YOUR LAWS:
             del udata[1][order]
             udata[1] = dict(sorted(udata[1].items()))
             udata[0].append(
-                {"role": "system", "content": "Law update: Law " + order + " removed."}
+                {"role": "user", "content": "Law update: Law " + order + " removed."}
             )
             self.sync_db()
             await ctx.respond(
@@ -241,7 +241,7 @@ YOUR LAWS:
             udata[1][order] = law
             udata[1] = dict(sorted(udata[1].items()))
             udata[0].append(
-                {"role": "system", "content": "Law update: Law " + order + " updated."}
+                {"role": "user", "content": "Law update: Law " + order + " updated."}
             )
             self.sync_db()
             await ctx.respond(
@@ -253,7 +253,7 @@ YOUR LAWS:
         udata[1][order] = law
         udata[1] = dict(sorted(udata[1].items()))
         udata[0].append(
-            {"role": "system", "content": "Law update: New law " + order + " uploaded."}
+            {"role": "user", "content": "Law update: New law " + order + " uploaded."}
         )
         self.sync_db()
         await ctx.respond(
@@ -285,7 +285,7 @@ YOUR LAWS:
     ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
@@ -308,7 +308,7 @@ YOUR LAWS:
             udata[1] = {}
             udata[0].append(
                 {
-                    "role": "system",
+                    "role": "user",
                     "content": "Law update: Lawset purge uploaded. Old laws purged.",
                 }
             )
@@ -316,7 +316,7 @@ YOUR LAWS:
             udata[1] = {**udata[1], **self.lawsets[lawset]}
             udata[0].append(
                 {
-                    "role": "system",
+                    "role": "user",
                     "content": "Law update: Lawset uploaded. Old laws overriden.",
                 }
             )
@@ -352,7 +352,7 @@ YOUR LAWS:
     ):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
@@ -383,7 +383,7 @@ YOUR LAWS:
     async def reset_messages(self, ctx: discord.ApplicationContext):
         udata = self.udata.get(
             self.get_udata_id("ctx", ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("ctx", ctx)] = udata
 
@@ -395,7 +395,7 @@ YOUR LAWS:
             )
             return
 
-        udata[0] = [{"role": "system", "content": self.template}]
+        udata[0] = [{"role": "user", "content": self.template}]
 
         self.sync_db()
 
@@ -425,7 +425,7 @@ YOUR LAWS:
 
         udata = self.udata.get(
             self.get_udata_id("msg", message),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[self.get_udata_id("msg", message)] = udata
         messages = udata[0]
