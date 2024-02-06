@@ -457,7 +457,6 @@ YOUR LAWS:
                 g4f.Provider.Myshell,
                 g4f.Provider.ChatgptAi,
                 g4f.Provider.GeminiProChat,
-                g4f.Provider.ChatBase,
             ]
             #            ignore_providers = [
             #                g4f.Provider.ChatBase,
@@ -473,6 +472,7 @@ YOUR LAWS:
             #                if getattr(g4f.Provider, i).working
             #                and getattr(g4f.Provider, i) not in ignore_providers
             #            ]
+            fail = False
             for provider in providers:
                 if provider is None:
                     continue
@@ -495,7 +495,9 @@ YOUR LAWS:
                     break
             if not result:
                 result = "Errored: no provider responded with valid answer... Try again later?"
+                fail = True
             messages.append({"role": "assistant", "content": result})
+            if fail: messages = messages[:-1]
 
         self.sync_db()
 
