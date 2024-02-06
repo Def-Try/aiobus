@@ -497,7 +497,8 @@ YOUR LAWS:
                 result = "Errored: no provider responded with valid answer... Try again later?"
                 fail = True
             messages.append({"role": "assistant", "content": result})
-            if fail: messages = messages[:-1]
+            if fail:
+                messages = messages[:-1]
 
         self.sync_db()
 
