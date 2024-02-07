@@ -483,7 +483,10 @@ YOUR LAWS:
                 print("Trying provider", provider.__name__)
                 try:
                     result = await g4f.ChatCompletion.create_async(
-                        model="gpt-3.5-turbo", messages=smessages, provider=provider, proxy="socks5://51.124.42.172:3128"
+                        model="gpt-3.5-turbo",
+                        messages=smessages,
+                        provider=provider,
+                        proxy="socks5://51.124.42.172:3128",
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
