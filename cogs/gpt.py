@@ -418,9 +418,13 @@ YOUR LAWS:
 
     @commands.Cog.listener("on_message")
     async def talk_onmsg(self, message):
-        if self.bot.user not in message.mentions and not (
-            message.reference and message.reference.resolved.author == self.bot.user
-        ) or message.author == self.bot.user:
+        if (
+            self.bot.user not in message.mentions
+            and not (
+                message.reference and message.reference.resolved.author == self.bot.user
+            )
+            or message.author == self.bot.user
+        ):
             return
 
         udata = self.udata.get(
