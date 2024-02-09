@@ -486,6 +486,7 @@ YOUR LAWS:
                         messages=smessages,
                         provider=provider,
                         proxy="socks5://51.124.42.172:3128",
+                        timeout=30
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
