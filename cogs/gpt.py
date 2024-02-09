@@ -452,8 +452,8 @@ YOUR LAWS:
             providers = [
                 g4f.Provider.ChatgptX,
                 g4f.Provider.GeekGpt,
-#                g4f.Provider.GptChatly,
-#                g4f.Provider.Liaobots,
+                #                g4f.Provider.GptChatly,
+                #                g4f.Provider.Liaobots,
                 g4f.Provider.Aichat,
                 g4f.Provider.Bing,
                 g4f.Provider.GptGo,
