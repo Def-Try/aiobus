@@ -492,7 +492,7 @@ YOUR LAWS:
                         provider=provider,
                         proxy=CONFIG["proxy"],
                         timeout=10,
-                        webdriver=self.webdriver
+                        webdriver=self.webdriver,
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
