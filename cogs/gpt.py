@@ -22,8 +22,8 @@ class GPTChat(commands.Cog):
         self.preferred_provider = None
 
         options = ChromeOptions()
-        options.add_argument("--incognito");
-        self.webdriver = None # Chrome(options=options, headless=True)
+        options.add_argument("--incognito")
+        self.webdriver = None  # Chrome(options=options, headless=True)
 
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
