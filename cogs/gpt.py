@@ -22,7 +22,7 @@ class GPTChat(commands.Cog):
         self.preferred_provider = None
 
         options = ChromeOptions()
-        options.add_argument("--incognito");
+        options.add_argument("--incognito")
         self.webdriver = Chrome(options=options, headless=True)
 
         for udata in self.db:
@@ -492,7 +492,7 @@ YOUR LAWS:
                         provider=provider,
                         proxy=CONFIG["proxy"],
                         timeout=10,
-                        webdriver=self.webdriver
+                        webdriver=self.webdriver,
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
