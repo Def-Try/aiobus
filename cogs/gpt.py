@@ -2,6 +2,7 @@ import discord
 import g4f
 from tinydb import TinyDB, Query
 from discord.ext import commands
+from undetected_chromedriver import Chrome, ChromeOptions
 from localisation import localise, DEFAULT_LOCALE
 from config import CONFIG
 
@@ -19,6 +20,10 @@ class GPTChat(commands.Cog):
         self.udata = {}
 
         self.preferred_provider = None
+
+        options = ChromeOptions()
+        options.add_argument("--incognito");
+        self.webdriver = Chrome(options=options, headless=True)
 
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
@@ -485,8 +490,9 @@ YOUR LAWS:
                         model="gpt-3.5-turbo",
                         messages=smessages,
                         provider=provider,
-                        proxy="socks5://51.124.42.172:3128",
-                        timeout=30
+                        proxy=CONFIG["proxy"],
+                        timeout=10,
+                        webdriver=self.webdriver
                     )
                 except Exception as e:
                     print("Provider " + provider.__name__, e)
