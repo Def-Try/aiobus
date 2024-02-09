@@ -15,7 +15,7 @@ class GoogerIsLenivy(commands.Cog):
         if (
             891289716501119016 in [u.id for u in message.mentions]
             and message.author != self.bot.user
-        ):
+        ) and any([i in message.content for i in ["го", "sudo"]]):
             await message.reply("лень")
 
 
