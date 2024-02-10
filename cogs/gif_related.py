@@ -58,13 +58,12 @@ categories = [
 
 async def download_file(session, url):
     try:
-        with async_timeout.timeout(10):
-            async with session.get(url) as remotefile:
-                if remotefile.status == 200:
-                    data = await remotefile.read()
-                    return {"error": "", "data": data}
-                else:
-                    return {"error": remotefile.status, "data": ""}
+        async with session.get(url) as remotefile:
+            if remotefile.status == 200:
+                data = await remotefile.read()
+                return {"error": "", "data": data}
+            else:
+                return {"error": remotefile.status, "data": ""}
     except Exception as e:
         return {"error": e, "data": ""}
 
