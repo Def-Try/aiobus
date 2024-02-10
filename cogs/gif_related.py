@@ -127,8 +127,6 @@ class GifRelated(commands.Cog):
         ctx: discord.ApplicationContext
     ):
         loop = asyncio.get_event_loop()
-        q = asyncio.Queue(loop=loop)
-        [q.put_nowait(url) for url in urls]
         con = aiohttp.TCPConnector(limit=10)
         with aiohttp.ClientSession(loop=loop, connector=con) as session:
             status = await download_file(session, "https://shiggy.fun/api/v3/random")
