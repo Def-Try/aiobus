@@ -56,6 +56,7 @@ categories = [
     "yawn",
 ]
 
+
 async def download_file(session, url):
     try:
         with async_timeout.timeout(10):
@@ -67,6 +68,7 @@ async def download_file(session, url):
                     return {"error": remotefile.status, "data": ""}
     except Exception as e:
         return {"error": e, "data": ""}
+
 
 class GifRelated(commands.Cog):
     author = "googer_"
@@ -122,10 +124,7 @@ class GifRelated(commands.Cog):
         name_localizations=localise("cog.gif_related.commands.shiggy.name"),
         description_localizations=localise("cog.gif_related.commands.shiggy.desc"),
     )
-    async def shiggy(
-        self,
-        ctx: discord.ApplicationContext
-    ):
+    async def shiggy(self, ctx: discord.ApplicationContext):
         loop = asyncio.get_event_loop()
         con = aiohttp.TCPConnector(limit=10)
         async with aiohttp.ClientSession(loop=loop, connector=con) as session:
@@ -134,7 +133,7 @@ class GifRelated(commands.Cog):
                 await ctx.respond(status["error"])
                 return
             with io.BytesIO(status["data"]) as fp:
-                await ctx.respond(file=discord.File(fp, 'shiggy.png'))
+                await ctx.respond(file=discord.File(fp, "shiggy.png"))
 
 
 def setup(bot):
