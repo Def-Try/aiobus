@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import aiohttp
+import io
 from nekosbest import Client
 from config import CONFIG
 from localisation import localise, DEFAULT_LOCALE
@@ -53,6 +55,17 @@ categories = [
     "yawn",
 ]
 
+async def download_file(session, url):
+    try:
+        with async_timeout.timeout(10):
+            async with session.get(url) as remotefile:
+                if remotefile.status == 200:
+                    data = await remotefile.read()
+                    return {"error": "", "data": data}
+                else:
+                    return {"error": remotefile.status, "data": ""}
+    except Exception as e:
+        return {"error": e, "data": ""}
 
 class GifRelated(commands.Cog):
     author = "googer_"
@@ -102,6 +115,27 @@ class GifRelated(commands.Cog):
         )
         embed.set_image(url=result.url)
         await ctx.respond(embed=embed)
+
+    @gif_cmds.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.gif_related.commands.shiggy.name"),
+        description_localizations=localise("cog.gif_related.commands.shiggy.desc"),
+    )
+    async def shiggy(
+        self,
+        ctx: discord.ApplicationContext
+    ):
+        loop = asyncio.get_event_loop()
+        q = asyncio.Queue(loop=loop)
+        [q.put_nowait(url) for url in urls]
+        con = aiohttp.TCPConnector(limit=10)
+        with aiohttp.ClientSession(loop=loop, connector=con) as session:
+            status = await download_file(session, "https://shiggy.fun/api/v3/random")
+            if status["error"]:
+                await ctx.reply(status["error"])
+                return
+            with io.BytesIO(status["data"]) as fp
+                await ctx.reply(file=discord.File(fp, 'shiggy.png'))
 
 
 def setup(bot):
