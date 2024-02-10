@@ -128,7 +128,7 @@ class GifRelated(commands.Cog):
     ):
         loop = asyncio.get_event_loop()
         con = aiohttp.TCPConnector(limit=10)
-        with aiohttp.ClientSession(loop=loop, connector=con) as session:
+        async with aiohttp.ClientSession(loop=loop, connector=con) as session:
             status = await download_file(session, "https://shiggy.fun/api/v3/random")
             if status["error"]:
                 await ctx.reply(status["error"])
