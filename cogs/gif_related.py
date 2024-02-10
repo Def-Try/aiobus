@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import aiohttp
+import asyncio
 import io
 from nekosbest import Client
 from config import CONFIG
