@@ -19,6 +19,10 @@
                                                         "desc": "Gif category to find."
                                                 }
                                         }
+                                },
+                                "shiggy": {
+                                        "name": "shiggy",
+                                        "desc": "shiggy"
                                 }
                         },
                         "answers": {
