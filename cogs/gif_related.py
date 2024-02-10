@@ -134,7 +134,7 @@ class GifRelated(commands.Cog):
             if status["error"]:
                 await ctx.reply(status["error"])
                 return
-            with io.BytesIO(status["data"]) as fp
+            with io.BytesIO(status["data"]) as fp:
                 await ctx.reply(file=discord.File(fp, 'shiggy.png'))
 
 
