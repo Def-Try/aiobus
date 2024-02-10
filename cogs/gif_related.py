@@ -131,10 +131,10 @@ class GifRelated(commands.Cog):
         async with aiohttp.ClientSession(loop=loop, connector=con) as session:
             status = await download_file(session, "https://shiggy.fun/api/v3/random")
             if status["error"]:
-                await ctx.reply(status["error"])
+                await ctx.respond(status["error"])
                 return
             with io.BytesIO(status["data"]) as fp:
-                await ctx.reply(file=discord.File(fp, 'shiggy.png'))
+                await ctx.respond(file=discord.File(fp, 'shiggy.png'))
 
 
 def setup(bot):
