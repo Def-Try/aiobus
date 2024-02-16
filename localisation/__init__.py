@@ -9,7 +9,7 @@ except ImportError:
 
 DEFAULT_LOCALE = CONFIG["locale"]
 LOCALES = ["en-US", "ru"]
-CHECK_LOCALES = False
+CHECK_LOCALES = True
 LOCALISATIONS = {}
 
 

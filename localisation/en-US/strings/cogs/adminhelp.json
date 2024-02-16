@@ -54,10 +54,10 @@
                                         "embed": {
                                                 "title": "ADMIN HELP REQUESTED",
                                                 "description": "Admin help required.",
-                                                "message": "User message",
-                                                "channel": "Ahelp channel",
-                                                "requestor": "Ahelp requestor",
-                                                "interchat": "Ahelp requestor interchat address"
+                                                "message": "Message",
+                                                "channel": "Channel",
+                                                "requestor": "Requestor",
+                                                "interchat": "Requestor interchat address"
                                         }
                                 }
                         }

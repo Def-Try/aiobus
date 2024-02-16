@@ -8,3 +8,5 @@ cogs/rp-utils.json
 cogs/debug.json
 cogs/fun.json
 cogs/gpt.json
+cogs/starboard.json
+cogs/adminhelp.json
