@@ -25,14 +25,11 @@ logging.basicConfig(format=FORMAT)
 logger = logging.getLogger("root")
 logger.setLevel(logging.INFO)
 
-# pylint: disable=unused-import
-# This is used to check localisation, but is not used in main.
 try:
-    import localisation
+    from localisation import localise
 except json.JSONDecodeError as uh_oh_json_error:
     logger.error(f"Localisation error: JSON could not be decoded: {uh_oh_json_error}")
     sys.exit(1)
-# pylint: enable=unused-import
 
 discord_bot = commands.Bot(intents=discord.Intents.all())
 
@@ -84,6 +81,16 @@ def reload_cogs(bot):
     # pylint: enable=broad-exception-caught
 
     return unload_fails + load_fails, bot.loaded_cogs, timings
+
+
+@discord_bot.event
+async def on_application_command_error(ctx: commands.Context, error: commands.CommandError):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.respond(localise("generic.error.missing_permissions", ctx.interaction.locale).format(permissions=", ".join(error.missing_permissions)))
+        return
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.respond(localise("generic.error.cooldown", ctx.interaction.locale).format(retry_after=round(error.retry_after)))
+    raise error
 
 
 if __name__ == "__main__":

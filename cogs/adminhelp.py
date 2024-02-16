@@ -35,8 +35,8 @@ class AdminHelp(commands.Cog):
             "cog.adminhelp.commands.set_ahelp_channel.desc"
         ),
     )
-    @discord.default_permissions(administrator=True)
     @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
     async def set_ahelp_channel(
         self,
         ctx: discord.ApplicationContext,
@@ -71,8 +71,8 @@ class AdminHelp(commands.Cog):
             "cog.adminhelp.commands.set_ahelp_role.desc"
         ),
     )
-    @discord.default_permissions(administrator=True)
     @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
     async def set_ahelp_role(
         self,
         ctx: discord.ApplicationContext,
@@ -106,6 +106,8 @@ class AdminHelp(commands.Cog):
         name_localizations=localise("cog.adminhelp.commands.ahelp.name"),
         description_localizations=localise("cog.adminhelp.commands.ahelp.desc"),
     )
+    @commands.guild_only()
+    @commands.cooldown(1, 120, commands.BucketType.user)
     async def ahelp(
         self,
         ctx: discord.ApplicationContext,

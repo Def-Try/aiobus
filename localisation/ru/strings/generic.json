@@ -1,8 +1,12 @@
 {
-	"generic": {
+        "generic": {
                 "yes": "да",
                 "no": "нет",
                 "here": "здесь",
-                "banned_from_command": "Вы забанены от использования данной команды."
+                "banned_from_command": "Вы забанены от использования данной команды.",
+                "error": {
+                        "missing_permissions": "Извини, тебе не хватает данных прав:\n{permissions}",
+                        "cooldown": "Остынь! Повтори через {retry_after} секунд."
+                }
         }
 }
