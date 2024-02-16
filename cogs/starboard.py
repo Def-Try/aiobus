@@ -25,6 +25,7 @@ class Starboard(commands.Cog):
         name_localizations=localise("cog.starboard.commands.init.name"),
         description_localizations=localise("cog.starboard.commands.init.desc"),
     )
+    @discord.default_permissions(administrator=True)
     async def init(
         self,
         ctx: discord.ApplicationContext,
@@ -54,6 +55,13 @@ class Starboard(commands.Cog):
             min_value=1,
         ),
     ):
+        if channel.guild != ctx.message.guild:
+            await ctx.respond(
+                localise(
+                    "cog.starboard.answers.init.wrong_guild", ctx.interaction.locale
+                )
+            )
+            return
         if self.db.search(Query().channel == channel.id):
             await ctx.respond(
                 localise(
@@ -79,6 +87,7 @@ class Starboard(commands.Cog):
         name_localizations=localise("cog.starboard.commands.destroy.name"),
         description_localizations=localise("cog.starboard.commands.destroy.desc"),
     )
+    @discord.default_permissions(administrator=True)
     async def destroy(
         self,
         ctx: discord.ApplicationContext,
@@ -95,6 +104,13 @@ class Starboard(commands.Cog):
             ),
         ),
     ):
+        if channel.guild != ctx.message.guild:
+            await ctx.respond(
+                localise(
+                    "cog.starboard.answers.destroy.wrong_guild", ctx.interaction.locale
+                )
+            )
+            return
         server_starboard = self.db.search(Query().channel == channel.id)
         if not server_starboard:
             await ctx.respond(

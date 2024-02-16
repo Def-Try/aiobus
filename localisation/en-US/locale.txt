@@ -9,3 +9,4 @@ cogs/starboard.json
 cogs/debug.json
 cogs/fun.json
 cogs/gpt.json
+cogs/adminhelp.json

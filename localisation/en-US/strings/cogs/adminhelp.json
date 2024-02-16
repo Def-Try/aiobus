@@ -1,0 +1,66 @@
+{
+        "cog": {
+                "adminhelp": {
+                        "info": {
+                                "desc": "Adminhelp cog. Simple, private ModMail.",
+                                "brief": "Adminhelp"
+                        },
+                        "command_group": {
+                                "name": "ahelp",
+                                "desc": "Adminhelp commands."
+                        },
+                        "commands": {
+                                "set_ahelp_channel": {
+                                        "name": "set_channel",
+                                        "desc": "Set channel where ahelp messages will be sent.",
+                                        "options": {
+                                                "channel": {
+                                                        "name": "channel",
+                                                        "desc": "Where ahelp messages should go"
+                                                }
+                                        }
+                                },
+                                "set_ahelp_role": {
+                                        "name": "set_role",
+                                        "desc": "Set ahelp role that will get @pinged on ahelp message",
+                                        "options": {
+                                                "role": {
+                                                        "name": "role",
+                                                        "desc": "Role that should be pinged."
+                                                }
+                                        }
+                                },
+                                "ahelp": {
+                                        "name": "ahelp",
+                                        "desc": "Admin Help. Send message to admins.",
+                                        "options": {
+                                                "message": {
+                                                        "name": "message",
+                                                        "desc": "What do you want to send to admins?"
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {
+                                "ahelp_channel_update": "AHelp channel has been updated to {channel}",
+                                "ahelp_role_update": "AHelp role has been updated to {role}",
+                                "ahelp": {
+                                        "not_configured": {
+                                                "overall": "Ahelp has not been configured on this guild.",
+                                                "no_channel": "Ahelp channel has not been configured on this guild.",
+                                                "no_role": "Ahelp role has not been configured on this guild."
+                                        },
+                                        "message_sent": "Your message has been sent to admins.",
+                                        "embed": {
+                                                "title": "ADMIN HELP REQUESTED",
+                                                "description": "Admin help required.",
+                                                "message": "User message",
+                                                "channel": "Ahelp channel",
+                                                "requestor": "Ahelp requestor",
+                                                "interchat": "Ahelp requestor interchat address"
+                                        }
+                                }
+                        }
+                }
+        }
+}
