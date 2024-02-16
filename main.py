@@ -84,12 +84,22 @@ def reload_cogs(bot):
 
 
 @discord_bot.event
-async def on_application_command_error(ctx: commands.Context, error: commands.CommandError):
+async def on_application_command_error(
+    ctx: commands.Context, error: commands.CommandError
+):
     if isinstance(error, commands.MissingPermissions):
-        await ctx.respond(localise("generic.error.missing_permissions", ctx.interaction.locale).format(permissions=", ".join(error.missing_permissions)))
+        await ctx.respond(
+            localise(
+                "generic.error.missing_permissions", ctx.interaction.locale
+            ).format(permissions=", ".join(error.missing_permissions))
+        )
         return
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.respond(localise("generic.error.cooldown", ctx.interaction.locale).format(retry_after=round(error.retry_after)))
+        await ctx.respond(
+            localise("generic.error.cooldown", ctx.interaction.locale).format(
+                retry_after=round(error.retry_after)
+            )
+        )
     raise error
 
 
