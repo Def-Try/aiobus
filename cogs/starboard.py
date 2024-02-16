@@ -26,6 +26,7 @@ class Starboard(commands.Cog):
         description_localizations=localise("cog.starboard.commands.init.desc"),
     )
     @discord.default_permissions(administrator=True)
+    @discord.has_guild_permissions(administrator=True)
     async def init(
         self,
         ctx: discord.ApplicationContext,
@@ -88,6 +89,7 @@ class Starboard(commands.Cog):
         description_localizations=localise("cog.starboard.commands.destroy.desc"),
     )
     @discord.default_permissions(administrator=True)
+    @discord.has_guild_permissions(administrator=True)
     async def destroy(
         self,
         ctx: discord.ApplicationContext,

@@ -36,6 +36,7 @@ class AdminHelp(commands.Cog):
         ),
     )
     @discord.default_permissions(administrator=True)
+    @discord.has_guild_permissions(administrator=True)
     async def set_ahelp_channel(
         self,
         ctx: discord.ApplicationContext,
@@ -71,6 +72,7 @@ class AdminHelp(commands.Cog):
         ),
     )
     @discord.default_permissions(administrator=True)
+    @discord.has_guild_permissions(administrator=True)
     async def set_ahelp_role(
         self,
         ctx: discord.ApplicationContext,
