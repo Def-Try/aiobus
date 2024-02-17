@@ -1,9 +1,10 @@
+import time
+
 import discord
 from discord.ext import commands
 from openai import AsyncOpenAI
 from tinydb import Query
 from tinydb import TinyDB
-import time
 
 from config import CONFIG
 from config import TOKENS
@@ -429,13 +430,13 @@ YOUR LAWS:
 
     @commands.Cog.listener("on_message")
     async def talk_onmsg(self, message):
-        if (
-            self.bot.user not in message.mentions or message.author == self.bot.user
-        ):
+        if self.bot.user not in message.mentions or message.author == self.bot.user:
             return
 
         if self.cooldowns.get(message.author.id) > time.time():
-            raise commands.CommandOnCooldown(None, time.time() - self.cooldowns.get(message.author.id), None)
+            raise commands.CommandOnCooldown(
+                None, time.time() - self.cooldowns.get(message.author.id), None
+            )
 
         self.cooldowns[message.author.id] = time.time() + 60
 
