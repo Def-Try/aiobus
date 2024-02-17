@@ -696,7 +696,8 @@ class Interchat(commands.Cog, name="interchat"):
                 embed.color = discord.Color.red()
                 try:
                     await tunnel["in"].send(embed=embed)
-                except: pass
+                except:
+                    pass
 
                 embed = discord.Embed()
                 embed.title = localise(
@@ -743,7 +744,8 @@ class Interchat(commands.Cog, name="interchat"):
                 embed.color = discord.Color.red()
                 try:
                     await tunnel["out"].send(embed=embed)
-                except: pass
+                except:
+                    pass
 
                 await self.end_interchat(tunnel)
                 return
