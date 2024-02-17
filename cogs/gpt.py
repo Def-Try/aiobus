@@ -21,8 +21,6 @@ class GPTChat(commands.Cog):
 
         self.udata = {}
 
-        self.preferred_provider = None
-
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
 
@@ -445,51 +443,20 @@ YOUR LAWS:
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
         )
         async with message.channel.typing():
-            result = None
-            providers = [
-                g4f.Provider.ChatgptX,
-                g4f.Provider.GeekGpt,
-                g4f.Provider.GptChatly,
-                g4f.Provider.Liaobots,
-                g4f.Provider.Aichat,
-                g4f.Provider.Bing,
-                g4f.Provider.GptGo,
-                g4f.Provider.You,
-                g4f.Provider.Yqcloud,
-                g4f.Provider.FreeGpt,
-                g4f.Provider.GPTalk,
-                g4f.Provider.Hashnode,
-                g4f.Provider.Myshell,
-                g4f.Provider.ChatgptAi,
-                g4f.Provider.GeminiProChat,
-            ]
-            fail = False
-            for provider in providers:
-                if provider is None:
-                    continue
-                print("Trying provider", provider.__name__)
-                try:
-                    result = await g4f.ChatCompletion.create_async(
-                        model="gpt-3.5-turbo",
-                        messages=smessages,
-                        provider=provider,
-                        proxy=CONFIG["proxy"],
-                        timeout=10,
-                    )
-                except Exception as e:
-                    print("Provider " + provider.__name__, "errored:", e)
-                    if "Payload Too Large" in str(e):
-                        messages = [messages[0]] + messages[2:]
-                        return await self.talk_onmsg(message)
-                if (
-                    result
-                    and result
-                    != "Hmm, I am not sure. Email support@chatbase.co for more info."
-                ):
-                    self.preferred_provider = provider
-                    break
+            provider = g4f.Provider.DeepInfra
+            try:
+                result = await g4f.ChatCompletion.create_async(
+                    model=provider.default_model,
+                    messages=smessages,
+                    provider=provider,
+                    timeout=10,
+                )
+            except Exception as e:
+                if "Payload Too Large" in str(e):
+                    messages = [messages[0]] + messages[2:]
+                    return await self.talk_onmsg(message)
             if not result:
-                result = "Errored: no provider responded with valid answer... Try again later?"
+                result = "Errored: provider did not respond with valid answer... Try again later?"
                 fail = True
             messages.append({"role": "assistant", "content": result})
             if fail:
