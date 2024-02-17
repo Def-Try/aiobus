@@ -197,7 +197,6 @@ class Interchat(commands.Cog, name="interchat"):
         )
         self.tunnels.pop(self.tunnels.index(tunnel))
 
-
     async def update_interchat(self, tunnel):
         q = Query()
         self.tdb.update(
@@ -826,6 +825,7 @@ class Interchat(commands.Cog, name="interchat"):
 
 def setup(bot):
     bot.add_cog(Interchat(bot))
+
 
 def teardown(bot):
     bot.loop.call_soon(bot.get_cog("interchat").unload)
