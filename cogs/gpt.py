@@ -3,6 +3,7 @@ from discord.ext import commands
 from openai import AsyncOpenAI
 from tinydb import Query
 from tinydb import TinyDB
+import time
 
 from config import CONFIG
 from config import TOKENS
@@ -21,6 +22,8 @@ class GPTChat(commands.Cog):
         self.db = TinyDB("databases/ai.db")
 
         self.udata = {}
+
+        self.cooldowns = {}
 
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
@@ -427,13 +430,14 @@ YOUR LAWS:
     @commands.Cog.listener("on_message")
     async def talk_onmsg(self, message):
         if (
-            self.bot.user not in message.mentions
-            and not (
-                message.reference and message.reference.resolved.author == self.bot.user
-            )
-            or message.author == self.bot.user
+            self.bot.user not in message.mentions or message.author == self.bot.user
         ):
             return
+
+        if self.cooldowns.get(message.author.id) > time.time():
+            raise commands.CommandOnCooldown(None, time.time() - self.cooldowns.get(message.author.id), None)
+
+        self.cooldowns[message.author.id] = time.time() + 60
 
         udata = self.udata.get(
             self.get_udata_id(message),
@@ -462,7 +466,8 @@ YOUR LAWS:
                 )
 
                 result = chat_completion.choices[0].message.content
-            except Exception:
+            except Exception as e:
+                print(e)
                 fail = True
             messages.append({"role": "assistant", "content": result})
             if fail:
