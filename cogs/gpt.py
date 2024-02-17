@@ -449,7 +449,7 @@ YOUR LAWS:
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
         )
         async with message.channel.typing():
-            chat_completion = await openai.chat.completions.create_async(
+            chat_completion = await self.openai.chat.completions.create_async(
                 model="mistralai/Mixtral-8x7B-Instruct-v0.1",
                 messages=smessages,
             )
