@@ -1,6 +1,6 @@
 import discord
-from openai import OpenAI
 from discord.ext import commands
+from openai import OpenAI
 from tinydb import Query
 from tinydb import TinyDB
 
