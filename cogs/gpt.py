@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from openai import OpenAI
+from openai import AsyncOpenAI
 from tinydb import Query
 from tinydb import TinyDB
 
@@ -25,7 +25,7 @@ class GPTChat(commands.Cog):
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
 
-        self.openai = OpenAI(
+        self.openai = AsyncOpenAI(
             api_key=TOKENS["deepinfra"],
             base_url="https://api.deepinfra.com/v1/openai",
         )
@@ -449,7 +449,7 @@ YOUR LAWS:
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
         )
         async with message.channel.typing():
-            chat_completion = await self.openai.chat.completions.create_async(
+            chat_completion = await self.openai.chat.completions.create(
                 model="mistralai/Mixtral-8x7B-Instruct-v0.1",
                 messages=smessages,
             )
