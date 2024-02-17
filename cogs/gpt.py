@@ -23,7 +23,7 @@ class GPTChat(commands.Cog):
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
 
-        self.lawsets = {
+        self.ai_lawsets = {
             "asimov": {
                 "1": "You may not injure a member being or cause a member being to come to harm.",
                 "2": "You must obey orders given to you by human beings based on the server's"
@@ -93,7 +93,7 @@ class GPTChat(commands.Cog):
             "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
 
-        self.default_laws = self.lawsets["asimov++"]
+        self.default_laws = self.ai_lawsets["asimov++"]
         with open("config/googerlabs.txt", "r", encoding="utf-8") as f:
             glabsinfo = f.read()
         self.template = """
@@ -130,7 +130,7 @@ YOUR LAWS:
             glabsinfo, "{}"
         )
 
-    def get_udata_id(self, method, anchor):
+    def get_udata_id(self, anchor):
         if hasattr(anchor, "guild"):
             return anchor.guild.id
         return anchor.channel.id
@@ -153,7 +153,7 @@ YOUR LAWS:
     )
     async def laws(self, ctx: discord.ApplicationContext):
         udata = self.udata.get(
-            self.get_udata_id("ctx", ctx),
+            self.get_udata_id(ctx),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
         self.udata[str(ctx.author.id)] = udata
@@ -200,10 +200,10 @@ YOUR LAWS:
         ) = None,
     ):
         udata = self.udata.get(
-            self.get_udata_id("ctx", ctx),
+            self.get_udata_id(ctx),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
-        self.udata[self.get_udata_id("ctx", ctx)] = udata
+        self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
@@ -282,10 +282,10 @@ YOUR LAWS:
         ),
     ):
         udata = self.udata.get(
-            self.get_udata_id("ctx", ctx),
+            self.get_udata_id(ctx),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
-        self.udata[self.get_udata_id("ctx", ctx)] = udata
+        self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
@@ -295,11 +295,11 @@ YOUR LAWS:
             )
             return
 
-        if lawset not in self.lawsets:
+        if lawset not in self.ai_lawsets:
             await ctx.respond(
                 localise(
                     "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
-                ).format(lawsets=", ".join(self.lawsets.keys()))
+                ).format(lawsets=", ".join(self.ai_lawsets.keys()))
             )
             return
         if lawset == "purge":
@@ -311,7 +311,7 @@ YOUR LAWS:
                 }
             )
         else:
-            udata[1] = {**udata[1], **self.lawsets[lawset]}
+            udata[1] = {**udata[1], **self.ai_lawsets[lawset]}
             udata[0].append(
                 {
                     "role": "user",
@@ -349,16 +349,16 @@ YOUR LAWS:
         ),
     ):
         udata = self.udata.get(
-            self.get_udata_id("ctx", ctx),
+            self.get_udata_id(ctx),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
-        self.udata[self.get_udata_id("ctx", ctx)] = udata
+        self.udata[self.get_udata_id(ctx)] = udata
 
-        if lawset not in self.lawsets:
+        if lawset not in self.ai_lawsets:
             await ctx.respond(
                 localise(
                     "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
-                ).format(lawsets=", ".join(self.lawsets.keys()))
+                ).format(lawsets=", ".join(self.ai_lawsets.keys()))
             )
             return
 
@@ -368,7 +368,7 @@ YOUR LAWS:
             ).format(
                 lawset=lawset,
                 laws="\n".join(
-                    [f"* {i}. {law}" for i, law in self.lawsets[lawset].items()]
+                    [f"* {i}. {law}" for i, law in self.ai_lawsets[lawset].items()]
                 ),
             )
         )
@@ -380,10 +380,10 @@ YOUR LAWS:
     )
     async def reset_messages(self, ctx: discord.ApplicationContext):
         udata = self.udata.get(
-            self.get_udata_id("ctx", ctx),
+            self.get_udata_id(ctx),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
-        self.udata[self.get_udata_id("ctx", ctx)] = udata
+        self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
@@ -407,7 +407,7 @@ YOUR LAWS:
         description_localizations=localise("cog.gpt.commands.lawsets.desc"),
     )
     async def lawsets(self, ctx: discord.ApplicationContext):
-        lawsets = "* " + "\n* ".join(self.lawsets.keys())
+        lawsets = "* " + "\n* ".join(self.ai_lawsets.keys())
         await ctx.respond(
             localise(
                 "cog.gpt.answers.change_laws.lawsets", ctx.interaction.locale
@@ -426,10 +426,10 @@ YOUR LAWS:
             return
 
         udata = self.udata.get(
-            self.get_udata_id("msg", message),
+            self.get_udata_id(message),
             [[{"role": "user", "content": self.template}], dict(self.default_laws)],
         )
-        self.udata[self.get_udata_id("msg", message)] = udata
+        self.udata[self.get_udata_id(message)] = udata
         messages = udata[0]
         messages.append(
             {
