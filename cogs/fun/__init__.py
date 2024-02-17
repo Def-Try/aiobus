@@ -1,12 +1,14 @@
 import asyncio
-import random
 import io
+import random
+
 import discord
 from discord.ext import commands
-from localisation import localise, DEFAULT_LOCALE
-from config import CONFIG
 
 from . import languages
+from config import CONFIG
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class Fun(commands.Cog):

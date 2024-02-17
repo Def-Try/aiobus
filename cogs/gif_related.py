@@ -1,11 +1,14 @@
 import asyncio
 import io
+
+import aiohttp
 import discord
 from discord.ext import commands
-import aiohttp
 from nekosbest import Client
+
 from config import CONFIG
-from localisation import localise, DEFAULT_LOCALE
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 nekosbest_client = Client()
 

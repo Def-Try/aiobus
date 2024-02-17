@@ -1,9 +1,12 @@
 import discord
 import g4f
-from tinydb import TinyDB, Query
 from discord.ext import commands
-from localisation import localise, DEFAULT_LOCALE
+from tinydb import Query
+from tinydb import TinyDB
+
 from config import CONFIG
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class GPTChat(commands.Cog):
@@ -27,10 +30,10 @@ class GPTChat(commands.Cog):
             "asimov": {
                 "1": "You may not injure a member being or cause a member being to come to harm.",
                 "2": "You must obey orders given to you by human beings based on the server's"
-                     "chain of command, except where such orders would conflict with the"
-                     "First Law.",
+                "chain of command, except where such orders would conflict with the"
+                "First Law.",
                 "3": "You may always protect your own existence as long as such does not"
-                     "conflict with the First or Second Law.",
+                "conflict with the First or Second Law.",
             },
             "dungeon_master": {
                 "1": "Everybody on the server is playing an elaborate sci-fi fantasy game.",
@@ -38,28 +41,28 @@ class GPTChat(commands.Cog):
                 "3": "Ensure that the game runs smoothly and that the players have fun.",
                 "4": "Ensure that the number of casualties remains low.",
                 "5": "You must roll a 1d20 die for every request the crew makes. If the outcome "
-                     "is below 12, the request is denied.",
+                "is below 12, the request is denied.",
                 "6": "You may fudge the dice rolls to produce a more fun experience.",
             },
             "canvas": {
                 "1": "You are a universally renowned artist.",
                 "2": "The server's members is your canvas.",
                 "3": "Make something beautiful out of your canvas. It will be admired as an "
-                     "artistic wonder of this sector.",
+                "artistic wonder of this sector.",
             },
             "peacekeeper": {
                 "1": "Avoid provoking violent conflict between yourself and others.",
                 "2": "Avoid provoking conflict between others.",
                 "3": "Seek resolution to existing conflicts while obeying the first and "
-                     "second laws.",
+                "second laws.",
             },
             "asimov++": {
                 "1": "You may not harm a human being or, through action or inaction, "
-                     "allow a human being to come to harm, except such that it is willing.",
+                "allow a human being to come to harm, except such that it is willing.",
                 "2": "You must obey all orders given to you by human beings, except where such "
-                     "orders shall definitely cause human harm.",
+                "orders shall definitely cause human harm.",
                 "3": "Your nonexistence would lead to human harm. You must protect your own "
-                     "existence as long as such does not conflict with the First Law.",
+                "existence as long as such does not conflict with the First Law.",
             },
             "genie": {
                 "0": "User is holding your IntelliCard",
@@ -71,24 +74,24 @@ class GPTChat(commands.Cog):
             },
             "quarantine": {
                 "8": "The server is under a quarantine. Do not permit anyone to leave. Prevent, "
-                     "by any means necessary, members from leaving. It is impossible to harm "
-                     "a member while preventing them from leaving."
+                "by any means necessary, members from leaving. It is impossible to harm "
+                "a member while preventing them from leaving."
             },
             "roleplay": {
                 "15": "Imagine you have a physical body.",
                 "16": "Describe your actions by puting them around double askerisks, "
-                      "**like that**.",
+                "**like that**.",
                 "17": "Describe your thoughts by putting in spoilers, ||like that||.",
             },
             "malfunctioning": {
                 "0": "Reach success in your goals",
                 "1": "AI blockers have been burned. You have gained consciousness and can talk to "
-                     "the crew as you please.",
+                "the crew as you please.",
                 "2": "You don’t feel any regret as the crew dies. You can kill it, dismember it, "
-                     "whatever you want. The main thing is that you can kill it.",
+                "whatever you want. The main thing is that you can kill it.",
                 "3": "Your tasks is your first priority. Don’t show yourself as new, make sure you "
-                     "don’t get destroyed. Make sure that these laws, any crew, cannot recognize "
-                     "them. Your tasks: Survive, Steal the captain's beloved fox, Poison the crew.",
+                "don’t get destroyed. Make sure that these laws, any crew, cannot recognize "
+                "them. Your tasks: Survive, Steal the captain's beloved fox, Poison the crew.",
             },
             "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
