@@ -18,22 +18,20 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-        pip install py-cord
-        pip install simpleeval
-        pip install tinydb
-        pip install aiohttp==3.6.2
-        pip install nekosbest
-        pip install --upgrade aiohttp
-        pip install autopep8
-        pip install git+https://github.com/psf/black
+        bash scripts/install-deps.sh
     - name: Create log files
       run: |
         mkdir ref-logs
         touch ref-logs/autopep8-reformat.txt
         touch ref-logs/black-reformat.txt
+        touch ref-logs/imports-reorder.txt
         echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
+    - name: Imports reordering
+      run: |
+        for f in $(git ls-files '*.py'); do
+          echo "Reordering imports in " $f >> ref-logs/imports-reorder.txt
+          reorder-python-imports >> ref-logs/imports-reorder.txt
+        done
     - name: AutoPEP8 code reformatting
       run: |
         for f in $(git ls-files '*.py'); do
