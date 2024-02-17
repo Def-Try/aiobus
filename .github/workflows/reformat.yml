@@ -33,7 +33,7 @@ jobs:
       run: |
         for f in $(git ls-files '*.py'); do
           echo "Reordering imports in " $f >> ref-logs/imports-reorder.txt
-          reorder-python-imports >> ref-logs/imports-reorder.txt
+          reorder-python-imports $f >> ref-logs/imports-reorder.txt
         done
     - name: AutoPEP8 code reformatting
       run: |

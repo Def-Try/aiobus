@@ -1,13 +1,16 @@
-import logging
 import json
+import logging
+import sys
 import time
 import traceback
-import sys
-import discord
-from discord.ext import commands
+
 import colorama
+import discord
 import termcolor
-from config import CONFIG, TOKEN
+from discord.ext import commands
+
+from config import CONFIG
+from config import TOKEN
 
 try:
     colorama.just_fix_windows_console()
