@@ -444,6 +444,7 @@ YOUR LAWS:
         )
         async with message.channel.typing():
             provider = g4f.Provider.DeepInfra
+            fail = False
             try:
                 result = await g4f.ChatCompletion.create_async(
                     model=provider.default_model,
@@ -460,7 +461,7 @@ YOUR LAWS:
                 fail = True
             messages.append({"role": "assistant", "content": result})
             if fail:
-                messages = messages[:-1]
+                messages = messages[:-2]
 
         self.sync_db()
 
