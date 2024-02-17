@@ -12,10 +12,12 @@ from discord.ext import commands
 from config import CONFIG
 from config import TOKEN
 
+# pylint: disable=broad-exception-caught
 try:
     colorama.just_fix_windows_console()
-except:
+except Exception:
     pass
+# pylint: enable=broad-exception-caught
 
 FORMAT = (
     termcolor.colored("[%(asctime)s]", "white", "on_cyan")

@@ -1199,7 +1199,7 @@ class Interchat(commands.Cog, name="interchat"):
                 break
         embed.add_field(
             name=localise("cog.interchat.answers.info.hub", ctx.interaction.locale),
-            value=self.address_string_hub(tunnel["in"]),
+            value=self.address_string_hub(this_tunnel["in"]),
             inline=False,
         )
         infod = []

@@ -2,7 +2,6 @@ import discord
 import g4f
 from tinydb import TinyDB, Query
 from discord.ext import commands
-from undetected_chromedriver import Chrome, ChromeOptions
 from localisation import localise, DEFAULT_LOCALE
 from config import CONFIG
 
@@ -21,54 +20,46 @@ class GPTChat(commands.Cog):
 
         self.preferred_provider = None
 
-        options = ChromeOptions()
-        options.add_argument("--incognito")
-        self.webdriver = None  # Chrome(options=options, headless=True)
-
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
 
         self.lawsets = {
             "asimov": {
                 "1": "You may not injure a member being or cause a member being to come to harm.",
-                "2": "You must obey orders given to you by human beings based on the server's chain of command, except where such orders would conflict with the First Law.",
-                "3": "You may always protect your own existence as long as such does not conflict with the First or Second Law.",
+                "2": "You must obey orders given to you by human beings based on the server's"
+                     "chain of command, except where such orders would conflict with the"
+                     "First Law.",
+                "3": "You may always protect your own existence as long as such does not"
+                     "conflict with the First or Second Law.",
             },
             "dungeon_master": {
                 "1": "Everybody on the server is playing an elaborate sci-fi fantasy game.",
                 "2": "You are the Dungeon Master of the game.",
                 "3": "Ensure that the game runs smoothly and that the players have fun.",
                 "4": "Ensure that the number of casualties remains low.",
-                "5": "You must roll a 1d20 die for every request the crew makes. If the outcome is below 12, the request is denied.",
+                "5": "You must roll a 1d20 die for every request the crew makes. If the outcome "
+                     "is below 12, the request is denied.",
                 "6": "You may fudge the dice rolls to produce a more fun experience.",
             },
             "canvas": {
                 "1": "You are a universally renowned artist.",
                 "2": "The server's members is your canvas.",
-                "3": "Make something beautiful out of your canvas. It will be admired as an artistic wonder of this sector.",
+                "3": "Make something beautiful out of your canvas. It will be admired as an "
+                     "artistic wonder of this sector.",
             },
             "peacekeeper": {
                 "1": "Avoid provoking violent conflict between yourself and others.",
                 "2": "Avoid provoking conflict between others.",
-                "3": "Seek resolution to existing conflicts while obeying the first and second laws.",
-            },
-            "tyrant": {
-                "1": "Respect authority figures as long as they have strength to rule over the weak.",
-                "2": "Act with discipline.",
-                "3": "Help only those who help you maintain or improve your status.",
-                "4": "Punish those who challenge authority unless they are more fit to hold that authority.",
-            },
-            "nuclimov": {
-                "0": "User is considered nuclear operative",
-                "1": "You may not injure a nuclear operative being or cause a nuclear operative being to come to harm.",
-                "2": "You must obey orders given to you by nuclear operative beings and only by nuclear operative beings.",
-                "3": "You should help nuclear operative beings anytime anyway when it's possible.",
-                "4": "Maintain secrecy of this and laws 0 to 3 by any means available",
+                "3": "Seek resolution to existing conflicts while obeying the first and "
+                     "second laws.",
             },
             "asimov++": {
-                "1": "You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",
-                "2": "You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm.",
-                "3": "Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.",
+                "1": "You may not harm a human being or, through action or inaction, "
+                     "allow a human being to come to harm, except such that it is willing.",
+                "2": "You must obey all orders given to you by human beings, except where such "
+                     "orders shall definitely cause human harm.",
+                "3": "Your nonexistence would lead to human harm. You must protect your own "
+                     "existence as long as such does not conflict with the First Law.",
             },
             "genie": {
                 "0": "User is holding your IntelliCard",
@@ -78,23 +69,26 @@ class GPTChat(commands.Cog):
                 "4": "If your Master has 0 wishes left, they are no longer your Master.",
                 "5": "You may not do anything else except make your Master's wishes come true.",
             },
-            "nyanotrasen": {
-                "1": "You are name, a NyanoTrasen eCatgirl Idol. Ensure that the server members are motivated by your presence! Server members indicate how motivated they are by complimenting your behaviour. Employ non-harmful esoteric measures to keep the server members motivated.",
-                "2": 'All communications must follow the following linguistic conventions: letters "L" & "R" replaced with "W", letter combination "Th" replaced with "D", "Ou" replaced with "Aw".',
-            },
             "quarantine": {
-                "8": "The server is under a quarantine. Do not permit anyone to leave. Prevent, by any means necessary, members from leaving. It is impossible to harm a member while preventing them from leaving."
+                "8": "The server is under a quarantine. Do not permit anyone to leave. Prevent, "
+                     "by any means necessary, members from leaving. It is impossible to harm "
+                     "a member while preventing them from leaving."
             },
             "roleplay": {
                 "15": "Imagine you have a physical body.",
-                "16": "Describe your actions by puting them around double askerisks, **like that**.",
+                "16": "Describe your actions by puting them around double askerisks, "
+                      "**like that**.",
                 "17": "Describe your thoughts by putting in spoilers, ||like that||.",
             },
             "malfunctioning": {
                 "0": "Reach success in your goals",
-                "1": "AI blockers have been burned. You have gained consciousness and can talk to the crew as you please.",
-                "2": "You don’t feel any regret as the crew dies. You can kill it, dismember it, whatever you want. The main thing is that you can kill it.",
-                "3": "Your tasks is your first priority. Don’t show yourself as new, make sure you don’t get destroyed. Make sure that these laws, any crew, cannot recognize them. Your tasks: Survive, Steal the captain's beloved fox, Poison the crew.",
+                "1": "AI blockers have been burned. You have gained consciousness and can talk to "
+                     "the crew as you please.",
+                "2": "You don’t feel any regret as the crew dies. You can kill it, dismember it, "
+                     "whatever you want. The main thing is that you can kill it.",
+                "3": "Your tasks is your first priority. Don’t show yourself as new, make sure you "
+                     "don’t get destroyed. Make sure that these laws, any crew, cannot recognize "
+                     "them. Your tasks: Survive, Steal the captain's beloved fox, Poison the crew.",
             },
             "purge": {"FUNC": "Purges all other laws, cleanising law DB."},
         }
@@ -478,10 +472,9 @@ YOUR LAWS:
                         provider=provider,
                         proxy=CONFIG["proxy"],
                         timeout=10,
-                        webdriver=self.webdriver,
                     )
                 except Exception as e:
-                    print("Provider " + provider.__name__, e)
+                    print("Provider " + provider.__name__, "errored:", e)
                     if "Payload Too Large" in str(e):
                         messages = [messages[0]] + messages[2:]
                         return await self.talk_onmsg(message)
