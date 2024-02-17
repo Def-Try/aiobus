@@ -20,30 +20,6 @@
                                                 }
                                         }
                                 },
-                                "bind": {
-                                        "name": "bind",
-                                        "desc": "Bind this channel to an interchat hub.",
-                                        "options": {
-                                                "address": {
-                                                        "name": "address",
-                                                        "desc": "Address of hub where you want to bind interchat."
-                                                }
-                                        }
-                                },
-                                "unbind": {
-                                        "name": "unbind",
-                                        "desc": "Unbind this channel from an interchat hub.",
-                                        "options": {
-                                                "address": {
-                                                        "name": "address",
-                                                        "desc": "Address of hub from where you want to unbind interchat."
-                                                }
-                                        }
-                                },
-                                "destroy_hub": {
-                                        "name": "destroy_hub",
-                                        "desc": "Unbind all bound interchat channels and free hub address."
-                                },
                                 "end": {
                                         "name": "end",
                                         "desc": "End current interchat communication in this channel."
@@ -51,10 +27,6 @@
                                 "address": {
                                         "name": "address",
                                         "desc": "Get an address of a channel this command was executed in."
-                                },
-                                "address_hub": {
-                                        "name": "address_hub",
-                                        "desc": "Get an address of a channel as a hub this command was executed in."
                                 },
                                 "info": {
                                         "name": "info",
@@ -64,7 +36,6 @@
                         "answers": {
                                 "reply": "Reply⤴️",
                                 "getaddress": "Address of this channel is {address}",
-                                "getaddresshub": "Address of this channel as a hub is {address}",
                                 "begin": {
                                         "incoming": "Incoming interchat connection requested",
                                         "outgoing": "Initiated outgoing interchat connection",
@@ -74,14 +45,6 @@
                                                 "already_open": "There is already an open interchat in one or both of endpoints!"
                                         }
                                 },
-                                "bind": {
-                                        "success": "OK, bind to hub was successful",
-                                        "already_bound": "We are already bound to this hub!",
-                                        "is_a_hub": "This channel IS a hub!",
-                                        "not_found": "Hub not found!",
-                                        "incoming": "Channel joined this hub.",
-                                        "outgoing": "Bound to interchat hub."
-                                },
                                 "end": {
                                         "incoming": "Incoming interchat connection closed by side \"{side}\"",
                                         "outgoing": "Outgoing interchat connection closed by side \"{side}\"",
@@ -89,13 +52,6 @@
                                                 "permanent_tunnel": "Unable to close permanent tunnel.",
                                                 "not_opened": "No interchat connection found in this channel."
                                         }
-                                },
-                                "unbind": {
-                                        "success": "OK, unbind from hub was successful",
-                                        "incoming": "Channel left this hub.",
-                                        "outgoing": "Unbound from the hub.",
-                                        "not_bound": "We are not bound to any hub!",
-                                        "not_found": "Hub not found!"
                                 },
                                 "info": {
                                         "title": "Interchat Info",
@@ -107,10 +63,7 @@
                                         "outgoing_from": "Outgoing from",
                                         "permanent": "Is permanent?",
                                         "receiver_side": "Receiver side",
-                                        "opener_side": "Opener side",
-                                        "hub": {
-                                                "incoming_to": "Incoming to hub"
-                                        }
+                                        "opener_side": "Opener side"
                                 }
                         }
                 }
