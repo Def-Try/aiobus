@@ -449,12 +449,17 @@ YOUR LAWS:
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
         )
         async with message.channel.typing():
-            chat_completion = await self.openai.chat.completions.create(
-                model="mistralai/Mixtral-8x7B-Instruct-v0.1",
-                messages=smessages,
-            )
+            result = "Something went terribly wrong."
+            fail = False
+            try:
+                chat_completion = await self.openai.chat.completions.create(
+                    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+                    messages=smessages,
+                )
 
-            result = chat_completion.choices[0].message.content
+                result = chat_completion.choices[0].message.content
+            except Exception:
+                fail = True
             messages.append({"role": "assistant", "content": result})
             if fail:
                 messages = messages[:-2]
