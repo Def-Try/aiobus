@@ -1,10 +1,11 @@
 import discord
-import g4f
+from openai import OpenAI
 from discord.ext import commands
 from tinydb import Query
 from tinydb import TinyDB
 
 from config import CONFIG
+from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
@@ -23,6 +24,11 @@ class GPTChat(commands.Cog):
 
         for udata in self.db:
             self.udata[udata["key"]] = udata["data"]
+
+        self.openai = OpenAI(
+            api_key=TOKENS["deepinfra"],
+            base_url="https://api.deepinfra.com/v1/openai",
+        )
 
         self.ai_lawsets = {
             "asimov": {
@@ -443,24 +449,12 @@ YOUR LAWS:
             "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
         )
         async with message.channel.typing():
-            provider = g4f.Provider.DeepInfra
-            fail = False
-            result = None
-            try:
-                result = await g4f.ChatCompletion.create_async(
-                    model=provider.default_model,
-                    messages=smessages,
-                    provider=provider,
-                    timeout=10,
-                )
-            except Exception as e:
-                if "Payload Too Large" in str(e):
-                    messages = [messages[0]] + messages[2:]
-                    return await self.talk_onmsg(message)
-                print("Provider errored!", e)
-            if not result:
-                result = "Errored: provider did not respond with valid answer... Try again later?"
-                fail = True
+            chat_completion = await openai.chat.completions.create_async(
+                model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+                messages=smessages,
+            )
+
+            result = chat_completion.choices[0].message.content
             messages.append({"role": "assistant", "content": result})
             if fail:
                 messages = messages[:-2]

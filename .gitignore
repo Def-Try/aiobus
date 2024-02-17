@@ -1,4 +1,4 @@
-config/token.txt
+config/tokens.json
 config/googerlabs.txt
 __pycache__
 .idea

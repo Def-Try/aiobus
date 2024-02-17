@@ -10,7 +10,7 @@ import termcolor
 from discord.ext import commands
 
 from config import CONFIG
-from config import TOKEN
+from config import TOKENS
 
 # pylint: disable=broad-exception-caught
 try:
@@ -118,4 +118,4 @@ if __name__ == "__main__":
     discord_bot.loaded_cogs = []
     _, _, _ = discord_bot.reload_cogs(discord_bot)
 
-    discord_bot.run(TOKEN)
+    discord_bot.run(TOKENS["discord"])
