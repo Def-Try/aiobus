@@ -445,6 +445,7 @@ YOUR LAWS:
         async with message.channel.typing():
             provider = g4f.Provider.DeepInfra
             fail = False
+            result = None
             try:
                 result = await g4f.ChatCompletion.create_async(
                     model=provider.default_model,
@@ -456,6 +457,7 @@ YOUR LAWS:
                 if "Payload Too Large" in str(e):
                     messages = [messages[0]] + messages[2:]
                     return await self.talk_onmsg(message)
+                print("Provider errored!", e)
             if not result:
                 result = "Errored: provider did not respond with valid answer... Try again later?"
                 fail = True
