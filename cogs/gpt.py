@@ -455,6 +455,7 @@ YOUR LAWS:
                 chat_completion = await self.openai.chat.completions.create(
                     model="mistralai/Mixtral-8x7B-Instruct-v0.1",
                     messages=smessages,
+                    max_tokens=200
                 )
 
                 result = chat_completion.choices[0].message.content
