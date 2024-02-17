@@ -11,6 +11,7 @@ class AdminHelp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB("databases/adminhelp.db")
+        self.interchat = None
 
     @commands.Cog.listener("on_ready")
     async def init_on_ready(self):

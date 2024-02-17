@@ -6,6 +6,4 @@ pip install tinydb
 pip install aiohttp==3.6.2
 pip install nekosbest
 pip install --upgrade aiohttp
-pip install autopep8
-pip install git+https://github.com/psf/black
-pip install reorder-python-imports
+pip install g4f

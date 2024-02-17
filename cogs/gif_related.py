@@ -1,8 +1,8 @@
+import asyncio
+import io
 import discord
 from discord.ext import commands
 import aiohttp
-import asyncio
-import io
 from nekosbest import Client
 from config import CONFIG
 from localisation import localise, DEFAULT_LOCALE
@@ -63,8 +63,7 @@ async def download_file(session, url):
             if remotefile.status == 200:
                 data = await remotefile.read()
                 return {"error": "", "data": data}
-            else:
-                return {"error": remotefile.status, "data": ""}
+            return {"error": remotefile.status, "data": ""}
     except Exception as e:
         return {"error": e, "data": ""}
 

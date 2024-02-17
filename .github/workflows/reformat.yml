@@ -19,6 +19,9 @@ jobs:
     - name: Install dependencies
       run: |
         bash scripts/install-deps.sh
+        pip install autopep8
+        pip install git+https://github.com/psf/black
+        pip install reorder-python-imports
     - name: Create log files
       run: |
         mkdir ref-logs
