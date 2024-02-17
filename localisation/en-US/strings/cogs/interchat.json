@@ -42,7 +42,8 @@
                                         "fail": {
                                                 "not_found": "Unable to trace this address to channel. Maybe you made a typo?",
                                                 "same_channel": "You can't open interchat to the same channel you are in!",
-                                                "already_open": "There is already an open interchat in one or both of endpoints!"
+                                                "already_open": "There is already an open interchat in one or both of endpoints!",
+                                                "unknown": "An unknown error appeared while opening interchat tunnel."
                                         }
                                 },
                                 "end": {

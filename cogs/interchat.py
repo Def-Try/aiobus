@@ -557,7 +557,20 @@ class Interchat(commands.Cog, name="interchat"):
                 value=self.address_string(ctx.channel),
             )
             embed.color = discord.Color.green()
-            await channel.send(embed=embed)
+            try:
+                await channel.send(embed=embed)
+            except:
+                try:
+                    await self.end(ctx)
+                except:
+                    pass
+                await ctx.followup.send(
+                    localise(
+                        "cog.interchat.answers.begin.fail.unknown",
+                        ctx.interaction.locale,
+                    ),
+                    ephemeral=True,
+                )
 
             embed = discord.Embed()
             embed.title = localise(
@@ -588,7 +601,20 @@ class Interchat(commands.Cog, name="interchat"):
                 value=self.address_string(ctx.channel),
             )
             embed.color = discord.Color.green()
-            await ctx.channel.send(embed=embed)
+            try:
+                await ctx.channel.send(embed=embed)
+            except:
+                try:
+                    await self.end(ctx)
+                except:
+                    pass
+                await ctx.followup.send(
+                    localise(
+                        "cog.interchat.answers.begin.fail.unknown",
+                        ctx.interaction.locale,
+                    ),
+                    ephemeral=True,
+                )
 
             await ctx.followup.send("OK", ephemeral=True)
         else:
@@ -668,7 +694,9 @@ class Interchat(commands.Cog, name="interchat"):
                     value=self.address_string(tunnel["out"]),
                 )
                 embed.color = discord.Color.red()
-                await tunnel["in"].send(embed=embed)
+                try:
+                    await tunnel["in"].send(embed=embed)
+                except: pass
 
                 embed = discord.Embed()
                 embed.title = localise(
@@ -713,7 +741,9 @@ class Interchat(commands.Cog, name="interchat"):
                     value=self.address_string(tunnel["out"]),
                 )
                 embed.color = discord.Color.red()
-                await tunnel["out"].send(embed=embed)
+                try:
+                    await tunnel["out"].send(embed=embed)
+                except: pass
 
                 await self.end_interchat(tunnel)
                 return
