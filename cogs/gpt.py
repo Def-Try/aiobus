@@ -433,7 +433,7 @@ YOUR LAWS:
         if self.bot.user not in message.mentions or message.author == self.bot.user:
             return
 
-        if self.cooldowns.get(message.author.id) > time.time():
+        if self.cooldowns.get(message.author.id, 0) > time.time():
             raise commands.CommandOnCooldown(
                 None, time.time() - self.cooldowns.get(message.author.id), None
             )
