@@ -1,8 +1,11 @@
 import discord
 from discord.ext import commands
-from tinydb import TinyDB, Query
-from localisation import localise, DEFAULT_LOCALE
+from tinydb import Query
+from tinydb import TinyDB
+
 from config import CONFIG
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class AdminHelp(commands.Cog):

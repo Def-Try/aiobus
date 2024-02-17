@@ -1,7 +1,7 @@
-import string
 import math
 import os
 import random
+import string
 
 
 class Language:

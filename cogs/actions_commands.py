@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
 from nekosbest import Client
-from localisation import localise, DEFAULT_LOCALE
+
 from config import CONFIG
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 nekosbest_client = Client()
 

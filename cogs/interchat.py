@@ -1,11 +1,15 @@
-import time
 import random
 import string
+import time
+
 import discord
 from discord.ext import commands
-from tinydb import TinyDB, Query
+from tinydb import Query
+from tinydb import TinyDB
+
 from config import CONFIG
-from localisation import localise, DEFAULT_LOCALE
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 # interchat bans.
 # michaai / UID 629999906429337600: opening, ending, and in general interacting with interchats.

@@ -1,8 +1,11 @@
 import inspect
+
 import discord
 from discord.ext import commands
+
 from config import CONFIG
-from localisation import localise, DEFAULT_LOCALE
+from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class Basic(commands.Cog):

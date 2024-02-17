@@ -5,8 +5,9 @@ aka How To Make Your Own Module
 
 import discord
 from discord.ext import commands
-from localisation import localise
+
 from config import CONFIG
+from localisation import localise
 
 
 class Template(commands.Cog):
