@@ -434,12 +434,8 @@ YOUR LAWS:
             return
 
         if self.cooldowns.get(message.author.id, 0) > time.time():
-            return await self.bot.on_application_command_error(
-                ctx,
-                commands.CommandOnCooldown(
-                    None, self.cooldowns.get(message.author.id) - time.time(), None
-                ),
-            )
+            await message.add_reaction("🐢")
+            return
 
         self.cooldowns[message.author.id] = time.time() + 60
 
