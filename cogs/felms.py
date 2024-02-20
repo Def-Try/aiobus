@@ -1,4 +1,5 @@
 import random
+
 import discord
 from discord.ext import commands
 
@@ -46,7 +47,8 @@ class Felms(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.guild.id not in self.enabled_on: return
+        if message.guild.id not in self.enabled_on:
+            return
         if random.randint(1, 20) != 20:
             return
         await message.channel.send(random.choice(phrases), delete_after=30)
@@ -54,4 +56,3 @@ class Felms(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Felms(bot))
-
