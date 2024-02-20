@@ -38,18 +38,20 @@ phrases = [
 class Felms(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.enabled_on = [1193216540166856794, 1076117733428711434]
 
-    @commands.command(aliases=["фраза-фелмса"])
-    async def mood(self, ctx):
-        await ctx.reply(random.choice(phrases))
+    # @commands.command(aliases=["фраза-фелмса"])
+    # async def mood(self, ctx):
+    #     await ctx.reply(random.choice(phrases))
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.guild.id not in self.enabled_on: return
         if random.randint(1, 20) != 20:
             return
         await message.channel.send(random.choice(phrases), delete_after=30)
 
 
 def setup(bot):
-    bot.add_cog(Fun(bot))
+    bot.add_cog(Felms(bot))
 
