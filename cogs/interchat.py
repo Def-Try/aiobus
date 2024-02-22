@@ -59,7 +59,6 @@ class Interchat(commands.Cog, name="interchat"):
             rtunnel["rmessages"] = tunnel["rmessages"]
             rtunnel["permanent"] = tunnel["permanent"]
             rtunnel["started"] = tunnel["started"]
-            rtunnel["hub_addr"] = tunnel["hub_addr"]
             self.tunnels.append(rtunnel)
 
     def get_address(self, channel):
