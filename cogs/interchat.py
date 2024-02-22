@@ -19,10 +19,6 @@ interchat_bans = {
     "end": [629999906429337600],  # @michaai
     "info": [629999906429337600],  # @michaai
     "address": [629999906429337600],  # @michaai
-    "address_hub": [629999906429337600],  # @michaai
-    "bind": [629999906429337600],  # @michaai
-    "unbind": [629999906429337600],  # @michaai
-    "destroy_hub": [629999906429337600],  # @michaai
     "send": [629999906429337600],  # @michaai
 }
 
@@ -33,7 +29,6 @@ class Interchat(commands.Cog, name="interchat"):
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB("databases/interchat.db")
-        self.tdb = TinyDB("databases/interchat_tunnels.db")
         self.tunnels = []
 
     async def unload(self):
@@ -75,9 +70,8 @@ class Interchat(commands.Cog, name="interchat"):
         if addr is None:
             while True:
                 addr = self.generate_address()
-                addrcs1 = self.db.search(Query().address == addr)
-                addrcs2 = self.hdb.search(Query().address == addr)
-                if len(addrcs1) == 0 and len(addrcs2) == 0:
+                addrcs = self.db.search(Query().address == addr)
+                if len(addrcs) == 0:
                     break
             self.db.insert(
                 {
