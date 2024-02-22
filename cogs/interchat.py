@@ -187,7 +187,6 @@ class Interchat(commands.Cog, name="interchat"):
         self.tdb.remove(
             q["in"] == tunnel["in"].id
             and q["out"] == tunnel["out"].id
-            and q["hub_addr"] == tunnel["hub_addr"]
         )
         self.tunnels.pop(self.tunnels.index(tunnel))
 
@@ -267,11 +266,6 @@ class Interchat(commands.Cog, name="interchat"):
                         if isinstance(message.author, discord.User)
                         or not message.author.nick
                         else message.author.nick
-                    )
-                    + (
-                        (" | " + self.address_string(message.channel))
-                        if itunnel["hub_addr"]
-                        else ""
                     ),
                     avatar_url=(
                         message.author.avatar.url
@@ -290,11 +284,6 @@ class Interchat(commands.Cog, name="interchat"):
                         if isinstance(message.author, discord.User)
                         or not message.author.nick
                         else message.author.nick
-                    )
-                    + (
-                        (" | " + self.address_string(message.channel))
-                        if itunnel["hub_addr"]
-                        else ""
                     )
                     + ": "
                     + message.clean_content,
@@ -397,11 +386,6 @@ class Interchat(commands.Cog, name="interchat"):
                         if isinstance(message.author, discord.User)
                         or not message.author.nick
                         else message.author.nick
-                    )
-                    + (
-                        (" | " + self.address_string(message.channel))
-                        if itunnel["hub_addr"]
-                        else ""
                     )
                     + ": "
                     + message.clean_content,
