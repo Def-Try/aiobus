@@ -158,7 +158,6 @@ class Interchat(commands.Cog, name="interchat"):
                     "permanent": False,
                     "started": round(time.time()),
                     "whookless": whookless,
-                    "hub_addr": hub,
                 },
                 **(
                     {
