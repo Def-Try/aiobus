@@ -29,6 +29,7 @@ class Interchat(commands.Cog, name="interchat"):
     def __init__(self, bot):
         self.bot = bot
         self.db = TinyDB("databases/interchat.db")
+        self.tdb = TinyDB("databases/interchat_tunnels.db")
         self.tunnels = []
 
     async def unload(self):
