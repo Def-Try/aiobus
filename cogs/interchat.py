@@ -183,10 +183,7 @@ class Interchat(commands.Cog, name="interchat"):
                 pass
         # pylint: enable=broad-exception-caught
         q = Query()
-        self.tdb.remove(
-            q["in"] == tunnel["in"].id
-            and q["out"] == tunnel["out"].id
-        )
+        self.tdb.remove(q["in"] == tunnel["in"].id and q["out"] == tunnel["out"].id)
         self.tunnels.pop(self.tunnels.index(tunnel))
 
     async def update_interchat(self, tunnel):
