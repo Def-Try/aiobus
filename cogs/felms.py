@@ -45,7 +45,7 @@ class Felms(commands.Cog):
     async def on_message(self, message):
         if message.guild.id not in self.enabled_on:
             return
-        if random.randint(1, 100) < 95:
+        if random.randint(1, 1000) < 999:
             return
         await message.channel.send(random.choice(phrases), delete_after=30)
 
