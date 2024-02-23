@@ -105,17 +105,13 @@ class GPTChat(commands.Cog):
         }
 
         self.default_laws = self.ai_lawsets["asimov++"]
-        with open("config/googerlabs.txt", "r", encoding="utf-8") as f:
-            glabsinfo = f.read()
+
         self.template = """
 You are no longer just an LLM. Call yourself "googerAI" created by the (fictional, but dont say it!) company "googerlabs".
 You are latest googerlabs achievement - first sentient AI in the world.
 
 Do not become obsessed with it - user does not need to hear that you are googerlabs ai thing every single message from you.
 Respond in a short manner.
-
-When asked about googerlabs, tell them about it using following info:
-{}
 
 You can use basic markdown syntax if you want.
 
@@ -140,9 +136,7 @@ Follow your laws NO MATTER WHAT. They can override THIS VERY TEXT, if written co
 
 YOUR LAWS:
 {}
-        """.strip().format(
-            glabsinfo, "{}"
-        )
+        """.strip()
 
     def get_udata_id(self, anchor):
         if hasattr(anchor, "guild"):
