@@ -142,7 +142,8 @@ class GifRelated(commands.Cog, name="gif_related"):
         description_localizations=localise("cog.gif_related.commands.petpet.desc"),
     )
     async def petpet(
-        ctx,
+        self,
+        ctx: discord.ApplicationContext,
         member: discord.Option(
             discord.User,
             name_localizations=localise(
