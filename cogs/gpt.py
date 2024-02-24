@@ -429,9 +429,14 @@ YOUR LAWS:
 
         if self.cooldowns.get(message.author.id, 0) > time.time():
             await message.add_reaction("🐢")
-            await message.reply(localise("generic.error.cooldown", DEFAULT_LOCALE).format(
-                retry_after=round(self.cooldowns.get(message.author.id, 0)-time.time())
-            ), delete_after=10)
+            await message.reply(
+                localise("generic.error.cooldown", DEFAULT_LOCALE).format(
+                    retry_after=round(
+                        self.cooldowns.get(message.author.id, 0) - time.time()
+                    )
+                ),
+                delete_after=10,
+            )
             return
 
         self.cooldowns[message.author.id] = time.time() + 10
