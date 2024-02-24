@@ -10,7 +10,7 @@ from config import CONFIG
 from localisation import localise
 
 
-class Template(commands.Cog):
+class Template(commands.Cog, name="template"):
     """
     first, Class Name.
     it should describe your cog in literally 1 to 2 words.

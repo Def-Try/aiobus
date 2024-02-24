@@ -71,7 +71,7 @@ async def download_file(session, url):
         return {"error": e, "data": ""}
 
 
-class GifRelated(commands.Cog):
+class GifRelated(commands.Cog, name="gif_related"):
     author = "googer_"
 
     def __init__(self, bot):

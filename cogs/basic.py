@@ -1,18 +1,107 @@
 import inspect
+import select
+import subprocess
+import socket
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class Basic(commands.Cog):
+def collect_commands(to_collect):
+    to_do_commands = []
+    for command in to_collect:
+        if isinstance(command, discord.SlashCommandGroup):
+            to_do_commands += collect_commands(command.walk_commands())
+        else:
+            to_do_commands.append(command)
+    return to_do_commands
+
+def do_name(ctx, command):
+    name = (
+        command.name_localizations.get(ctx.interaction.locale, command.name)
+        if command.name_localizations
+        else command.name
+    )
+    if command.parent:
+        name = do_name(ctx, command.parent) + " " + name
+    return name
+
+def do_commands(ctx, cmds):
+    string = ""
+
+    cmds = collect_commands(cmds)
+    for command in cmds[:5]:
+        string += "`" + do_name(ctx, command) + "` - `" + command.name + "`\n"
+    if len(cmds[5:]) > 0:
+        string += localise(
+            "cog.basic.answers.help.hidden", ctx.interaction.locale
+        ).format(amount=len(cmds[5:]))
+    return string.strip()
+
+def guess_cog(bot, ctx, command):
+    command_parts = command.split(" ")
+
+    for _, cog in bot.cogs.items():
+        for cmd in collect_commands(cog.walk_commands()):
+            if cmd.name == command_parts[0]:
+                return cog
+            if do_name(ctx, cmd) == " ".join(command_parts):
+                return cog
+
+def find_command(bot, ctx, command, cog):
+    command_parts = command.split(" ")
+
+    ccommands = []
+    if not cog:
+        for _, cog_ in bot.cogs.items():
+            ccommands += collect_commands(cog_.walk_commands())
+    else:
+        ccommands += collect_commands(cog.walk_commands())
+    for cmd in ccommands:
+        if cmd.name == command_parts[0]:
+            return cmd
+        if do_name(ctx, cmd) == " ".join(command_parts):
+            return cmd
+
+class Basic(commands.Cog, name="basic"):
     author = "googer_"
 
     def __init__(self, bot):
         self.bot = bot
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            self.socket.bind(("", 41080))
+        except:
+            self.bot.logger.warning("Failed to bind to monitoring port!")
+            return
+        self.socket.listen()
+        self.listen_ping.start()
+        self.pinginfo = "AiOBus "
+        try:
+            subprocess.run("git", capture_output=True)
+            self.pinginfo += f"commit {subprocess.run('git rev-parse --short HEAD', capture_output=True).stdout.decode().strip()}"
+        except:
+            self.pinginfo += "commit unknown"
+        self.pinginfo += f"\nloaded cogs:"
+        for cog in self.bot.cogs.keys():
+            self.pinginfo += "\n  "+cog
+
+    @tasks.loop(seconds=2)
+    async def listen_ping(self):
+        ready, _, _ = select.select([self.socket], [], [], 0)
+        if ready:
+            conn, _ = self.socket.accept()
+            conn.recv(1024)
+            conn.send(self.pinginfo.encode())
+            conn.close()
+
+    def cog_unload(self):
+        self.listen_ping.cancel()
+        self.s.close()
 
     @commands.slash_command(
         guild_ids=CONFIG["g_ids"],
@@ -61,37 +150,6 @@ class Basic(commands.Cog):
             ).format(mention=self.bot.user.mention),
         )
 
-        def do_commands(ctx, cmds):
-            string = ""
-
-            def collect_commands(to_collect):
-                to_do_commands = []
-                for command in to_collect:
-                    if isinstance(command, discord.SlashCommandGroup):
-                        to_do_commands += collect_commands(command.walk_commands())
-                    else:
-                        to_do_commands.append(command)
-                return to_do_commands
-
-            def do_name(ctx, command):
-                name = (
-                    command.name_localizations.get(ctx.interaction.locale, command.name)
-                    if command.name_localizations
-                    else command.name
-                )
-                if command.parent:
-                    name = do_name(ctx, command.parent) + " " + name
-                return name
-
-            cmds = collect_commands(cmds)
-            for command in cmds[:5]:
-                string += "`" + do_name(ctx, command) + "` - `" + command.name + "`\n"
-            if len(cmds[5:]) > 0:
-                string += localise(
-                    "cog.basic.answers.help.hidden", ctx.interaction.locale
-                ).format(amount=len(cmds[5:]))
-            return string.strip()
-
         for name, cog in self.bot.cogs.items():
             embed.add_field(
                 name=f"Cog `{name}` - "
@@ -103,6 +161,7 @@ class Basic(commands.Cog):
             )
         await ctx.respond(embed=embed, ephemeral=True)
 
+
     async def help_error(self, ctx: discord.ApplicationContext, error):
         embed = discord.Embed(
             title=localise("cog.basic.answers.help.title", ctx.interaction.locale),
@@ -113,68 +172,6 @@ class Basic(commands.Cog):
         )
         await ctx.respond(embed=embed, ephemeral=True)
 
-    def guess_cog(self, ctx, command):
-        command_parts = command.split(" ")
-
-        def collect_commands(to_collect):
-            to_do_commands = []
-            for command in to_collect:
-                if isinstance(command, discord.SlashCommandGroup):
-                    to_do_commands += collect_commands(command.walk_commands())
-                else:
-                    to_do_commands.append(command)
-            return to_do_commands
-
-        def do_name(ctx, command):
-            name = (
-                command.name_localizations.get(ctx.interaction.locale, command.name)
-                if command.name_localizations
-                else command.name
-            )
-            if command.parent:
-                name = do_name(ctx, command.parent) + " " + name
-            return name
-
-        for _, cog in self.bot.cogs.items():
-            for cmd in collect_commands(cog.walk_commands()):
-                if cmd.name == command_parts[0]:
-                    return cog
-                if do_name(ctx, cmd) == " ".join(command_parts):
-                    return cog
-
-    def find_command(self, ctx, command, cog):
-        command_parts = command.split(" ")
-
-        def collect_commands(to_collect):
-            to_do_commands = []
-            for command in to_collect:
-                if isinstance(command, discord.SlashCommandGroup):
-                    to_do_commands += collect_commands(command.walk_commands())
-                else:
-                    to_do_commands.append(command)
-            return to_do_commands
-
-        def do_name(ctx, command):
-            name = (
-                command.name_localizations.get(ctx.interaction.locale, command.name)
-                if command.name_localizations
-                else command.name
-            )
-            if command.parent:
-                name = do_name(ctx, command.parent) + " " + name
-            return name
-
-        ccommands = []
-        if not cog:
-            for _, cog_ in self.bot.cogs.items():
-                ccommands += collect_commands(cog_.walk_commands())
-        else:
-            ccommands += collect_commands(cog.walk_commands())
-        for cmd in ccommands:
-            if cmd.name == command_parts[0]:
-                return cmd
-            if do_name(ctx, cmd) == " ".join(command_parts):
-                return cmd
 
     async def help_command(self, ctx: discord.ApplicationContext, cog, command):
         if isinstance(cog, str):
@@ -183,17 +180,8 @@ class Basic(commands.Cog):
                 return
             cog = self.bot.cogs[cog]
 
-        def do_name(ctx, command):
-            name = (
-                command.name_localizations.get(ctx.interaction.locale, command.name)
-                if command.name_localizations
-                else command.name
-            )
-            if command.parent:
-                name = do_name(ctx, command.parent) + " " + name
-            return name
 
-        command = self.find_command(ctx, command, cog)
+        command = find_command(self.bot, ctx, command, cog)
         if not command:
             await self.help_error(ctx, "unknown_command")
             return
@@ -296,33 +284,6 @@ class Basic(commands.Cog):
             title=localise("cog.basic.answers.help.title", ctx.interaction.locale),
             description=localise(f"cog.{cog_name}.info.desc", ctx.interaction.locale),
         )
-
-        def do_commands(ctx, cmds):
-            string = ""
-
-            def collect_commands(to_collect):
-                to_do_commands = []
-                for command in to_collect:
-                    if isinstance(command, discord.SlashCommandGroup):
-                        to_do_commands += collect_commands(command.walk_commands())
-                    else:
-                        to_do_commands.append(command)
-                return to_do_commands
-
-            def do_name(ctx, command):
-                name = (
-                    command.name_localizations.get(ctx.interaction.locale, command.name)
-                    if command.name_localizations
-                    else command.name
-                )
-                if command.parent:
-                    name = do_name(ctx, command.parent) + " " + name
-                return name
-
-            commands_ = collect_commands(cmds)
-            for command in commands_:
-                string += "`" + do_name(ctx, command) + "` - `" + command.name + "`\n"
-            return string.strip()
 
         embed.add_field(name="Author", value="`" + cog.author + "`", inline=False)
         embed.add_field(

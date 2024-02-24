@@ -8,7 +8,7 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class AdminHelp(commands.Cog):
+class AdminHelp(commands.Cog, name="adminhelp"):
     author = "googer_"
 
     def __init__(self, bot):

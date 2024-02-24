@@ -8,7 +8,7 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class Starboard(commands.Cog):
+class Starboard(commands.Cog, name="starboard"):
     author = "googer_"
     emoji = "⭐"
 

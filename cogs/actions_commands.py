@@ -17,7 +17,7 @@ actions_bans = [
 ]
 
 
-class ActionsCommands(commands.Cog):
+class ActionsCommands(commands.Cog, name="actions_commands"):
     author = "googer_"
 
     def __init__(self, bot):

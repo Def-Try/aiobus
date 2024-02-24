@@ -7,7 +7,7 @@ from config import CONFIG
 from localisation import localise
 
 
-class Debug(commands.Cog):
+class Debug(commands.Cog, name="debug"):
     author = "googer_'s blood and tears :sob:"
 
     def __init__(self, bot):

@@ -11,7 +11,7 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class Fun(commands.Cog):
+class Fun(commands.Cog, name="fun"):
     author = "googer_"
 
     def __init__(self, bot):

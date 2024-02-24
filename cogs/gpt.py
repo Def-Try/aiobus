@@ -12,7 +12,7 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class GPTChat(commands.Cog):
+class GPTChat(commands.Cog, name="gpt"):
     author = "googer_"
 
     ai_upload_operators = [891289716501119016, 650741976085299211, 1040666659196768256]

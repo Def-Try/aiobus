@@ -36,7 +36,7 @@ phrases = [
 ]
 
 
-class Felms(commands.Cog):
+class Felms(commands.Cog, name="felms"):
     def __init__(self, bot):
         self.bot = bot
         self.enabled_on = [1193216540166856794, 1076117733428711434]
