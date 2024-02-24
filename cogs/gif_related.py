@@ -141,7 +141,9 @@ class GifRelated(commands.Cog, name="gif_related"):
         name_localizations=localise("cog.gif_related.commands.petpet.name"),
         description_localizations=localise("cog.gif_related.commands.petpet.desc"),
     )
-    async def petpet(ctx, member: discord.Option(
+    async def petpet(
+        ctx,
+        member: discord.Option(
             discord.User,
             name_localizations=localise(
                 "cog.gif_related.commands.petpet.options.member.name"
@@ -152,16 +154,15 @@ class GifRelated(commands.Cog, name="gif_related"):
             description_localizations=localise(
                 "cog.gif_related.commands.petpet.options.member.desc"
             ),
-        )
+        ),
     ):
-        image = await member.avatar_url_as(format='png').read()
+        image = await member.avatar_url_as(format="png").read()
 
         source = BytesIO(image)
         dest = BytesIO()
         petpetgif.make(source, dest)
         dest.seek(0)
         await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
-
 
 
 def setup(bot):
