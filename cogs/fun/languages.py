@@ -376,7 +376,8 @@ class AutoTranslatorFrom:
             scores[language] = 1 - self.levenshtein_distance(text, textt) / max(
                 len(text), len(textt)
             )
-        best = list(scores.keys())[list(scores.values()).index(max(scores.values()))]
+        print(scores)
+        best = list(scores.keys())[list(scores.values()).index(min(scores.values()))]
         return best.translate("from", text)
 
 
