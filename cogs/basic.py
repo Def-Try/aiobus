@@ -86,17 +86,18 @@ class Basic(commands.Cog, name="basic"):
             self.pinginfo += f"commit {subprocess.run('git rev-parse --short HEAD', capture_output=True).stdout.decode().strip()}"
         except:
             self.pinginfo += "commit unknown"
-        self.pinginfo += f"\nloaded cogs:"
-        for cog in self.bot.cogs.keys():
-            self.pinginfo += "\n  "+cog
 
-    @tasks.loop(seconds=2)
+    @tasks.loop(seconds=0.5)
     async def listen_ping(self):
         ready, _, _ = select.select([self.socket], [], [], 0)
         if ready:
             conn, _ = self.socket.accept()
             conn.recv(1024)
-            conn.send(self.pinginfo.encode())
+            pinginfo = self.pinginfo
+            pinginfo += f"\nloaded cogs:"
+            for cog in self.bot.cogs.keys():
+                pinginfo += "\n  "+cog
+            conn.send(pinginfo.encode())
             conn.close()
 
     def cog_unload(self):
