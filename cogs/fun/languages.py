@@ -52,7 +52,42 @@ class Language:
 
 class Nyatalk(Language):
     def initdict(self):
-        self.dictionary = {"r": "l", "l": "w", "u": "uy"}
+        pass
+
+    def translate(self, mode, text):
+        if mode == "from":
+            return text
+        result = ""
+        for ch in text:
+            if ch == "л": result += 'в'
+            elif ch == "р": result += 'л'
+            elif ch == "в": result += 'ф'
+            elif ch == "ю": result += 'ую'
+            elif ch == "у": result += 'ю'
+            elif ch == "ж": result += 'з'
+            elif ch == "r": result += 'l'
+            elif ch == "l": result += 'w'
+            elif ch == "u": result += 'yu'
+            else: result += ch
+        result = result.strip()
+        if stutter:
+            text = result
+            result = ""
+            n = random.randint(1,3)
+            for word in text.split(" "):
+                if not word:
+                    result += " "
+                    continue
+                n += 1
+                if n < 3:
+                    result += word + " "
+                    continue
+                n = random.randint(-1,3)
+                result += word[0]+"-"+word+" "
+            result = result.strip()
+        if emote:
+            result += "~ "+random.choice(["UwU", "OwO", "owo", "Pwp", "TwT", "~w~"])
+        return result
 
 
 class Codespeak:
@@ -129,7 +164,7 @@ class Nekomimetic(Language):
             "ё": "уф",
             "ж": "ама",
             "з": "сан",
-            "и": "кум",
+            "и": "кун",
             "и́": "бо",
             "к": "оп",
             "л": "до",
