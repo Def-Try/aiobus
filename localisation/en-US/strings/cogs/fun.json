@@ -2,12 +2,12 @@
         "cog": {
                 "fun": {
                         "info": {
-                                "desc": "Cog with functional commands",
-                                "brief": "Functional commands"
+                                "desc": "Cog with non serious commands",
+                                "brief": "Non serious commands"
                         },
                         "command_group": {
-                                "name": "funct",
-                                "desc": "Functional commands"
+                                "name": "fun",
+                                "desc": "Non serious commands"
                         },
                         "commands": {
                                 "crash_server": {

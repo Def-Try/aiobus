@@ -23,6 +23,16 @@
                                 "shiggy": {
                                         "name": "shiggy",
                                         "desc": "shiggy"
+                                },
+                                "petpet": {
+                                        "name": "petpet",
+                                        "desc": "Generate a petpet gif with users avatar",
+                                        "options": {
+                                                "member": {
+                                                        "name": "user",
+                                                        "desc": "User"
+                                                }
+                                        }
                                 }
                         },
                         "answers": {

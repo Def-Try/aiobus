@@ -136,6 +136,32 @@ class GifRelated(commands.Cog, name="gif_related"):
             with io.BytesIO(status["data"]) as fp:
                 await ctx.respond(file=discord.File(fp, "shiggy.png"))
 
+    @gif_cmds.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.gif_related.commands.petpet.name"),
+        description_localizations=localise("cog.gif_related.commands.petpet.desc"),
+    )
+    async def petpet(ctx, member: discord.Option(
+            discord.User,
+            name_localizations=localise(
+                "cog.gif_related.commands.petpet.options.member.name"
+            ),
+            description=localise(
+                "cog.gif_related.commands.petpet.options.member.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gif_related.commands.petpet.options.member.desc"
+            ),
+        ),):
+    image = await member.avatar_url_as(format='png').read() # retrieve the image bytes
+
+    source = BytesIO(image) # file-like container to hold the emoji in memory
+    dest = BytesIO() # container to store the petpet gif in memory
+    petpetgif.make(source, dest)
+    dest.seek(0) # set the file pointer back to the beginning so it doesn't upload a blank file.
+    await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
+
+
 
 def setup(bot):
     bot.add_cog(GifRelated(bot))
