@@ -378,7 +378,6 @@ class AutoTranslatorFrom:
 languages = {
     "nekomimetic": Nekomimetic(),
     "dronelang": DroneLang(),
-    "galactic_common": Common(),
     "galactic_uncommon": Uncommon(),
     "galactic_standart": Standart(),
     "squirrelatin": Squirrelatin(),
@@ -386,3 +385,4 @@ languages = {
     "nyatalk": Nyatalk(),
 }
 languages["autofrom"] = AutoTranslatorFrom(languages)
+languages["galactic_common"] = Common()
