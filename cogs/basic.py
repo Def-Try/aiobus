@@ -103,7 +103,7 @@ class Basic(commands.Cog, name="basic"):
             self.socket.settimeout(0.02)
             conn, _ = self.socket.accept()
         except:
-            pass
+            return
         try:
             conn.settimeout(0.02)
             conn.recv(1024)
