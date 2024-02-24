@@ -108,6 +108,15 @@ async def on_application_command_error(
     raise error
 
 
+@discord_bot.event
+async def on_reaction_add(reaction: discord.Reaction, user: discord.User):
+    if not reaction.message.author.id == discord_bot.user.id: return
+    if not reaction.message.interaction: return
+    if str(reaction) != "❌": continue
+    if not reaction.message.interaction.user == user: return
+
+    await reaction.message.delete()
+
 if __name__ == "__main__":
     discord_bot.reload_cogs = reload_cogs
 
