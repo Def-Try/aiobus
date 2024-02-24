@@ -352,27 +352,32 @@ class AutoTranslatorFrom:
         self.languages = languages
 
     @staticmethod
-    def levenshtein_distance(str1, str2, ):
+    def levenshtein_distance(
+        str1,
+        str2,
+    ):
         counter = {"+": 0, "-": 0}
         distance = 0
         for edit_code, *_ in ndiff(str1, str2):
             if edit_code == " ":
                 distance += max(counter.values())
                 counter = {"+": 0, "-": 0}
-            else: 
+            else:
                 counter[edit_code] += 1
         distance += max(counter.values())
         return distance
 
     def translate(self, mode, text):
-        if mode == "to": return text
+        if mode == "to":
+            return text
         scores = {}
         for language in self.languages:
             textt = language.translate("from", text)
-            scores[language] = 1 - self.levenshtein_distance(text, textt) / max(len(text), len(textt))
+            scores[language] = 1 - self.levenshtein_distance(text, textt) / max(
+                len(text), len(textt)
+            )
         best = list(scores.keys())[list(scores.values()).index(max(scores.values()))]
         return best.translate("from", text)
-
 
 
 languages = {
