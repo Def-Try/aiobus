@@ -1,10 +1,11 @@
 import inspect
 import select
-import subprocess
 import socket
+import subprocess
 
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+from discord.ext import tasks
 
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
@@ -20,6 +21,7 @@ def collect_commands(to_collect):
             to_do_commands.append(command)
     return to_do_commands
 
+
 def do_name(ctx, command):
     name = (
         command.name_localizations.get(ctx.interaction.locale, command.name)
@@ -29,6 +31,7 @@ def do_name(ctx, command):
     if command.parent:
         name = do_name(ctx, command.parent) + " " + name
     return name
+
 
 def do_commands(ctx, cmds):
     string = ""
@@ -42,6 +45,7 @@ def do_commands(ctx, cmds):
         ).format(amount=len(cmds[5:]))
     return string.strip()
 
+
 def guess_cog(bot, ctx, command):
     command_parts = command.split(" ")
 
@@ -51,6 +55,7 @@ def guess_cog(bot, ctx, command):
                 return cog
             if do_name(ctx, cmd) == " ".join(command_parts):
                 return cog
+
 
 def find_command(bot, ctx, command, cog):
     command_parts = command.split(" ")
@@ -66,6 +71,7 @@ def find_command(bot, ctx, command, cog):
             return cmd
         if do_name(ctx, cmd) == " ".join(command_parts):
             return cmd
+
 
 class Basic(commands.Cog, name="basic"):
     author = "googer_"
@@ -162,7 +168,6 @@ class Basic(commands.Cog, name="basic"):
             )
         await ctx.respond(embed=embed, ephemeral=True)
 
-
     async def help_error(self, ctx: discord.ApplicationContext, error):
         embed = discord.Embed(
             title=localise("cog.basic.answers.help.title", ctx.interaction.locale),
@@ -173,14 +178,12 @@ class Basic(commands.Cog, name="basic"):
         )
         await ctx.respond(embed=embed, ephemeral=True)
 
-
     async def help_command(self, ctx: discord.ApplicationContext, cog, command):
         if isinstance(cog, str):
             if not cog in self.bot.cogs.keys():
                 await self.help_error(ctx, "unknown_cog")
                 return
             cog = self.bot.cogs[cog]
-
 
         command = find_command(self.bot, ctx, command, cog)
         if not command:
