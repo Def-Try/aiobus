@@ -371,7 +371,7 @@ class AutoTranslatorFrom:
         if mode == "to":
             return text
         scores = {}
-        for language in self.languages:
+        for language in self.languages.values():
             textt = language.translate("from", text)
             scores[language] = 1 - self.levenshtein_distance(text, textt) / max(
                 len(text), len(textt)
