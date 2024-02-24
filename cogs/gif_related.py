@@ -164,7 +164,7 @@ class GifRelated(commands.Cog, name="gif_related"):
         dest = io.BytesIO()
         petpetgif.make(source, dest)
         dest.seek(0)
-        await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
+        await ctx.respond(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
 
 
 def setup(bot):
