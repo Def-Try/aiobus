@@ -2,6 +2,7 @@ import math
 import os
 import random
 import string
+from difflib import ndiff
 
 
 class Language:
@@ -346,6 +347,34 @@ class Squirrelatin(Language):
             )
 
 
+class AutoTranslatorFrom:
+    def __init__(self, languages):
+        self.languages = languages
+
+    @staticmethod
+    def levenshtein_distance(str1, str2, ):
+        counter = {"+": 0, "-": 0}
+        distance = 0
+        for edit_code, *_ in ndiff(str1, str2):
+            if edit_code == " ":
+                distance += max(counter.values())
+                counter = {"+": 0, "-": 0}
+            else: 
+                counter[edit_code] += 1
+        distance += max(counter.values())
+        return distance
+
+    def translate(self, mode, text):
+        if mode == "to": return text
+        scores = {}
+        for language in self.languages:
+            textt = language.translate("from", text)
+            scores[language] = 1 - self.levenshtein_distance(text, textt) / max(len(text), len(textt))
+        best = list(scores.keys())[list(scores.values()).index(max(scores.values()))]
+        return best.translate("from", text)
+
+
+
 languages = {
     "nekomimetic": Nekomimetic(),
     "dronelang": DroneLang(),
@@ -356,3 +385,4 @@ languages = {
     "codespeak": Codespeak(),
     "nyatalk": Nyatalk(),
 }
+languages["autofrom"] = AutoTranslatorFrom(languages)
