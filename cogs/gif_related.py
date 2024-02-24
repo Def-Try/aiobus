@@ -152,14 +152,15 @@ class GifRelated(commands.Cog, name="gif_related"):
             description_localizations=localise(
                 "cog.gif_related.commands.petpet.options.member.desc"
             ),
-        ),):
-    image = await member.avatar_url_as(format='png').read() # retrieve the image bytes
+        )
+    ):
+        image = await member.avatar_url_as(format='png').read()
 
-    source = BytesIO(image) # file-like container to hold the emoji in memory
-    dest = BytesIO() # container to store the petpet gif in memory
-    petpetgif.make(source, dest)
-    dest.seek(0) # set the file pointer back to the beginning so it doesn't upload a blank file.
-    await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
+        source = BytesIO(image)
+        dest = BytesIO()
+        petpetgif.make(source, dest)
+        dest.seek(0)
+        await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
 
 
 
