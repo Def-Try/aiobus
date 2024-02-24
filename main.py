@@ -112,7 +112,7 @@ async def on_application_command_error(
 async def on_reaction_add(reaction: discord.Reaction, user: discord.User):
     if not reaction.message.author.id == discord_bot.user.id: return
     if not reaction.message.interaction: return
-    if str(reaction) != "❌": continue
+    if str(reaction) != "❌": return
     if not reaction.message.interaction.user == user: return
 
     await reaction.message.delete()
