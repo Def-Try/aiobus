@@ -349,7 +349,7 @@ class Squirrelatin(Language):
 
 class AutoTranslatorFrom:
     def __init__(self, languages):
-        self.languages = languages
+        self.languages = languages.copy()
 
     @staticmethod
     def levenshtein_distance(
