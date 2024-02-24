@@ -3,7 +3,7 @@ import io
 
 import aiohttp
 import discord
-import petpetgif
+from petpetgif import petpet as petpetgif
 from discord.ext import commands
 from nekosbest import Client
 
@@ -162,7 +162,7 @@ class GifRelated(commands.Cog, name="gif_related"):
 
         source = io.BytesIO(image)
         dest = io.BytesIO()
-        petpetgif.petpet.make(source, dest)
+        petpetgif.make(source, dest)
         dest.seek(0)
         await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
 
