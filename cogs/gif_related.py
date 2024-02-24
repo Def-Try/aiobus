@@ -5,6 +5,7 @@ import aiohttp
 import discord
 from discord.ext import commands
 from nekosbest import Client
+import petpetgif
 
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
@@ -159,8 +160,8 @@ class GifRelated(commands.Cog, name="gif_related"):
     ):
         image = await member.display_avatar.read()
 
-        source = BytesIO(image)
-        dest = BytesIO()
+        source = io.BytesIO(image)
+        dest = io.BytesIO()
         petpetgif.make(source, dest)
         dest.seek(0)
         await ctx.send(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
