@@ -103,7 +103,7 @@ class Basic(commands.Cog, name="basic"):
             pinginfo = self.pinginfo
             pinginfo += f"\nloaded cogs:"
             for cog in self.bot.cogs.keys():
-                pinginfo += "\n  "+cog
+                pinginfo += "\n  " + cog
             conn.send(pinginfo.encode())
             conn.close()
 
