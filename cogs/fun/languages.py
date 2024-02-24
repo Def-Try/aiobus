@@ -97,7 +97,7 @@ class Nyatalk(Language):
                 result += word[0] + "-" + word + " "
             result = result.strip()
         if emote:
-            result += " "+random.choice(["UwU", "OwO", "owo", "Pwp", "TwT", "~w~"])
+            result += " " + random.choice(["UwU", "OwO", "owo", "Pwp", "TwT", "~w~"])
         return result
 
 
