@@ -157,7 +157,7 @@ class GifRelated(commands.Cog, name="gif_related"):
             ),
         ),
     ):
-        image = await member.avatar_url_as(format="png").read()
+        image = await member.display_avatar.read()
 
         source = BytesIO(image)
         dest = BytesIO()
