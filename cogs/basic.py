@@ -84,6 +84,7 @@ class Basic(commands.Cog, name="basic"):
         except:
             self.bot.logger.warning("Failed to bind to monitoring port!")
             return
+        self.socket.setblocking(0)
         self.socket.listen()
         self.listen_ping.start()
         self.pinginfo = "AiOBus "
