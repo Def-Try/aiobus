@@ -57,6 +57,7 @@ class Nyatalk(Language):
     def translate(self, mode, text):
         if mode == "from":
             return text
+        stutter, emote = True, True
         result = ""
         for ch in text:
             if ch == "л": result += 'в'
@@ -86,7 +87,7 @@ class Nyatalk(Language):
                 result += word[0]+"-"+word+" "
             result = result.strip()
         if emote:
-            result += "~ "+random.choice(["UwU", "OwO", "owo", "Pwp", "TwT", "~w~"])
+            result += " "+random.choice(["UwU", "OwO", "owo", "Pwp", "TwT", "~w~"])
         return result
 
 
@@ -164,7 +165,7 @@ class Nekomimetic(Language):
             "ё": "уф",
             "ж": "ама",
             "з": "сан",
-            "и": "кун",
+            "и": "кюн",
             "и́": "бо",
             "к": "оп",
             "л": "до",
