@@ -97,15 +97,21 @@ class Basic(commands.Cog, name="basic"):
     @tasks.loop(seconds=0.5)
     async def listen_ping(self):
         ready, _, _ = select.select([self.socket], [], [], 0)
-        if ready:
+        if not ready: return
+        try:
+            self.socket.settimeout(0.02)
             conn, _ = self.socket.accept()
+        except: pass
+        try:
+            self.socket.settimeout(0.02)
             conn.recv(1024)
-            pinginfo = self.pinginfo
-            pinginfo += f"\nloaded cogs:"
-            for cog in self.bot.cogs.keys():
-                pinginfo += "\n  " + cog
-            conn.send(pinginfo.encode())
-            conn.close()
+        except: pass
+        pinginfo = self.pinginfo
+        pinginfo += f"\nloaded cogs:"
+        for cog in self.bot.cogs.keys():
+            pinginfo += "\n  " + cog
+        conn.send(pinginfo.encode())
+        conn.close()
 
     def cog_unload(self):
         self.listen_ping.cancel()
