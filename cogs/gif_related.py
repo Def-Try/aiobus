@@ -3,9 +3,9 @@ import io
 
 import aiohttp
 import discord
-from petpetgif import petpet as petpetgif
 from discord.ext import commands
 from nekosbest import Client
+from petpetgif import petpet as petpetgif
 
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
