@@ -1,6 +1,7 @@
 import inspect
 import select
 import socket
+import random
 import subprocess
 
 import discord
@@ -10,6 +11,17 @@ from discord.ext import tasks
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
 from localisation import localise
+
+
+activities = [
+    lambda bot: discord.Game(localise("activities.game.api", DEFAULT_LOCALE)),
+    lambda bot: discord.Game(localise("activities.game.discord", DEFAULT_LOCALE)),
+    lambda bot: discord.Game(localise("activities.game.you", DEFAULT_LOCALE)),
+    lambda bot: discord.Activity(type=discord.ActivityType.listening, name=localise("activities.listen.lofi", DEFAULT_LOCALE)),
+    lambda bot: discord.Activity(type=discord.ActivityType.listening, name=localise("activities.listen.archiso", DEFAULT_LOCALE)),
+    lambda bot: discord.Activity(type=discord.ActivityType.watching, name=localise("activities.watch.you", DEFAULT_LOCALE)),
+    lambda bot: discord.Activity(type=discord.ActivityType.watching, name=localise("activities.watch.xservers", DEFAULT_LOCALE).format(num=len(bot.guilds))),
+]
 
 
 def collect_commands(to_collect):
@@ -78,6 +90,9 @@ class Basic(commands.Cog, name="basic"):
 
     def __init__(self, bot):
         self.bot = bot
+
+        self.activity.start()
+
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.socket.bind(("", 41080))
@@ -116,9 +131,16 @@ class Basic(commands.Cog, name="basic"):
         conn.send(pinginfo.encode())
         conn.close()
 
+    @tasks.loop(seconds=1):
+    def activity(self):
+        await self.bot.change_presence(activity=random.choice(activities)(self.bot))
+
     def cog_unload(self):
-        self.listen_ping.cancel()
-        self.s.close()
+        self.activity.cancel()
+        try:
+            self.listen_ping.cancel()
+            self.socket.close()
+        except: pass
 
     @commands.slash_command(
         guild_ids=CONFIG["g_ids"],
