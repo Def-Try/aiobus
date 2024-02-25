@@ -171,18 +171,28 @@ class GifRelated(commands.Cog, name="gif_related"):
         )=None,
     ):
         img = None
+        name = None
         if member:
             img = await member.display_avatar.read()
+            name = member.name
         if image:
             img = await image.read()
+            name = "img"
         if not img:
             img = await ctx.author.display_avatar.read()
+            name = ctx.author.name
 
-        source = io.BytesIO(image)
+        source = io.BytesIO(img)
         dest = io.BytesIO()
-        petpetgif.make(source, dest)
+        try:
+            petpetgif.make(source, dest)
+        except Exception:
+            await ctx.respond(localise(
+                "cog.gif_related.answers.petpet.fail", DEFAULT_LOCALE
+            ))
+            return
         dest.seek(0)
-        await ctx.respond(file=discord.File(dest, filename=f"{image[0]}-petpet.gif"))
+        await ctx.respond(file=discord.File(dest, filename=f"{name}-petpet.gif"))
 
 
 def setup(bot):

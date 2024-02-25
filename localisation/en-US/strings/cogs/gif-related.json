@@ -43,6 +43,9 @@
                                 "findgif": {
                                         "invalid_category": "Wrong category: should be one of next: {categories}",
                                         "title": "Gif"
+                                },
+                                "petpet": {
+                                        "fail": "Failed to make a petpet..."
                                 }
                         }
                 }
