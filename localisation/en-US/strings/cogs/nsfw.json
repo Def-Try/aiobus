@@ -1,0 +1,45 @@
+{
+        "cog": {
+                "nsfw": {
+                        "info": {
+                                "desc": "NSFW commands cog.",
+                                "brief": "NSFW commands."
+                        },
+                        "command_group": {
+                                "name": "nsfw",
+                                "desc": "NSFW commands."
+                        },
+                        "commands": {
+                                "find": {
+                                        "name": "find",
+                                        "desc": "Find an NSFW image with specified tags",
+                                        "options": {
+                                                "tags": {
+                                                        "name": "tags",
+                                                        "desc": "Tags to search for"
+                                                },
+                                                "provider": {
+                                                        "name": "provider",
+                                                        "desc": "Provider to search from"
+                                                }
+                                        }
+                                },
+                                "bomb": {
+                                        "name": "bomb",
+                                        "desc": "Find an NSFW images with specified tags",
+                                        "options": {
+                                                "tags": {
+                                                        "name": "tags",
+                                                        "desc": "Tags to search for"
+                                                },
+                                                "provider": {
+                                                        "name": "provider",
+                                                        "desc": "Provider to search from"
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {}
+                }
+        }
+}
