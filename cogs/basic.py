@@ -1,7 +1,7 @@
 import inspect
+import random
 import select
 import socket
-import random
 import subprocess
 
 import discord
@@ -17,10 +17,24 @@ activities = [
     lambda bot: discord.Game(localise("activities.game.api", DEFAULT_LOCALE)),
     lambda bot: discord.Game(localise("activities.game.discord", DEFAULT_LOCALE)),
     lambda bot: discord.Game(localise("activities.game.you", DEFAULT_LOCALE)),
-    lambda bot: discord.Activity(type=discord.ActivityType.listening, name=localise("activities.listen.lofi", DEFAULT_LOCALE)),
-    lambda bot: discord.Activity(type=discord.ActivityType.listening, name=localise("activities.listen.archiso", DEFAULT_LOCALE)),
-    lambda bot: discord.Activity(type=discord.ActivityType.watching, name=localise("activities.watch.you", DEFAULT_LOCALE)),
-    lambda bot: discord.Activity(type=discord.ActivityType.watching, name=localise("activities.watch.xservers", DEFAULT_LOCALE).format(num=len(bot.guilds))),
+    lambda bot: discord.Activity(
+        type=discord.ActivityType.listening,
+        name=localise("activities.listen.lofi", DEFAULT_LOCALE),
+    ),
+    lambda bot: discord.Activity(
+        type=discord.ActivityType.listening,
+        name=localise("activities.listen.archiso", DEFAULT_LOCALE),
+    ),
+    lambda bot: discord.Activity(
+        type=discord.ActivityType.watching,
+        name=localise("activities.watch.you", DEFAULT_LOCALE),
+    ),
+    lambda bot: discord.Activity(
+        type=discord.ActivityType.watching,
+        name=localise("activities.watch.xservers", DEFAULT_LOCALE).format(
+            num=len(bot.guilds)
+        ),
+    ),
 ]
 
 
@@ -141,7 +155,8 @@ class Basic(commands.Cog, name="basic"):
         try:
             self.listen_ping.cancel()
             self.socket.close()
-        except: pass
+        except:
+            pass
 
     @commands.slash_command(
         guild_ids=CONFIG["g_ids"],
