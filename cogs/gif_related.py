@@ -156,7 +156,7 @@ class GifRelated(commands.Cog, name="gif_related"):
             description_localizations=localise(
                 "cog.gif_related.commands.petpet.options.member.desc"
             ),
-        )=None,
+        ) = None,
         image: discord.Option(
             discord.Attachment,
             name_localizations=localise(
@@ -168,7 +168,7 @@ class GifRelated(commands.Cog, name="gif_related"):
             description_localizations=localise(
                 "cog.gif_related.commands.petpet.options.image.desc"
             ),
-        )=None,
+        ) = None,
     ):
         img = None
         if member:
