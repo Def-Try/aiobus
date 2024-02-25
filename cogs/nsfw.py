@@ -44,25 +44,30 @@ class R34:
     def get_img_url(post):
         return post["file_url"]
 
+
 class Danbooru:
     def get_posts(tags):
         formatted_tags = ""
         for tag in tags:
             formatted_tags += tag
             formatted_tags += "+"
-        if formatted_tags.endswith("+"): formatted_tags = formatted_tags[:-1]
+        if formatted_tags.endswith("+"):
+            formatted_tags = formatted_tags[:-1]
         request = requests.get(
             f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
-            'tags={}'.format(
-                formatted_tags
-            )
+            "tags={}".format(formatted_tags)
         )
-        if not request.text: return {}
+        if not request.text:
+            return {}
         return request.json()
-    def get_img_url(post):
-        return post.get('large_file_url', post.get('file_url', post.get('preview_file_url')))
 
-providers = {'rule34': R34, "danbooru": Danbooru}
+    def get_img_url(post):
+        return post.get(
+            "large_file_url", post.get("file_url", post.get("preview_file_url"))
+        )
+
+
+providers = {"rule34": R34, "danbooru": Danbooru}
 
 
 class NSFW(commands.Cog, name="nsfw"):
