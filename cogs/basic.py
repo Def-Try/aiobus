@@ -121,8 +121,15 @@ class Basic(commands.Cog, name="basic"):
         self.pinginfo = "AiOBus "
         try:
             subprocess.run("git", capture_output=True, check=False)
-            commit = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'],
-                capture_output=True, check=False).stdout.decode().strip()
+            commit = (
+                subprocess.run(
+                    ["git", "rev-parse", "--short", "HEAD"],
+                    capture_output=True,
+                    check=False,
+                )
+                .stdout.decode()
+                .strip()
+            )
             self.pinginfo += f"commit {commit}"
         except Exception:
             self.pinginfo += "commit unknown"
