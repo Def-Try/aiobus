@@ -131,7 +131,7 @@ class Basic(commands.Cog, name="basic"):
         conn.send(pinginfo.encode())
         conn.close()
 
-    @tasks.loop(seconds=1):
+    @tasks.loop(seconds=1)
     def activity(self):
         await self.bot.change_presence(activity=random.choice(activities)(self.bot))
 
