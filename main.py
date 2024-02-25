@@ -106,6 +106,12 @@ async def on_application_command_error(
                 retry_after=round(error.retry_after)
             )
         )
+        return
+    if isinstance(error, commands.NSFWChannelRequired):
+        await ctx.respond(
+            localise("generic.error.nsfw_required", ctx.interaction.locale)
+        )
+        return
     raise error
 
 

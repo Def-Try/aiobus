@@ -6,7 +6,8 @@
                 "banned_from_command": "Вы забанены от использования данной команды.",
                 "error": {
                         "missing_permissions": "Извини, тебе не хватает данных прав:\n{permissions}",
-                        "cooldown": "Остынь! Повтори через {retry_after} секунд."
+                        "cooldown": "Остынь! Повтори через {retry_after} секунд.",
+                        "nsfw_required": "NSFW канал необходим что-бы вызвать эту команду!"
                 }
         },
         "activities": {
