@@ -111,7 +111,9 @@ class NSFW(commands.Cog, name="nsfw"):
     ):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
-        post = random.choice(_provider.get_posts(_tags))
+        post = {}
+        while _provider.get_img_url(post) is None:
+            post = random.choice(_provider.get_posts(_tags))
         await ctx.respond(_provider.get_img_url(post))
 
     @cmds.command(
