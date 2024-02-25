@@ -1,17 +1,26 @@
-import discord
-from discord.ext import commands
-import requests
 import random
 
+import discord
+import requests
+from discord.ext import commands
+
 from config import CONFIG
+<<<<<<< HEAD
 from config import TOKENS
 from localisation import localise
+=======
+>>>>>>> 446a04c40f2a216fd21383b4d91fccbf89ba9669
 from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class Provider:
-    def get_img_url(post): return post['url']
-    def get_posts(tags): return {'url': 'http://example.com'}
+    def get_img_url(post):
+        return post["url"]
+
+    def get_posts(tags):
+        return {"url": "http://example.com"}
+
 
 class R34:
     def get_posts(tags):
@@ -19,18 +28,25 @@ class R34:
         for tag in tags:
             formatted_tags += tag
             formatted_tags += "+"
-        if formatted_tags.endswith("+"): formatted_tags = formatted_tags[:-1]
+        if formatted_tags.endswith("+"):
+            formatted_tags = formatted_tags[:-1]
         request = requests.get(
-            'https://api.rule34.xxx/index.php?'
-            'page=dapi&s=post&q=index&tags={}&limit=1000&pid={}&json=1'.format(
+            "https://api.rule34.xxx/index.php?"
+            "page=dapi&s=post&q=index&tags={}&limit=1000&pid={}&json=1".format(
                 formatted_tags, 0
             ),
-            headers={"User-Agent": "Mozilla/5.0", "Host": "api.rule34.xxx", "Accept": "*/*"}
+            headers={
+                "User-Agent": "Mozilla/5.0",
+                "Host": "api.rule34.xxx",
+                "Accept": "*/*",
+            },
         )
-        if not request.text: return {}
+        if not request.text:
+            return {}
         return request.json()
+
     def get_img_url(post):
-        return post['file_url']
+        return post["file_url"]
 
 class Danbooru:
     def get_posts(tags):
@@ -72,35 +88,33 @@ class NSFW(commands.Cog, name="nsfw"):
         description_localizations=localise("cog.nsfw.commands.find.desc"),
     )
     @commands.is_nsfw()
-    async def find(self, ctx: discord.ApplicationContext,
-            tags: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.nsfw.commands.find.options.tags.name"
-                ),
-                description=localise(
-                    "cog.nsfw.commands.find.options.tags.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.nsfw.commands.find.options.tags.desc"
-                ),
+    async def find(
+        self,
+        ctx: discord.ApplicationContext,
+        tags: discord.Option(
+            str,
+            name_localizations=localise("cog.nsfw.commands.find.options.tags.name"),
+            description=localise(
+                "cog.nsfw.commands.find.options.tags.desc", DEFAULT_LOCALE
             ),
-            provider: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.nsfw.commands.find.options.provider.name"
-                ),
-                description=localise(
-                    "cog.nsfw.commands.find.options.provider.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.nsfw.commands.find.options.provider.desc"
-                ),
-                choices=list(providers.keys()),
-            )='rule34'
-        ):
+            description_localizations=localise(
+                "cog.nsfw.commands.find.options.tags.desc"
+            ),
+        ),
+        provider: discord.Option(
+            str,
+            name_localizations=localise("cog.nsfw.commands.find.options.provider.name"),
+            description=localise(
+                "cog.nsfw.commands.find.options.provider.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.nsfw.commands.find.options.provider.desc"
+            ),
+            choices=list(providers.keys()),
+        ) = "rule34",
+    ):
         _provider = providers.get(provider)
-        _tags = [tag.strip() for tag in tags.split(',')]
+        _tags = [tag.strip() for tag in tags.split(",")]
         post = random.choice(_provider.get_posts(_tags))
         await ctx.respond(_provider.get_img_url(post))
 
@@ -110,35 +124,33 @@ class NSFW(commands.Cog, name="nsfw"):
         description_localizations=localise("cog.nsfw.commands.bomb.desc"),
     )
     @commands.is_nsfw()
-    async def bomb(self, ctx: discord.ApplicationContext,
-            tags: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.nsfw.commands.bomb.options.tags.name"
-                ),
-                description=localise(
-                    "cog.nsfw.commands.bomb.options.tags.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.nsfw.commands.bomb.options.tags.desc"
-                ),
+    async def bomb(
+        self,
+        ctx: discord.ApplicationContext,
+        tags: discord.Option(
+            str,
+            name_localizations=localise("cog.nsfw.commands.bomb.options.tags.name"),
+            description=localise(
+                "cog.nsfw.commands.bomb.options.tags.desc", DEFAULT_LOCALE
             ),
-            provider: discord.Option(
-                str,
-                name_localizations=localise(
-                    "cog.nsfw.commands.bomb.options.provider.name"
-                ),
-                description=localise(
-                    "cog.nsfw.commands.bomb.options.provider.desc", DEFAULT_LOCALE
-                ),
-                description_localizations=localise(
-                    "cog.nsfw.commands.bomb.options.provider.desc"
-                ),
-                choices=list(providers.keys()),
-            )='rule34'
-        ):
+            description_localizations=localise(
+                "cog.nsfw.commands.bomb.options.tags.desc"
+            ),
+        ),
+        provider: discord.Option(
+            str,
+            name_localizations=localise("cog.nsfw.commands.bomb.options.provider.name"),
+            description=localise(
+                "cog.nsfw.commands.bomb.options.provider.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.nsfw.commands.bomb.options.provider.desc"
+            ),
+            choices=list(providers.keys()),
+        ) = "rule34",
+    ):
         _provider = providers.get(provider)
-        _tags = [tag.strip() for tag in tags.split(',')]
+        _tags = [tag.strip() for tag in tags.split(",")]
         _posts = _provider.get_posts(_tags)
         posts = [random.choice(_posts) for _ in range(10)]
         await ctx.respond("\n".join([_provider.get_img_url(post) for post in posts]))
