@@ -156,9 +156,27 @@ class GifRelated(commands.Cog, name="gif_related"):
             description_localizations=localise(
                 "cog.gif_related.commands.petpet.options.member.desc"
             ),
-        ),
+        )=None,
+        image: discord.Option(
+            discord.Attachment,
+            name_localizations=localise(
+                "cog.gif_related.commands.petpet.options.image.name"
+            ),
+            description=localise(
+                "cog.gif_related.commands.petpet.options.image.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.gif_related.commands.petpet.options.image.desc"
+            ),
+        )=None,
     ):
-        image = await member.display_avatar.read()
+        img = None
+        if member:
+            img = await member.display_avatar.read()
+        if image:
+            img = await image.read()
+        if not img:
+            img = await ctx.author.display_avatar.read()
 
         source = io.BytesIO(image)
         dest = io.BytesIO()

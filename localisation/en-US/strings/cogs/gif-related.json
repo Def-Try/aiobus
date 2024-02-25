@@ -26,11 +26,15 @@
                                 },
                                 "petpet": {
                                         "name": "petpet",
-                                        "desc": "Generate a petpet gif with users avatar",
+                                        "desc": "Generate a petpet gif",
                                         "options": {
                                                 "member": {
                                                         "name": "user",
-                                                        "desc": "User"
+                                                        "desc": "User to *petpet*"
+                                                },
+                                                "image": {
+                                                        "name": "image",
+                                                        "desc": "Image to *petpet*"
                                                 }
                                         }
                                 }

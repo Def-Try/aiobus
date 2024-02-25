@@ -149,7 +149,7 @@ class Basic(commands.Cog, name="basic"):
         conn.send(pinginfo.encode())
         conn.close()
 
-    @tasks.loop(seconds=600)
+    @tasks.loop(seconds=300)
     async def activity(self):
         if not self.bot.ready:
             return
