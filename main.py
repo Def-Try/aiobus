@@ -127,6 +127,7 @@ if __name__ == "__main__":
 
     @discord_bot.event
     async def on_ready():
+        discord_bot.ready = True
         discord_bot.logger.info(f"We have logged in as {discord_bot.user}")
 
     discord_bot.loaded_cogs = []
