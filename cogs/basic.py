@@ -132,7 +132,7 @@ class Basic(commands.Cog, name="basic"):
         conn.close()
 
     @tasks.loop(seconds=1)
-    def activity(self):
+    async def activity(self):
         await self.bot.change_presence(activity=random.choice(activities)(self.bot))
 
     def cog_unload(self):
