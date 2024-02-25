@@ -37,6 +37,7 @@ activities = [
     ),
 ]
 
+
 def collect_commands(to_collect):
     to_do_commands = []
     for command in to_collect:
