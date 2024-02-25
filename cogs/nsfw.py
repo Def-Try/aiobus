@@ -35,7 +35,7 @@ class R34:
 providers = {'rule34': R34}
 
 
-class NSFW(commands.Cog, name="template"):
+class NSFW(commands.Cog, name="nsfw"):
     author = "googer_"
 
     def __init__(self, bot):
