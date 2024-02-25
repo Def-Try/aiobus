@@ -81,6 +81,7 @@ def guess_cog(bot, ctx, command):
                 return cog
             if do_name(ctx, cmd) == " ".join(command_parts):
                 return cog
+    return None
 
 
 def find_command(bot, ctx, command, cog):
@@ -97,6 +98,7 @@ def find_command(bot, ctx, command, cog):
             return cmd
         if do_name(ctx, cmd) == " ".join(command_parts):
             return cmd
+    return None
 
 
 class Basic(commands.Cog, name="basic"):
@@ -110,7 +112,7 @@ class Basic(commands.Cog, name="basic"):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.socket.bind(("", 41080))
-        except:
+        except Exception:
             self.bot.logger.warning("Failed to bind to monitoring port!")
             return
         self.socket.setblocking(0)
@@ -118,9 +120,10 @@ class Basic(commands.Cog, name="basic"):
         self.listen_ping.start()
         self.pinginfo = "AiOBus "
         try:
-            subprocess.run("git", capture_output=True)
-            self.pinginfo += f"commit {subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], capture_output=True).stdout.decode().strip()}"
-        except:
+            subprocess.run("git", capture_output=True, check=False)
+            self.pinginfo += f"commit {subprocess.run(['git', 'rev-parse', '--short', 'HEAD'],
+                capture_output=True, check=False).stdout.decode().strip()}"
+        except Exception:
             self.pinginfo += "commit unknown"
 
     @tasks.loop(seconds=0.5)
@@ -131,15 +134,15 @@ class Basic(commands.Cog, name="basic"):
         try:
             self.socket.settimeout(0.02)
             conn, _ = self.socket.accept()
-        except:
+        except Exception:
             return
         try:
             conn.settimeout(0.02)
             conn.recv(1024)
-        except:
+        except Exception:
             pass
         pinginfo = self.pinginfo
-        pinginfo += f"\nloaded cogs:"
+        pinginfo += "\nloaded cogs:"
         for cog in self.bot.cogs.keys():
             pinginfo += "\n  " + cog
         conn.send(pinginfo.encode())
@@ -156,7 +159,7 @@ class Basic(commands.Cog, name="basic"):
         try:
             self.listen_ping.cancel()
             self.socket.close()
-        except:
+        except Exception:
             pass
 
     @commands.slash_command(

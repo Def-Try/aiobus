@@ -533,10 +533,10 @@ class Interchat(commands.Cog, name="interchat"):
             embed.color = discord.Color.green()
             try:
                 await channel.send(embed=embed)
-            except:
+            except Exception:
                 try:
                     await self.end(ctx)
-                except:
+                except Exception:
                     pass
                 await ctx.followup.send(
                     localise(
@@ -577,10 +577,10 @@ class Interchat(commands.Cog, name="interchat"):
             embed.color = discord.Color.green()
             try:
                 await ctx.channel.send(embed=embed)
-            except:
+            except Exception:
                 try:
                     await self.end(ctx)
-                except:
+                except Exception:
                     pass
                 await ctx.followup.send(
                     localise(
@@ -670,7 +670,7 @@ class Interchat(commands.Cog, name="interchat"):
                 embed.color = discord.Color.red()
                 try:
                     await tunnel["in"].send(embed=embed)
-                except:
+                except Exception:
                     pass
 
                 embed = discord.Embed()
@@ -718,7 +718,7 @@ class Interchat(commands.Cog, name="interchat"):
                 embed.color = discord.Color.red()
                 try:
                     await tunnel["out"].send(embed=embed)
-                except:
+                except Exception:
                     pass
 
                 await self.end_interchat(tunnel)

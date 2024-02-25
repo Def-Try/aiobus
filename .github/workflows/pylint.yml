@@ -37,6 +37,7 @@ jobs:
           --disable=too-many-lines \
           --disable=broad-exception-caught \
           --disable=wrong-import-order \
+          --disable=too-many-instance-attributes \
           $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
         cat lint-logs/pylint.txt
   
