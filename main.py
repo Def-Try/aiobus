@@ -41,6 +41,7 @@ discord_bot = commands.Bot(intents=discord.Intents.all())
 discord_bot.logger = logger
 discord_bot.ready = False
 
+
 def reload_cogs(bot):
     bot.logger.info("Reloading cogs...")
 
