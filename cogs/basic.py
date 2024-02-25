@@ -147,7 +147,8 @@ class Basic(commands.Cog, name="basic"):
 
     @tasks.loop(seconds=1)
     async def activity(self):
-        if not self.bot.ready: return
+        if not self.bot.ready:
+            return
         await self.bot.change_presence(activity=random.choice(activities)(self.bot))
 
     def cog_unload(self):
