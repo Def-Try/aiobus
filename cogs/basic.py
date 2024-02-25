@@ -37,7 +37,6 @@ activities = [
     ),
 ]
 
-
 def collect_commands(to_collect):
     to_do_commands = []
     for command in to_collect:
@@ -145,7 +144,7 @@ class Basic(commands.Cog, name="basic"):
         conn.send(pinginfo.encode())
         conn.close()
 
-    @tasks.loop(seconds=1)
+    @tasks.loop(seconds=600)
     async def activity(self):
         if not self.bot.ready: return
         await self.bot.change_presence(activity=random.choice(activities)(self.bot))

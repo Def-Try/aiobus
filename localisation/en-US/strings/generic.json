@@ -8,5 +8,20 @@
                         "missing_permissions": "Sorry, you are missing next permissions:\n{permissions}",
                         "cooldown": "Cooldown! Retry after {retry_after} seconds."
                 }
+        },
+        "activities": {
+        	"game": {
+        		"api": "with API",
+        		"discord": "Discord",
+        		"you": "with you"
+        	},
+        	"listen": {
+        		"lofi": "to lofi beats to be AI to",
+        		"archiso": "to archiso raw contents"
+        	},
+        	"watch": {
+			"you": "at you",
+			"xservers": "at {num} servers"
+        	}
         }
 }

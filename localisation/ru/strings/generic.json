@@ -8,5 +8,20 @@
                         "missing_permissions": "Извини, тебе не хватает данных прав:\n{permissions}",
                         "cooldown": "Остынь! Повтори через {retry_after} секунд."
                 }
+        },
+        "activities": {
+                "game": {
+                        "api": "API",
+                        "discord": "Discord",
+                        "you": "тебя"
+                },
+                "listen": {
+                        "lofi": "lofi биты для бытья ИИ",
+                        "archiso": "сырое содержимое archiso"
+                },
+                "watch": {
+                        "you": "на тебя",
+                        "xservers": "на {num} серверов"
+                }
         }
 }
