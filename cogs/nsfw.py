@@ -5,11 +5,7 @@ import requests
 from discord.ext import commands
 
 from config import CONFIG
-<<<<<<< HEAD
 from config import TOKENS
-from localisation import localise
-=======
->>>>>>> 446a04c40f2a216fd21383b4d91fccbf89ba9669
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
