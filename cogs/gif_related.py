@@ -187,9 +187,9 @@ class GifRelated(commands.Cog, name="gif_related"):
         try:
             petpetgif.make(source, dest)
         except Exception:
-            await ctx.respond(localise(
-                "cog.gif_related.answers.petpet.fail", DEFAULT_LOCALE
-            ))
+            await ctx.respond(
+                localise("cog.gif_related.answers.petpet.fail", DEFAULT_LOCALE)
+            )
             return
         dest.seek(0)
         await ctx.respond(file=discord.File(dest, filename=f"{name}-petpet.gif"))
