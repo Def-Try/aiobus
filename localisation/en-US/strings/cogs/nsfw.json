@@ -39,7 +39,9 @@
                                         }
                                 }
                         },
-                        "answers": {}
+                        "answers": {
+                                "zero_returned": "Zero posts returned"
+                        }
                 }
         }
 }

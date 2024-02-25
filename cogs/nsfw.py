@@ -116,9 +116,13 @@ class NSFW(commands.Cog, name="nsfw"):
     ):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
+        _posts = _provider.get_posts(_tags)
+        if len(_posts) < 1:
+            await ctx.respond(localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale))
+            return
         post = {}
         while _provider.get_img_url(post) is None:
-            post = random.choice(_provider.get_posts(_tags))
+            post = random.choice(_posts)
         await ctx.respond(_provider.get_img_url(post))
 
     @cmds.command(
@@ -155,7 +159,10 @@ class NSFW(commands.Cog, name="nsfw"):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
         _posts = _provider.get_posts(_tags)
-        posts = [random.choice(_posts) for _ in range(10)]
+        if len(_posts) < 1:
+            await ctx.respond(localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale))
+            return
+        posts = [random.choice(_posts) for _ in range(min(len(posts), 10))]
         await ctx.respond("\n".join([_provider.get_img_url(post) for post in posts]))
 
 
