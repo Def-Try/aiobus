@@ -42,7 +42,7 @@ class R34:
         return request.json()
 
     def get_img_url(post):
-        return post["file_url"]
+        return post.get("file_url")
 
 
 class Danbooru:
