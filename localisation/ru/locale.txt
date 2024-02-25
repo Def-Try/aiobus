@@ -9,3 +9,4 @@ cogs/debug.json
 cogs/fun.json
 cogs/gpt.json
 cogs/adminhelp.json
+cogs/nsfw.json
