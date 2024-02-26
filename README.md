@@ -17,3 +17,36 @@ AiObus is an All-In-One bot designed to fulfill basically all of discord server 
 
 [Invite bot to your server](https://discord.com/oauth2/authorize?client_id=988117050222342194&permissions=1639603105782&scope=bot)
 
+This bot was (and currently still is) originally just a small
+little project that i made for fun. Now it is used on at
+least 2 relatively big servers to entertain it's members
+and I am aiming into making this a full-blown plug-and-play,
+all-in-one discord bot for everything thay a server may ever
+need.
+
+Current list of "cogs" (modules):
+* basic.py - Core cog.
+  Provides basic functionality like /help or /ping
+* fun/\_\_init\_\_.py - "fun" commands cog.
+  Any commands that I was not sure to make another cog for.
+* actions_commands.py - Actions cog.
+  One of the first cogs that have been written.
+  Simple "send embed with gif" commands
+* adminhelp.py - Adminhelp.
+  Simple ans instant modmail with integration with INTERCHAT
+* interchat.py - Interchat.
+  Communication between two channels. Can link DM to a channel,
+  VC channel to a chat, etc, you've got the idea.
+* gif_related.py - Gif related.
+  Any commands related to images or gifs.
+  TODO: change name
+* gpt.py - GPT Chat.
+  Makes so that when someone @pings a bot it will answer to
+  the message with GPT AI. Includes a fairly simple prompt
+  to make it follow certain laws. A few lawsets available.
+* starboard.py - Starboard.
+  Simple starboard manager. Put enough stars on a message and
+  ot will be sent to a cool channel.
+* nsfw.py - NSFW commands.
+  Simple cog that gives commands that search for NSFW content
+  on rule34 or danbooru.
