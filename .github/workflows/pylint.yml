@@ -1,6 +1,11 @@
 name: Pylint code check
 
-on: [push, workflow_dispatch]
+on:
+  workflow_run:
+    workflows: ["Reformat code"]
+    branches: [main]
+    types: 
+      - completed
 
 jobs:
   lint:
@@ -18,7 +23,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        bash scripts/install-deps.sh
+        python3 -m pip install --upgrade pip
+        pip install --requirements requirements.txt
     - name: Create log files
       run: |
         mkdir lint-logs
@@ -26,19 +32,7 @@ jobs:
         echo LOGFILE_NAME="logs-$(python3 -V | cut -c 8-)" >> $GITHUB_ENV
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=missing-docstring \
-          --disable=no-member \
-          --disable=too-many-public-methods \
-          --disable=too-few-public-methods \
-          --disable=too-many-locals \
-          --disable=too-many-statements \
-          --disable=logging-fstring-interpolation \
-          --disable=too-many-branches \
-          --disable=too-many-lines \
-          --disable=broad-exception-caught \
-          --disable=wrong-import-order \
-          --disable=too-many-instance-attributes \
-          $(git ls-files '*.py') --exit-zero > lint-logs/pylint.txt
+        pylint $(git ls-files '*.py') --rcfile=pylintrc > lint-logs/pylint.txt
         cat lint-logs/pylint.txt
   
     - uses: actions/upload-artifact@v4
