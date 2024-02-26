@@ -1,0 +1,9 @@
+aiohttp==3.8.6
+colorama==0.4.6
+py-cord==2.4.1
+nekosbest==1.1.12
+openai==1.12.0
+pet_pet_gif==1.0.2
+requests==2.31.0
+termcolor==2.4.0
+tinydb==4.8.0
