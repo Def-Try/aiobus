@@ -13,7 +13,7 @@ AiObus is an All-In-One bot designed to fulfill basically all of discord server 
 
 ![googer_](https://img.shields.io/badge/Author-googer__-blue?logo=discord&logoColor=white)
 ![GitHub top language](https://img.shields.io/github/languages/top/Def-Try/aiobus)
-![GitHub License](https://img.shields.io/github/License/Def-Try/aiobus)
+![GitHub License](https://img.shields.io/github/license/Def-Try/aiobus)
 
 [Invite bot to your server](https://discord.com/oauth2/authorize?client_id=988117050222342194&permissions=1639603105782&scope=bot)
 
