@@ -10,3 +10,4 @@ pip install colorama
 pip install termcolor
 pip install openai
 pip install pet-pet-gif
+pip install requests

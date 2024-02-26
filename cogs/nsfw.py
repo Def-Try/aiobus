@@ -9,16 +9,18 @@ from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
-
 class Provider:
+    @staticmethod
     def get_img_url(post):
         return post["url"]
 
+    @staticmethod
     def get_posts(tags):
         return {"url": "http://example.com"}
 
 
 class R34:
+    @staticmethod
     def get_posts(tags):
         formatted_tags = ""
         for tag in tags:
@@ -28,9 +30,7 @@ class R34:
             formatted_tags = formatted_tags[:-1]
         request = requests.get(
             "https://api.rule34.xxx/index.php?"
-            "page=dapi&s=post&q=index&tags={}&limit=1000&pid={}&json=1".format(
-                formatted_tags, 0
-            ),
+            f"page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1",
             headers={
                 "User-Agent": "Mozilla/5.0",
                 "Host": "api.rule34.xxx",
@@ -41,11 +41,13 @@ class R34:
             return {}
         return request.json()
 
+    @staticmethod
     def get_img_url(post):
         return post.get("file_url")
 
 
 class Danbooru:
+    @staticmethod
     def get_posts(tags):
         formatted_tags = ""
         for tag in tags:
@@ -61,6 +63,7 @@ class Danbooru:
             return {}
         return request.json()
 
+    @staticmethod
     def get_img_url(post):
         return post.get(
             "large_file_url", post.get("file_url", post.get("preview_file_url"))
@@ -166,7 +169,7 @@ class NSFW(commands.Cog, name="nsfw"):
                 localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale)
             )
             return
-        posts = [random.choice(_posts) for _ in range(min(len(posts), 10))]
+        posts = [random.choice(_posts) for _ in range(min(len(_posts), 10))]
         await ctx.respond("\n".join([_provider.get_img_url(post) for post in posts]))
 
 
