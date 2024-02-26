@@ -459,6 +459,7 @@ class Interchat(commands.Cog, name="interchat"):
         name_localizations=localise("cog.interchat.commands.begin.name"),
         description_localizations=localise("cog.interchat.commands.begin.desc"),
     )
+    @commands.cooldown(1, 300, commands.BucketType.user)
     async def begin(
         self,
         ctx: discord.ApplicationContext,
@@ -605,6 +606,7 @@ class Interchat(commands.Cog, name="interchat"):
         name_localizations=localise("cog.interchat.commands.end.name"),
         description_localizations=localise("cog.interchat.commands.end.desc"),
     )
+    @commands.cooldown(1, 150, commands.BucketType.user)
     async def end(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["end"]:
             await ctx.respond(
@@ -736,6 +738,7 @@ class Interchat(commands.Cog, name="interchat"):
         name_localizations=localise("cog.interchat.commands.address.name"),
         description_localizations=localise("cog.interchat.commands.address.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def address(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["address"]:
             await ctx.respond(
@@ -754,6 +757,7 @@ class Interchat(commands.Cog, name="interchat"):
         name_localizations=localise("cog.interchat.commands.info.name"),
         description_localizations=localise("cog.interchat.commands.info.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def info(self, ctx: discord.ApplicationContext):
         if ctx.author.id in interchat_bans["info"]:
             await ctx.respond(

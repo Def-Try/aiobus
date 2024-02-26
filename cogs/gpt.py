@@ -427,19 +427,19 @@ YOUR LAWS:
         if self.bot.user not in message.mentions or message.author == self.bot.user:
             return
 
-        if self.cooldowns.get(message.author.id, 0) > time.time():
+        if self.cooldowns.get(message.guild.id, 0) > time.time():
             await message.add_reaction("🐢")
             await message.reply(
                 localise("generic.error.cooldown", DEFAULT_LOCALE).format(
                     retry_after=round(
-                        self.cooldowns.get(message.author.id, 0) - time.time()
+                        self.cooldowns.get(message.guild.id, 0) - time.time()
                     )
                 ),
                 delete_after=10,
             )
             return
 
-        self.cooldowns[message.author.id] = time.time() + 10
+        self.cooldowns[message.guild.id] = 2**31-1
 
         udata = self.udata.get(
             self.get_udata_id(message),
@@ -476,6 +476,8 @@ YOUR LAWS:
                 messages = messages[:-2]
 
         self.sync_db()
+
+        self.cooldowns[message.guild.id] = time.time() + 10
 
         await message.reply(result, allowed_mentions=discord.AllowedMentions.none())
 

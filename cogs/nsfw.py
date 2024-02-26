@@ -16,9 +16,11 @@ class Provider:
         return post["url"]
 
     @staticmethod
-    def get_posts(tags):
+    def get_posts(_):
         return {"url": "http://example.com"}
 
+# FIXME: Use aiohttp instead of requests!
+# this stinks!!
 
 class R34:
     @staticmethod
@@ -29,15 +31,19 @@ class R34:
             formatted_tags += "+"
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
-        request = requests.get(
-            "https://api.rule34.xxx/index.php?"
-            f"page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1",
-            headers={
-                "User-Agent": "Mozilla/5.0",
-                "Host": "api.rule34.xxx",
-                "Accept": "*/*",
-            },
-        )
+        try:
+            request = requests.get(
+                "https://api.rule34.xxx/index.php?"
+                f"page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1",
+                headers={
+                    "User-Agent": "Mozilla/5.0",
+                    "Host": "api.rule34.xxx",
+                    "Accept": "*/*",
+                },
+                timeout=5,
+            )
+        except TimeoutError:
+            return {}
         if not request.text:
             return {}
         return request.json()
@@ -56,10 +62,13 @@ class Danbooru:
             formatted_tags += "+"
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
-        request = requests.get(
-            f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
-            "tags={}".format(formatted_tags)
-        )
+        try:
+            request = requests.get(
+                f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
+                "tags={}".format(formatted_tags)
+            )
+        except TimeoutError:
+            return {}
         if not request.text:
             return {}
         return request.json()
@@ -93,6 +102,7 @@ class NSFW(commands.Cog, name="nsfw"):
         description_localizations=localise("cog.nsfw.commands.find.desc"),
     )
     @commands.is_nsfw()
+    @commands.cooldown(5, 10, commands.BucketType.user)
     async def find(
         self,
         ctx: discord.ApplicationContext,
@@ -137,6 +147,7 @@ class NSFW(commands.Cog, name="nsfw"):
         description_localizations=localise("cog.nsfw.commands.bomb.desc"),
     )
     @commands.is_nsfw()
+    @commands.cooldown(5, 10, commands.BucketType.user)
     async def bomb(
         self,
         ctx: discord.ApplicationContext,

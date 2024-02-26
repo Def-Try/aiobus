@@ -157,6 +157,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.pat"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def pat(
         self,
         ctx: discord.ApplicationContext,
@@ -181,6 +182,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.hug"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def hug(
         self,
         ctx: discord.ApplicationContext,
@@ -205,6 +207,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.cuddle"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def cuddle(
         self,
         ctx: discord.ApplicationContext,
@@ -229,6 +232,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.handshake"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def handshake(
         self,
         ctx: discord.ApplicationContext,
@@ -253,6 +257,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.bite"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def bite(
         self,
         ctx: discord.ApplicationContext,
@@ -277,6 +282,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.highfive"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def highfive(
         self,
         ctx: discord.ApplicationContext,
@@ -301,6 +307,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.kiss"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def kiss(
         self,
         ctx: discord.ApplicationContext,
@@ -325,6 +332,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.poke"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def poke(
         self,
         ctx: discord.ApplicationContext,
@@ -349,6 +357,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.slap"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def slap(
         self,
         ctx: discord.ApplicationContext,
@@ -373,6 +382,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.handhold"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def handhold(
         self,
         ctx: discord.ApplicationContext,
@@ -397,6 +407,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.kick"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def kick(
         self,
         ctx: discord.ApplicationContext,
@@ -421,6 +432,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.punch"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def punch(
         self,
         ctx: discord.ApplicationContext,
@@ -445,6 +457,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.tickle"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def tickle(
         self,
         ctx: discord.ApplicationContext,
@@ -469,6 +482,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.feed"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def feed(
         self,
         ctx: discord.ApplicationContext,
@@ -493,6 +507,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.stare"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def stare(
         self,
         ctx: discord.ApplicationContext,
@@ -517,6 +532,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.wave"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def wave(
         self,
         ctx: discord.ApplicationContext,
@@ -541,6 +557,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.cry"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def cry(self, ctx: discord.ApplicationContext):
         await self.act("cry", ctx)
 
@@ -549,6 +566,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.dance"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def dance(self, ctx: discord.ApplicationContext):
         await self.act("dance", ctx)
 
@@ -557,6 +575,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.blush"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def blush(self, ctx: discord.ApplicationContext):
         await self.act("blush", ctx)
 
@@ -565,6 +584,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.happy"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def happy(self, ctx: discord.ApplicationContext):
         await self.act("happy", ctx)
 
@@ -573,6 +593,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.laugh"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def laugh(self, ctx: discord.ApplicationContext):
         await self.act("laugh", ctx)
 
@@ -581,6 +602,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.shrug"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def shrug(self, ctx: discord.ApplicationContext):
         await self.act("shrug", ctx)
 
@@ -589,6 +611,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.sleep"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def sleep(self, ctx: discord.ApplicationContext):
         await self.act("sleep", ctx)
 
@@ -597,6 +620,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.smile"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def smile(self, ctx: discord.ApplicationContext):
         await self.act("smile", ctx)
 
@@ -605,6 +629,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.think"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def think(self, ctx: discord.ApplicationContext):
         await self.act("think", ctx)
 
@@ -619,6 +644,7 @@ class ActionsCommands(commands.Cog, name="actions_commands"):
         name_localizations=localise("cog.actions_commands.commands.nod"),
         description_localizations=localise("cog.actions_commands.commands.action.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def nod(self, ctx: discord.ApplicationContext):
         await self.act("nod", ctx)
 

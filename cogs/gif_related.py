@@ -89,6 +89,7 @@ class GifRelated(commands.Cog, name="gif_related"):
         name_localizations=localise("cog.gif_related.commands.findgif.name"),
         description_localizations=localise("cog.gif_related.commands.findgif.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def findgif(
         self,
         ctx: discord.ApplicationContext,
@@ -126,6 +127,7 @@ class GifRelated(commands.Cog, name="gif_related"):
         name_localizations=localise("cog.gif_related.commands.shiggy.name"),
         description_localizations=localise("cog.gif_related.commands.shiggy.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def shiggy(self, ctx: discord.ApplicationContext):
         loop = asyncio.get_event_loop()
         con = aiohttp.TCPConnector(limit=10)
@@ -142,6 +144,7 @@ class GifRelated(commands.Cog, name="gif_related"):
         name_localizations=localise("cog.gif_related.commands.petpet.name"),
         description_localizations=localise("cog.gif_related.commands.petpet.desc"),
     )
+    @commands.cooldown(10, 30, commands.BucketType.user)
     async def petpet(
         self,
         ctx: discord.ApplicationContext,

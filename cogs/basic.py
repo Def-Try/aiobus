@@ -372,6 +372,7 @@ class Basic(commands.Cog, name="basic"):
         name_localizations=localise("cog.basic.commands.ping.name"),
         description_localizations=localise("cog.basic.commands.ping.desc"),
     )
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def ping(self, ctx: discord.ApplicationContext):
         embed = discord.Embed(
             title=localise("cog.basic.answers.ping.title", ctx.interaction.locale),
