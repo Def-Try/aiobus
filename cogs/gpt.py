@@ -439,7 +439,7 @@ YOUR LAWS:
             )
             return
 
-        self.cooldowns[message.guild.id] = 2**31-1
+        self.cooldowns[message.guild.id] = 2**31 - 1
 
         udata = self.udata.get(
             self.get_udata_id(message),

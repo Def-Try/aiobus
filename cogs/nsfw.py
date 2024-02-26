@@ -19,8 +19,10 @@ class Provider:
     def get_posts(_):
         return {"url": "http://example.com"}
 
+
 # FIXME: Use aiohttp instead of requests!
 # this stinks!!
+
 
 class R34:
     @staticmethod
