@@ -1,5 +1,5 @@
 config/tokens.json
-config/googerlabs.txt
+config/confog.cfg
 __pycache__
 .idea
 databases

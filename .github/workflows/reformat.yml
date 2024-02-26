@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip install --requirements requirements.txt
+        pip install --requirement requirements.txt
         pip install autopep8
         pip install git+https://github.com/psf/black
         pip install reorder-python-imports

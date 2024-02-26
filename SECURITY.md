@@ -1,12 +1,11 @@
 # Security Policy
 
 ## Supported Versions
-```
-| Version | Supported          |
+
+| Object  | Supported          |
 | ------- | ------------------ |
 | core    | ✅                 |
 | my cogs | ✅                 |
-```
 
 ## Reporting a Vulnerability
 
