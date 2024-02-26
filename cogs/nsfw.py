@@ -9,6 +9,7 @@ from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
+
 class Provider:
     @staticmethod
     def get_img_url(post):
