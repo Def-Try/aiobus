@@ -3,6 +3,7 @@ import random
 import select
 import socket
 import subprocess
+import time
 
 import discord
 from discord.ext import commands
@@ -349,9 +350,13 @@ class Basic(commands.Cog, name="basic"):
             description=localise(f"cog.{cog_name}.info.desc", ctx.interaction.locale),
         )
 
-        embed.add_field(name="Author", value="`" + cog.author + "`", inline=False)
+        embed.add_field(name=localise(
+                "cog.basic.answers.help.elements.author", ctx.interaction.locale
+            ), value="`" + cog.author + "`", inline=False)
         embed.add_field(
-            name="Commands", value=do_commands(ctx, cog.get_commands()), inline=False
+            name=localise(
+                "cog.basic.answers.help.elements.commands", ctx.interaction.locale
+            ), value=do_commands(ctx, cog.get_commands()), inline=False
         )
         await ctx.respond(embed=embed, ephemeral=True)
 
@@ -372,6 +377,25 @@ class Basic(commands.Cog, name="basic"):
             f"{localise('cog.basic.answers.ping.unit', ctx.interaction.locale)}",
             inline=False,
         )
+        socket.setdefaulttimeout(3)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            start = time.time()
+            s.connect(("", 41080))
+        except OSError:
+            embed.add_field(
+                name=localise("cog.basic.answers.ping.ssrp", ctx.interaction.locale),
+                value=f"{localise('cog.basic.answers.ping.error', ctx.interaction.locale)}",
+                inline=False,
+            )
+        else:
+            embed.add_field(
+                name=localise("cog.basic.answers.ping.ssrp", ctx.interaction.locale),
+                value=f"{round((time.time()-start)*1000, 2)}"
+                f"{localise('cog.basic.answers.ping.unit', ctx.interaction.locale)}",
+                inline=False,
+            )
+
 
         await ctx.respond(embed=embed)
 

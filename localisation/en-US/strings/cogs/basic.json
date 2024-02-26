@@ -2,7 +2,7 @@
         "cog": {
                 "basic": {
                         "info": {
-                                "desc": "Basic commands cog. Provides, well, basic functionality - /help, /reload_cogs, /ping commands.",
+                                "desc": "Basic commands cog. Provides, well, basic functionality.",
                                 "brief": "Basic commands"
                         },
                         "commands": {
@@ -36,9 +36,11 @@
                                         "desc": "AIOBus is a bot designed to fulfill basically ALL of server needs, from funny things to server dumping and restoration, from message boards to interchat communication, etc...",
                                         "command": "Command `/{command}`",
                                         "elements": {
+                                                "author": "Author",
                                                 "desc": "Description",
                                                 "parameters": "Parameters",
-                                                "cog": "Cog"
+                                                "cog": "Cog",
+                                                "commands": "Commands"
                                         },
                                         "error": {
                                                 "unknown_cog": "Unknown cog. Maybe you made a typo? Make sure to type in exact name of cog - it's case-sensitive!",
@@ -49,6 +51,8 @@
                                         "title": "Ping (latency status)",
                                         "desc": "pong!",
                                         "dwpl": "Discord Websocket Protocol Latency (DWPL)",
+                                        "ssrp": "Self Status Report Ping (SSRP)",
+                                        "err": "ERROR",
                                         "unit": "ms"
                                 },
                                 "reload_cogs": {
