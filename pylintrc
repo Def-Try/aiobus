@@ -74,7 +74,7 @@ min-public-methods=2
 overgeneral-exceptions=builtins.BaseException,builtins.Exception
 
 [FORMAT]
-expected-line-ending-format=CRLF
+expected-line-ending-format=LF
 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
 indent-after-paren=4
 indent-string='    '
@@ -117,18 +117,18 @@ disable=raw-checker-failed,
         use-symbolic-message-instead,
         use-implicit-booleaness-not-comparison-to-string,
         use-implicit-booleaness-not-comparison-to-zero,
-        missing-docstring
-        no-member
-        too-many-public-methods
-        too-few-public-methods
-        too-many-locals
-        too-many-statements
-        logging-fstring-interpolation
-        too-many-branches
-        too-many-lines
-        broad-exception-caught
-        wrong-import-order
-        too-many-instance-attributes
+        missing-docstring,
+        no-member,
+        too-many-public-methods,
+        too-few-public-methods,
+        too-many-locals,
+        too-many-statements,
+        logging-fstring-interpolation,
+        too-many-branches,
+        too-many-lines,
+        broad-exception-caught,
+        wrong-import-order,
+        too-many-instance-attributes,
 enable=
 
 [METHOD_ARGS]
