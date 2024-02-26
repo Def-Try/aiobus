@@ -65,7 +65,8 @@ class Danbooru:
         try:
             request = requests.get(
                 f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
-                "tags={}".format(formatted_tags)
+                f"tags={formatted_tags}",
+                timeout=5,
             )
         except TimeoutError:
             return {}
