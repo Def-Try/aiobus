@@ -112,7 +112,7 @@ class Basic(commands.Cog, name="basic"):
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.socket.bind(("", 41080))
+            self.socket.bind((CONFIG["ip"], 41080))
         except Exception:
             self.bot.logger.warning("Failed to bind to monitoring port!")
             return

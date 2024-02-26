@@ -25,6 +25,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install --requirement requirements.txt
+        pip install pylint
     - name: Create log files
       run: |
         mkdir lint-logs
@@ -34,7 +35,7 @@ jobs:
       run: |
         pylint $(git ls-files '*.py') --rcfile=pylintrc > lint-logs/pylint.txt
         cat lint-logs/pylint.txt
-  
+
     - uses: actions/upload-artifact@v4
       with:
         name: ${{env.LOGFILE_NAME}}
