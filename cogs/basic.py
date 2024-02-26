@@ -350,13 +350,19 @@ class Basic(commands.Cog, name="basic"):
             description=localise(f"cog.{cog_name}.info.desc", ctx.interaction.locale),
         )
 
-        embed.add_field(name=localise(
+        embed.add_field(
+            name=localise(
                 "cog.basic.answers.help.elements.author", ctx.interaction.locale
-            ), value="`" + cog.author + "`", inline=False)
+            ),
+            value="`" + cog.author + "`",
+            inline=False,
+        )
         embed.add_field(
             name=localise(
                 "cog.basic.answers.help.elements.commands", ctx.interaction.locale
-            ), value=do_commands(ctx, cog.get_commands()), inline=False
+            ),
+            value=do_commands(ctx, cog.get_commands()),
+            inline=False,
         )
         await ctx.respond(embed=embed, ephemeral=True)
 
@@ -395,7 +401,6 @@ class Basic(commands.Cog, name="basic"):
                 f"{localise('cog.basic.answers.ping.unit', ctx.interaction.locale)}",
                 inline=False,
             )
-
 
         await ctx.respond(embed=embed)
 
