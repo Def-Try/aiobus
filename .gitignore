@@ -1,5 +1,5 @@
 config/tokens.json
-config/confog.cfg
+config/config.cfg
 __pycache__
 .idea
 databases
