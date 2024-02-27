@@ -27,7 +27,7 @@ need.
 Current list of "cogs" (modules):
 * basic.py - Core cog.
   Provides basic functionality like /help or /ping
-* fun/\_\_init\_\_.py - "fun" commands cog.
+* fun - "fun" commands cog.
   Any commands that I was not sure to make another cog for.
 * actions_commands.py - Actions cog.
   One of the first cogs that have been written.
