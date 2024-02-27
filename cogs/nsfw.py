@@ -10,17 +10,6 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-async def download_file(session, url):
-    try:
-        async with session.get(url) as remotefile:
-            if remotefile.status == 200:
-                data = await remotefile.read()
-                return {"error": "", "data": data}
-            return {"error": remotefile.status, "data": ""}
-    except Exception as e:
-        return {"error": e, "data": ""}
-
-
 class Provider:
     @staticmethod
     def get_img_url(post):
@@ -41,7 +30,10 @@ class R34:
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
         try:
-            url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1"
+            url = (
+                "https://api.rule34.xxx/index.php?page=dapi&s=post&q=index"
+                + f"&tags={formatted_tags}&limit=1000&pid=0&json=1"
+            )
             headers = {
                 "User-Agent": "Mozilla/5.0",
                 "Host": "api.rule34.xxx",
