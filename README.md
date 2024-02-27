@@ -17,12 +17,18 @@ AiObus is an All-In-One bot designed to fulfill basically all of discord server 
 
 [Invite bot to your server](https://discord.com/oauth2/authorize?client_id=988117050222342194&permissions=1639603105782&scope=bot)
 
+
+## Description
+
 This bot was (and currently still is) originally just a small
 little project that i made for fun. Now it is used on at
 least 2 relatively big servers to entertain it's members
 and I am aiming into making this a full-blown plug-and-play,
 all-in-one discord bot for everything thay a server may ever
 need.
+
+
+# Cogs
 
 Current list of "cogs" (modules):
 * basic.py - Core cog.
@@ -50,3 +56,10 @@ Current list of "cogs" (modules):
 * nsfw.py - NSFW commands.
   Simple cog that gives commands that search for NSFW content
   on rule34 or danbooru.
+
+
+# TODO
+
+* moderation cog. with temp mutes/bans/etc
+* update starboard. fix bot starboarding it's starboard messages, make it more configurable
+* change name of cog gif_related.py to something else.
