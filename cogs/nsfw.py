@@ -1,7 +1,7 @@
 import random
 
-import discord
 import aiohttp
+import discord
 from discord.ext import commands
 
 from config import CONFIG
@@ -19,6 +19,7 @@ async def download_file(session, url):
             return {"error": remotefile.status, "data": ""}
     except Exception as e:
         return {"error": e, "data": ""}
+
 
 class Provider:
     @staticmethod
@@ -71,8 +72,10 @@ class Danbooru:
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
         try:
-            url = f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?' +\
-                  f"tags={formatted_tags}",
+            url = (
+                f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
+                + f"tags={formatted_tags}",
+            )
             async with aiohttp.ClientSession() as session:
                 async with session.get(url, timeout=5) as response:
                     request = await response.json()
