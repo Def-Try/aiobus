@@ -1,7 +1,7 @@
 import random
 
 import discord
-import requests
+import aiohttp
 from discord.ext import commands
 
 from config import CONFIG
@@ -9,6 +9,16 @@ from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
+
+async def download_file(session, url):
+    try:
+        async with session.get(url) as remotefile:
+            if remotefile.status == 200:
+                data = await remotefile.read()
+                return {"error": "", "data": data}
+            return {"error": remotefile.status, "data": ""}
+    except Exception as e:
+        return {"error": e, "data": ""}
 
 class Provider:
     @staticmethod
@@ -20,13 +30,9 @@ class Provider:
         return {"url": "http://example.com"}
 
 
-# FIXME: Use aiohttp instead of requests!
-# this stinks!!
-
-
 class R34:
     @staticmethod
-    def get_posts(tags):
+    async def get_posts(tags):
         formatted_tags = ""
         for tag in tags:
             formatted_tags += tag
@@ -34,21 +40,21 @@ class R34:
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
         try:
-            request = requests.get(
-                "https://api.rule34.xxx/index.php?"
-                f"page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1",
-                headers={
-                    "User-Agent": "Mozilla/5.0",
-                    "Host": "api.rule34.xxx",
-                    "Accept": "*/*",
-                },
-                timeout=5,
-            )
+            url = f"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags={formatted_tags}&limit=1000&pid=0&json=1"
+            headers = {
+                "User-Agent": "Mozilla/5.0",
+                "Host": "api.rule34.xxx",
+                "Accept": "*/*",
+            }
+
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, headers=headers, timeout=5) as response:
+                    request = await response.json()
         except TimeoutError:
             return {}
-        if not request.text:
+        if not request:
             return {}
-        return request.json()
+        return request
 
     @staticmethod
     def get_img_url(post):
@@ -57,7 +63,7 @@ class R34:
 
 class Danbooru:
     @staticmethod
-    def get_posts(tags):
+    async def get_posts(tags):
         formatted_tags = ""
         for tag in tags:
             formatted_tags += tag
@@ -65,16 +71,16 @@ class Danbooru:
         if formatted_tags.endswith("+"):
             formatted_tags = formatted_tags[:-1]
         try:
-            request = requests.get(
-                f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?'
-                f"tags={formatted_tags}",
-                timeout=5,
-            )
+            url = f'https://{TOKENS["danbooru"]}@danbooru.donmai.us/posts.json?' +\
+                  f"tags={formatted_tags}",
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url, timeout=5) as response:
+                    request = await response.json()
         except TimeoutError:
             return {}
-        if not request.text:
+        if not request:
             return {}
-        return request.json()
+        return request
 
     @staticmethod
     def get_img_url(post):
@@ -133,7 +139,7 @@ class NSFW(commands.Cog, name="nsfw"):
     ):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
-        _posts = _provider.get_posts(_tags)
+        _posts = await _provider.get_posts(_tags)
         if len(_posts) < 1:
             await ctx.respond(
                 localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale)
@@ -178,7 +184,7 @@ class NSFW(commands.Cog, name="nsfw"):
     ):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
-        _posts = _provider.get_posts(_tags)
+        _posts = await _provider.get_posts(_tags)
         if len(_posts) < 1:
             await ctx.respond(
                 localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale)
