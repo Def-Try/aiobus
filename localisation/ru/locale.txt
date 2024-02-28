@@ -3,10 +3,9 @@ cogs/actions-commands.json
 cogs/gif-related.json
 cogs/basic.json
 cogs/interchat.json
-cogs/rp-utils.json
 cogs/starboard.json
 cogs/debug.json
 cogs/fun.json
-cogs/gpt.json
+cogs/ai.json
 cogs/adminhelp.json
 cogs/nsfw.json

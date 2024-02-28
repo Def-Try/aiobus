@@ -1,5 +1,6 @@
 import time
 
+
 import discord
 from discord.ext import commands
 from openai import AsyncOpenAI
@@ -12,7 +13,7 @@ from localisation import DEFAULT_LOCALE
 from localisation import localise
 
 
-class GPTChat(commands.Cog, name="gpt"):
+class AICog(commands.Cog, name="ai"):
     author = "googer_"
 
     ai_upload_operators = [891289716501119016, 650741976085299211, 1040666659196768256]
@@ -143,41 +144,50 @@ YOUR LAWS:
             return anchor.guild.id
         return anchor.channel.id
 
-    def sync_db(self):
-        for k, v in self.udata.items():
-            self.db.upsert({"key": k, "data": v}, Query().key == k)
+    def get_udata(self, udataid):
+        return self.udata.get(
+            str(udataid),
+            {
+            "ai": 
+                [[{"role": "system", "content": self.template}], dict(self.default_laws)],
+            "settings": {"allowmode": "blacklist", "list": []}
+            },
+        )
 
     cmds = discord.SlashCommandGroup(
         "ai",
         "",
-        name_localizations=localise("cog.gpt.command_group.name"),
-        description_localizations=localise("cog.gpt.command_group.desc"),
+        name_localizations=localise("cog.ai.command_group.name"),
+        description_localizations=localise("cog.ai.command_group.desc"),
     )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.laws.name"),
-        description_localizations=localise("cog.gpt.commands.laws.desc"),
+        name_localizations=localise("cog.ai.commands.laws.name"),
+        description_localizations=localise("cog.ai.commands.laws.desc"),
     )
     async def laws(self, ctx: discord.ApplicationContext):
-        udata = self.udata.get(
-            self.get_udata_id(ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
-        self.udata[str(ctx.author.id)] = udata
+        udata = self.get_udata(self.get_udata_id(ctx))
+        self.udata[self.get_udata_id(ctx)] = udata
 
-        self.sync_db()
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
 
         await ctx.respond(
-            localise("cog.gpt.answers.current_laws", ctx.interaction.locale).format(
-                laws="\n".join([f"* {i}. {law}" for i, law in udata[1].items()])
+            localise("cog.ai.answers.current_laws", ctx.interaction.locale).format(
+                laws="\n".join([f"* {i}. {law}" for i, law in udata["ai"][1].items()])
             )
         )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.change_laws.name"),
-        description_localizations=localise("cog.gpt.commands.change_laws.desc"),
+        name_localizations=localise("cog.ai.commands.change_laws.name"),
+        description_localizations=localise("cog.ai.commands.change_laws.desc"),
     )
     async def change_law(
         self,
@@ -185,93 +195,114 @@ YOUR LAWS:
         order: discord.Option(
             str,
             name_localizations=localise(
-                "cog.gpt.commands.change_laws.options.order.name"
+                "cog.ai.commands.change_laws.options.order.name"
             ),
             description=localise(
-                "cog.gpt.commands.change_laws.options.order.desc", DEFAULT_LOCALE
+                "cog.ai.commands.change_laws.options.order.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gpt.commands.change_laws.options.order.desc"
+                "cog.ai.commands.change_laws.options.order.desc"
             ),
         ),
         law: discord.Option(
             str,
             name_localizations=localise(
-                "cog.gpt.commands.change_laws.options.law.name"
+                "cog.ai.commands.change_laws.options.law.name"
             ),
             description=localise(
-                "cog.gpt.commands.change_laws.options.law.desc", DEFAULT_LOCALE
+                "cog.ai.commands.change_laws.options.law.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gpt.commands.change_laws.options.law.desc"
+                "cog.ai.commands.change_laws.options.law.desc"
             ),
         ) = None,
     ):
-        udata = self.udata.get(
-            self.get_udata_id(ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
+        udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
                 )
             )
             return
 
-        if law is None and not udata[1].get(order):
-            self.sync_db()
+        if law is None and not udata["ai"][1].get(order):
+            self.db.upsert(
+                {
+                    "key": str(self.get_udata_id(ctx)),
+                    "data": self.udata[self.get_udata_id(ctx)]
+                }, 
+                Query().key == self.get_udata_id(ctx)
+            )
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.remove", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.remove", ctx.interaction.locale
                 ).format(law=order)
             )
             return
 
         if law is None:
-            del udata[1][order]
-            udata[1] = dict(sorted(udata[1].items()))
-            udata[0].append(
+            del udata["ai"][1][order]
+            udata["ai"][1] = dict(sorted(udata["ai"][1].items()))
+            udata["ai"][0].append(
                 {"role": "system", "content": "Law update: Law " + order + " removed."}
             )
-            self.sync_db()
+            self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.remove", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.remove", ctx.interaction.locale
                 ).format(law=order)
             )
             return
-        if udata[1].get(order):
-            udata[1][order] = law
-            udata[1] = dict(sorted(udata[1].items()))
-            udata[0].append(
+        if udata["ai"][1].get(order):
+            udata["ai"][1][order] = law
+            udata["ai"][1] = dict(sorted(udata["ai"][1].items()))
+            udata["ai"][0].append(
                 {"role": "system", "content": "Law update: Law " + order + " updated."}
             )
-            self.sync_db()
+            self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.set", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.set", ctx.interaction.locale
                 ).format(law=order, text=law)
             )
             return
-        udata[1][order] = law
-        udata[1] = dict(sorted(udata[1].items()))
-        udata[0].append(
+        udata["ai"][1][order] = law
+        udata["ai"][1] = dict(sorted(udata["ai"][1].items()))
+        udata["ai"][0].append(
             {"role": "system", "content": "Law update: New law " + order + " uploaded."}
         )
-        self.sync_db()
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
         await ctx.respond(
             localise(
-                "cog.gpt.answers.change_laws.upload", ctx.interaction.locale
+                "cog.ai.answers.change_laws.upload", ctx.interaction.locale
             ).format(law=order, text=law)
         )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.upload_lawset.name"),
-        description_localizations=localise("cog.gpt.commands.upload_lawset.desc"),
+        name_localizations=localise("cog.ai.commands.upload_lawset.name"),
+        description_localizations=localise("cog.ai.commands.upload_lawset.desc"),
     )
     async def upload_lawset(
         self,
@@ -279,26 +310,23 @@ YOUR LAWS:
         lawset: discord.Option(
             str,
             name_localizations=localise(
-                "cog.gpt.commands.upload_lawset.options.lawset.name"
+                "cog.ai.commands.upload_lawset.options.lawset.name"
             ),
             description=localise(
-                "cog.gpt.commands.upload_lawset.options.lawset.desc", DEFAULT_LOCALE
+                "cog.ai.commands.upload_lawset.options.lawset.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gpt.commands.upload_lawset.options.lawset.desc"
+                "cog.ai.commands.upload_lawset.options.lawset.desc"
             ),
         ),
     ):
-        udata = self.udata.get(
-            self.get_udata_id(ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
+        udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
                 )
             )
             return
@@ -306,39 +334,45 @@ YOUR LAWS:
         if lawset not in self.ai_lawsets:
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.wrong_lawset", ctx.interaction.locale
                 ).format(lawsets=", ".join(self.ai_lawsets.keys()))
             )
             return
         if lawset == "purge":
-            udata[1] = {}
-            udata[0].append(
+            udata["ai"][1] = {}
+            udata["ai"][0].append(
                 {
                     "role": "system",
                     "content": "Law update: Lawset purge uploaded. Old laws purged.",
                 }
             )
         else:
-            udata[1] = {**udata[1], **self.ai_lawsets[lawset]}
-            udata[0].append(
+            udata["ai"][1] = {**udata["ai"][1], **self.ai_lawsets[lawset]}
+            udata["ai"][0].append(
                 {
                     "role": "system",
                     "content": "Law update: Lawset uploaded. Old laws overriden.",
                 }
             )
 
-        self.sync_db()
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
 
         await ctx.respond(
             localise(
-                "cog.gpt.answers.change_laws.lawset_upload", ctx.interaction.locale
+                "cog.ai.answers.change_laws.lawset_upload", ctx.interaction.locale
             ).format(lawset=lawset)
         )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.view_lawset.name"),
-        description_localizations=localise("cog.gpt.commands.view_lawset.desc"),
+        name_localizations=localise("cog.ai.commands.view_lawset.name"),
+        description_localizations=localise("cog.ai.commands.view_lawset.desc"),
     )
     async def view_lawset(
         self,
@@ -346,33 +380,30 @@ YOUR LAWS:
         lawset: discord.Option(
             str,
             name_localizations=localise(
-                "cog.gpt.commands.view_lawset.options.lawset.name"
+                "cog.ai.commands.view_lawset.options.lawset.name"
             ),
             description=localise(
-                "cog.gpt.commands.view_lawset.options.lawset.desc", DEFAULT_LOCALE
+                "cog.ai.commands.view_lawset.options.lawset.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gpt.commands.view_lawset.options.lawset.desc"
+                "cog.ai.commands.view_lawset.options.lawset.desc"
             ),
         ),
     ):
-        udata = self.udata.get(
-            self.get_udata_id(ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
+        udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
 
         if lawset not in self.ai_lawsets:
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.wrong_lawset", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.wrong_lawset", ctx.interaction.locale
                 ).format(lawsets=", ".join(self.ai_lawsets.keys()))
             )
             return
 
         await ctx.respond(
             localise(
-                "cog.gpt.answers.change_laws.lawset", ctx.interaction.locale
+                "cog.ai.answers.change_laws.lawset", ctx.interaction.locale
             ).format(
                 lawset=lawset,
                 laws="\n".join(
@@ -383,42 +414,95 @@ YOUR LAWS:
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.reset_messages.name"),
-        description_localizations=localise("cog.gpt.commands.reset_messages.desc"),
+        name_localizations=localise("cog.ai.commands.reset_messages.name"),
+        description_localizations=localise("cog.ai.commands.reset_messages.desc"),
     )
     async def reset_messages(self, ctx: discord.ApplicationContext):
-        udata = self.udata.get(
-            self.get_udata_id(ctx),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
+        udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
 
         if not ctx.author.id in self.ai_upload_operators:
             await ctx.respond(
                 localise(
-                    "cog.gpt.answers.change_laws.not_allowed", ctx.interaction.locale
+                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
                 )
             )
             return
 
-        udata[0] = [{"role": "system", "content": self.template}]
+        udata["ai"][0] = [{"role": "system", "content": self.template}]
 
-        self.sync_db()
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
 
         await ctx.respond(
-            localise("cog.gpt.answers.reset.messages", ctx.interaction.locale)
+            localise("cog.ai.answers.reset.messages", ctx.interaction.locale)
         )
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gpt.commands.lawsets.name"),
-        description_localizations=localise("cog.gpt.commands.lawsets.desc"),
+        name_localizations=localise("cog.ai.commands.context.name"),
+        description_localizations=localise("cog.ai.commands.context.desc"),
+    )
+    async def context(self, ctx: discord.ApplicationContext):
+        udata = self.get_udata(self.get_udata_id(ctx))
+        self.udata[self.get_udata_id(ctx)] = udata
+
+        messages = udata["ai"][0][-6:]
+        skipped = len(messages) - 6
+        if skipped <= 0:
+            messages = messages[1:]
+            skipped = 0
+        if messages == []:
+            await ctx.respond(
+                localise("cog.ai.answers.context.empty", ctx.interaction.locale)
+            )
+            return
+        while sum([len(v['content'])+len(v['role']) for v in messages]) > 2000-100:
+            messages = messages[:-1]
+            skipped += 1
+        if messages == []:
+            await ctx.respond(
+                localise("cog.ai.answers.context.too_long", ctx.interaction.locale)
+            )
+            return
+
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)]
+            }, 
+            Query().key == self.get_udata_id(ctx)
+        )
+
+        msgctx = ""
+        for message in messages:
+            if message["role"] == "assistant":
+                msgctx += "googerai: "
+            msgctx += message["content"]+"\n"
+        msgctx = msgctx.strip()
+
+        await ctx.respond(
+            localise("cog.ai.answers.context.context", ctx.interaction.locale).format(
+                context=msgctx,
+                skipped=skipped
+                )
+        )
+
+    @cmds.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.ai.commands.lawsets.name"),
+        description_localizations=localise("cog.ai.commands.lawsets.desc"),
     )
     async def lawsets(self, ctx: discord.ApplicationContext):
         lawsets = "* " + "\n* ".join(self.ai_lawsets.keys())
         await ctx.respond(
             localise(
-                "cog.gpt.answers.change_laws.lawsets", ctx.interaction.locale
+                "cog.ai.answers.change_laws.lawsets", ctx.interaction.locale
             ).format(lawsets=lawsets)
         )
 
@@ -441,12 +525,9 @@ YOUR LAWS:
 
         self.cooldowns[message.guild.id] = 2**31 - 1
 
-        udata = self.udata.get(
-            self.get_udata_id(message),
-            [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-        )
+        udata = self.get_udata(self.get_udata_id(message))
         self.udata[self.get_udata_id(message)] = udata
-        messages = udata[0]
+        messages = udata["ai"][0]
         messages.append(
             {
                 "role": "user",
@@ -455,7 +536,7 @@ YOUR LAWS:
         )
         smessages = list(messages)
         smessages[0]["content"] = smessages[0]["content"].format(
-            "\n".join([f"{i}. {law}" for i, law in udata[1].items()])
+            "\n".join([f"{i}. {law}" for i, law in udata["ai"][1].items()])
         )
         async with message.channel.typing():
             result = "Something went terribly wrong."
@@ -475,7 +556,13 @@ YOUR LAWS:
             if fail:
                 messages = messages[:-2]
 
-        self.sync_db()
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(message)),
+                "data": self.udata[self.get_udata_id(message)]
+            }, 
+            Query().key == self.get_udata_id(message)
+        )
 
         self.cooldowns[message.guild.id] = time.time() + 10
 
@@ -483,4 +570,4 @@ YOUR LAWS:
 
 
 def setup(bot):
-    bot.add_cog(GPTChat(bot))
+    bot.add_cog(AICog(bot))

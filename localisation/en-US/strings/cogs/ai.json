@@ -1,6 +1,6 @@
 {
         "cog": {
-                "gpt": {
+                "ai": {
                         "info": {
                                 "desc": "Cog with AI hooks and commands",
                                 "brief": "AI commands"
@@ -13,6 +13,10 @@
                                 "laws": {
                                         "name": "laws",
                                         "desc": "Directly view AI laws."
+                                },
+                                "context": {
+                                        "name": "context",
+                                        "desc": "Get AI messages context"
                                 },
                                 "change_laws": {
                                         "name": "change_laws",
@@ -71,6 +75,11 @@
                                 },
                                 "reset": {
                                         "messages": "Messages reset."
+                                },
+                                "context": {
+                                        "context": "Context:\n```\n{context}\n```\nand {skipped} more messages skipped",
+                                        "too_long": "Context is too long to be displayed",
+                                        "empty": "Context is empty!"
                                 }
                         }
                 }
