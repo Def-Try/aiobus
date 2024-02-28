@@ -190,6 +190,8 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.change_laws.name"),
         description_localizations=localise("cog.ai.commands.change_laws.desc"),
     )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
     async def change_law(
         self,
         ctx: discord.ApplicationContext,
@@ -218,14 +220,6 @@ YOUR LAWS:
     ):
         udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
-
-        if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(
-                localise(
-                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
-                )
-            )
-            return
 
         if law is None and not udata["ai"][1].get(order):
             self.db.upsert(
@@ -303,6 +297,8 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.upload_lawset.name"),
         description_localizations=localise("cog.ai.commands.upload_lawset.desc"),
     )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
     async def upload_lawset(
         self,
         ctx: discord.ApplicationContext,
@@ -321,14 +317,6 @@ YOUR LAWS:
     ):
         udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
-
-        if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(
-                localise(
-                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
-                )
-            )
-            return
 
         if lawset not in self.ai_lawsets:
             await ctx.respond(
@@ -416,17 +404,11 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.reset_messages.name"),
         description_localizations=localise("cog.ai.commands.reset_messages.desc"),
     )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
     async def reset_messages(self, ctx: discord.ApplicationContext):
         udata = self.get_udata(self.get_udata_id(ctx))
         self.udata[self.get_udata_id(ctx)] = udata
-
-        if not ctx.author.id in self.ai_upload_operators:
-            await ctx.respond(
-                localise(
-                    "cog.ai.answers.change_laws.not_allowed", ctx.interaction.locale
-                )
-            )
-            return
 
         udata["ai"][0] = [{"role": "system", "content": self.template}]
 
