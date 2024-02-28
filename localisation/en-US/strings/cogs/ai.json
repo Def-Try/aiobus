@@ -64,7 +64,6 @@
                         "answers": {
                                 "current_laws": "Current AI laws:\n{laws}",
                                 "change_laws": {
-                                        "not_allowed": "Sorry, you are not allowed to perform this action.",
                                         "remove": "Purged law {law}",
                                         "set": "Updated law {law}: \"{text}\"",
                                         "upload": "Uploaded new law {law}: \"{text}\"",

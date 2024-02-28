@@ -356,6 +356,37 @@ YOUR LAWS:
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.ai.commands.rollback.name"),
+        description_localizations=localise("cog.ai.commands.rollback.desc"),
+    )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
+    async def rollback(
+        self,
+        ctx: discord.ApplicationContext,
+    ):
+        udata = self.get_udata(self.get_udata_id(ctx))
+        self.udata[self.get_udata_id(ctx)] = udata
+
+        if len(udata["ai"][0]) > 1:
+            udata["ai"][0] = udata["ai"][0][:-2]
+
+        self.db.upsert(
+            {
+                "key": str(self.get_udata_id(ctx)),
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
+        )
+
+        await ctx.respond(
+            localise(
+                "cog.ai.answers.context.rollback", ctx.interaction.locale
+            ).format(lawset=lawset)
+        )
+
+    @cmds.command(
+        guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.ai.commands.view_lawset.name"),
         description_localizations=localise("cog.ai.commands.view_lawset.desc"),
     )

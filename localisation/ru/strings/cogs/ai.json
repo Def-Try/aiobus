@@ -64,7 +64,6 @@
                         "answers": {
                                 "current_laws": "Текущие законы ИИ:\n{laws}",
                                 "change_laws": {
-                                        "not_allowed": "Извините, данная операция вам недоступна",
                                         "remove": "Удалён закон {law}",
                                         "set": "Обновлён закон {law}: \"{text}\"",
                                         "upload": "Загружен новый закон {law}: \"{text}\"",
