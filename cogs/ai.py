@@ -15,8 +15,6 @@ from localisation import localise
 class AICog(commands.Cog, name="ai"):
     author = "googer_"
 
-    ai_upload_operators = [891289716501119016, 650741976085299211, 1040666659196768256]
-
     def __init__(self, bot):
         self.bot = bot
 
