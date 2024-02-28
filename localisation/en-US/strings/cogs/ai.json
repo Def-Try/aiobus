@@ -59,6 +59,10 @@
                                 "lawsets": {
                                         "name": "lawsets",
                                         "desc": "View all available lawsets."
+                                },
+                                "rollback": {
+                                        "name": "rollback",
+                                        "desc": "Remove last 2 messages from context."
                                 }
                         },
                         "answers": {
