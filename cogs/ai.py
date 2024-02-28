@@ -380,9 +380,9 @@ YOUR LAWS:
         )
 
         await ctx.respond(
-            localise(
-                "cog.ai.answers.context.rollback", ctx.interaction.locale
-            ).format(lawset=lawset)
+            localise("cog.ai.answers.context.rollback", ctx.interaction.locale).format(
+                lawset=lawset
+            )
         )
 
     @cmds.command(
