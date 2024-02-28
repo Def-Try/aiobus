@@ -1,6 +1,5 @@
 import time
 
-
 import discord
 from discord.ext import commands
 from openai import AsyncOpenAI
@@ -148,9 +147,11 @@ YOUR LAWS:
         return self.udata.get(
             str(udataid),
             {
-            "ai": 
-                [[{"role": "system", "content": self.template}], dict(self.default_laws)],
-            "settings": {"allowmode": "blacklist", "list": []}
+                "ai": [
+                    [{"role": "system", "content": self.template}],
+                    dict(self.default_laws),
+                ],
+                "settings": {"allowmode": "blacklist", "list": []},
             },
         )
 
@@ -173,9 +174,9 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
         )
 
         await ctx.respond(
@@ -206,9 +207,7 @@ YOUR LAWS:
         ),
         law: discord.Option(
             str,
-            name_localizations=localise(
-                "cog.ai.commands.change_laws.options.law.name"
-            ),
+            name_localizations=localise("cog.ai.commands.change_laws.options.law.name"),
             description=localise(
                 "cog.ai.commands.change_laws.options.law.desc", DEFAULT_LOCALE
             ),
@@ -232,9 +231,9 @@ YOUR LAWS:
             self.db.upsert(
                 {
                     "key": str(self.get_udata_id(ctx)),
-                    "data": self.udata[self.get_udata_id(ctx)]
-                }, 
-                Query().key == self.get_udata_id(ctx)
+                    "data": self.udata[self.get_udata_id(ctx)],
+                },
+                Query().key == self.get_udata_id(ctx),
             )
             await ctx.respond(
                 localise(
@@ -250,12 +249,12 @@ YOUR LAWS:
                 {"role": "system", "content": "Law update: Law " + order + " removed."}
             )
             self.db.upsert(
-            {
-                "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
-        )
+                {
+                    "key": str(self.get_udata_id(ctx)),
+                    "data": self.udata[self.get_udata_id(ctx)],
+                },
+                Query().key == self.get_udata_id(ctx),
+            )
             await ctx.respond(
                 localise(
                     "cog.ai.answers.change_laws.remove", ctx.interaction.locale
@@ -269,12 +268,12 @@ YOUR LAWS:
                 {"role": "system", "content": "Law update: Law " + order + " updated."}
             )
             self.db.upsert(
-            {
-                "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
-        )
+                {
+                    "key": str(self.get_udata_id(ctx)),
+                    "data": self.udata[self.get_udata_id(ctx)],
+                },
+                Query().key == self.get_udata_id(ctx),
+            )
             await ctx.respond(
                 localise(
                     "cog.ai.answers.change_laws.set", ctx.interaction.locale
@@ -289,9 +288,9 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
         )
         await ctx.respond(
             localise(
@@ -358,9 +357,9 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
         )
 
         await ctx.respond(
@@ -434,9 +433,9 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
         )
 
         await ctx.respond(
@@ -462,7 +461,7 @@ YOUR LAWS:
                 localise("cog.ai.answers.context.empty", ctx.interaction.locale)
             )
             return
-        while sum([len(v['content'])+len(v['role']) for v in messages]) > 2000-100:
+        while sum([len(v["content"]) + len(v["role"]) for v in messages]) > 2000 - 100:
             messages = messages[:-1]
             skipped += 1
         if messages == []:
@@ -474,23 +473,22 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(ctx)),
-                "data": self.udata[self.get_udata_id(ctx)]
-            }, 
-            Query().key == self.get_udata_id(ctx)
+                "data": self.udata[self.get_udata_id(ctx)],
+            },
+            Query().key == self.get_udata_id(ctx),
         )
 
         msgctx = ""
         for message in messages:
             if message["role"] == "assistant":
                 msgctx += "googerai: "
-            msgctx += message["content"]+"\n"
+            msgctx += message["content"] + "\n"
         msgctx = msgctx.strip()
 
         await ctx.respond(
             localise("cog.ai.answers.context.context", ctx.interaction.locale).format(
-                context=msgctx,
-                skipped=skipped
-                )
+                context=msgctx, skipped=skipped
+            )
         )
 
     @cmds.command(
@@ -559,9 +557,9 @@ YOUR LAWS:
         self.db.upsert(
             {
                 "key": str(self.get_udata_id(message)),
-                "data": self.udata[self.get_udata_id(message)]
-            }, 
-            Query().key == self.get_udata_id(message)
+                "data": self.udata[self.get_udata_id(message)],
+            },
+            Query().key == self.get_udata_id(message),
         )
 
         self.cooldowns[message.guild.id] = time.time() + 10
