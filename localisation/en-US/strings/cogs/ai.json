@@ -79,7 +79,8 @@
                                 "context": {
                                         "context": "Context:\n```\n{context}\n```\nand {skipped} more messages skipped",
                                         "too_long": "Context is too long to be displayed",
-                                        "empty": "Context is empty!"
+                                        "empty": "Context is empty!",
+                                        "rollback": "Rolled back 2 messages from context"
                                 }
                         }
                 }
