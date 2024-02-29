@@ -189,12 +189,12 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.draw.name"),
         description_localizations=localise("cog.ai.commands.draw.desc"),
     )
-    async def draw(self, ctx: discord.ApplicationContext,
+    async def draw(
+        self,
+        ctx: discord.ApplicationContext,
         prompt: discord.Option(
             str,
-            name_localizations=localise(
-                "cog.ai.commands.draw.options.prompt.name"
-            ),
+            name_localizations=localise("cog.ai.commands.draw.options.prompt.name"),
             description=localise(
                 "cog.ai.commands.draw.options.prompt.desc", DEFAULT_LOCALE
             ),
