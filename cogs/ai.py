@@ -1,6 +1,7 @@
 import time
 
 import discord
+import aiohttp
 from discord.ext import commands
 from openai import AsyncOpenAI
 from tinydb import Query
