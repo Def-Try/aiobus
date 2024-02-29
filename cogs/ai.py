@@ -190,6 +190,7 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.draw.name"),
         description_localizations=localise("cog.ai.commands.draw.desc"),
     )
+    @commands.cooldown(2, 60, commands.BucketType.user)
     async def draw(
         self,
         ctx: discord.ApplicationContext,
