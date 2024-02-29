@@ -14,6 +14,16 @@
                                         "name": "laws",
                                         "desc": "Directly view AI laws."
                                 },
+                                "draw": {
+                                        "name": "draw",
+                                        "desc": "Draw something",
+                                        "options": {
+                                                "prompt": {
+                                                        "name": "prompt",
+                                                        "desc": "Your image prompt."
+                                                }
+                                        }
+                                },
                                 "context": {
                                         "name": "context",
                                         "desc": "Get AI messages context"
@@ -84,6 +94,9 @@
                                         "too_long": "Context is too long to be displayed",
                                         "empty": "Context is empty!",
                                         "rollback": "Rolled back 2 messages from context"
+                                },
+                                "draw": {
+                                	"nsfw_detected": "Potential NSFW content detected. Try again in NSFW channel or change your prompt."
                                 }
                         }
                 }

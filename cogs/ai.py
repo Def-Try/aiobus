@@ -185,6 +185,47 @@ YOUR LAWS:
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.ai.commands.draw.name"),
+        description_localizations=localise("cog.ai.commands.draw.desc"),
+    )
+    async def draw(self, ctx: discord.ApplicationContext,
+        prompt: discord.Option(
+            str,
+            name_localizations=localise(
+                "cog.ai.commands.draw.options.prompt.name"
+            ),
+            description=localise(
+                "cog.ai.commands.draw.options.prompt.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.ai.commands.draw.options.prompt.desc"
+            ),
+        ),
+    ):
+        async with aiohttp.ClientSession() as session:
+            response = await session.post(
+                url="https://fal.run/fal-ai/fast-lightning-sdxl",
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Key {TOKENS['fal']}",
+                },
+                data=json.dumps({"prompt": prompt, "enable_safety_checker": True}),
+            )
+            response = await response.json()
+
+        # TODO: отправка файлом, не ссылки
+        if ctx.channel.nsfw:
+            await ctx.respond(response["images"][0]["url"])
+            return
+        if not any(response["has_nsfw_concepts"]):
+            await ctx.respond(response["images"][0]["url"])
+            return
+        await ctx.respond(
+            localise("cog.ai.answers.draw.nsfw_detected", ctx.interaction.locale)
+        )
+
+    @cmds.command(
+        guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.ai.commands.change_laws.name"),
         description_localizations=localise("cog.ai.commands.change_laws.desc"),
     )
