@@ -95,11 +95,11 @@ invoker = discord_bot.invoke_application_command
 async def on_application_command(ctx: commands.Context):
     basic_cog = discord_bot.get_cog("basic")
     if not basic_cog:
-        return  # basic cog isn't loaded, which is bad but we can handle that
+        return await invoker(ctx)  # basic cog isn't loaded, which is bad but we can handle that
     if not hasattr(ctx, "guild"):
-        return  # we're probably running in DMs, so we'll ignore that case
+        return await invoker(ctx)  # we're probably running in DMs, so we'll ignore that case
     if hasattr(ctx.command, "ignores_allowance") and ctx.command.ignores_allowance:
-        return  # command wants to ignore these limits so we dont try to stop it
+        return await invoker(ctx)  # command wants to ignore these limits so we dont try to stop it
     server_cfg = basic_cog.configs[str(ctx.guild.id)]["command_invoke"]
     channel = None
     if isinstance(ctx.channel.type, discord.Thread):

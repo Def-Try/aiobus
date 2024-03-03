@@ -106,13 +106,13 @@ class AdminHelp(commands.Cog, name="adminhelp"):
             allowed_mentions=discord.AllowedMentions.none(),
         )
 
+    @ignores_allowed_channels()
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
         name_localizations=localise("cog.adminhelp.commands.ahelp.name"),
         description_localizations=localise("cog.adminhelp.commands.ahelp.desc"),
     )
     @commands.guild_only()
-    @ignores_allowed_channels()
     @commands.cooldown(1, 120, commands.BucketType.user)
     async def ahelp(
         self,
