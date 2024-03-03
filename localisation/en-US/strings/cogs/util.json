@@ -1,0 +1,36 @@
+{
+        "cog": {
+                "util": {
+                        "info": {
+                                "desc": "Various commands that are not worth to be in dedicated cog.",
+                                "brief": "Util commands"
+                        },
+                        "command_group": {
+                                "name": "util",
+                                "desc": "Util commands"
+                        },
+                        "commands": {
+                                "googlethatforyou": {
+                                        "name": "googlethatforyou",
+                                        "desc": "Let Me Google That For You™️",
+                                        "options": {
+                                                "question": {
+                                                        "name": "question",
+                                                        "desc": "What should I google?"
+                                                },
+                                                "asker": {
+                                                        "name": "asker",
+                                                        "desc": "Searching because someone else asked?"
+                                                }
+                                        }
+                                }
+                        },
+                        "answers": {
+                                "googlethatforyou": {
+                                        "noasker": "Let me google that for you...\n[here!](<{link}>)",
+                                        "wasker": "Let me google that for you, {asker}...\n[here!](<{link}>)"
+                                }
+                        }
+                }
+        }
+}
