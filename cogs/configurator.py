@@ -442,8 +442,8 @@ class Configurator(commands.Cog, name="configurator"):
             localise(
                 "cog.configurator.answers.googerai.show", ctx.interaction.locale
             ).format(
-                mode=udata["allowmode"],
-                channels=", ".join([f"<#{ch}>" for ch in udata["list"]]),
+                mode=udata["settings"]["allowmode"],
+                channels=", ".join([f"<#{ch}>" for ch in udata["settings"]["list"]]),
             )
         )
 
