@@ -143,21 +143,39 @@ class Basic(commands.Cog, name="basic"):
     @commands.Cog.listener("on_ready")
     async def complete_init(self):
         for servercfg in self.config_db:
-            self.configs[servercfg['key']] = servercfg['data']
+            self.configs[servercfg["key"]] = servercfg["data"]
         for guild in self.bot.guilds:
-            if str(guild.id) in self.configs: continue
-            self.config_db.insert({"key": str(guild.id), 'data': {"command_invoke": {"mode": "blacklist", "channels": []}}})
-            self.configs[str(guild.id)] = {"command_invoke": {"mode": "blacklist", "channels": []}}
+            if str(guild.id) in self.configs:
+                continue
+            self.config_db.insert(
+                {
+                    "key": str(guild.id),
+                    "data": {"command_invoke": {"mode": "blacklist", "channels": []}},
+                }
+            )
+            self.configs[str(guild.id)] = {
+                "command_invoke": {"mode": "blacklist", "channels": []}
+            }
 
     @commands.Cog.listener("on_guild_join")
     async def generate_default_config(self, guild):
         if str(guild.id) in self.configs:
             return
-        self.config_db.insert({"key": str(guild.id), 'data': {"command_invoke": {"mode": "blacklist", "channels": []}}})
-        self.configs[str(guild.id)] = {"command_invoke": {"mode": "blacklist", "channels": []}}
+        self.config_db.insert(
+            {
+                "key": str(guild.id),
+                "data": {"command_invoke": {"mode": "blacklist", "channels": []}},
+            }
+        )
+        self.configs[str(guild.id)] = {
+            "command_invoke": {"mode": "blacklist", "channels": []}
+        }
 
     async def update_config(self, guild):
-        self.config_db.update(Query().key == str(guild.id), {"key": str(guild.id), 'data': self.configs[str(guild.id)]})
+        self.config_db.update(
+            Query().key == str(guild.id),
+            {"key": str(guild.id), "data": self.configs[str(guild.id)]},
+        )
 
     @tasks.loop(seconds=0.5)
     async def listen_ping(self):

@@ -217,7 +217,9 @@ YOUR LAWS:
             response = await response.json()
 
         # TODO: отправка файлом, не ссылки
-        if (isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw) or ctx.channel.nsfw:
+        if (
+            isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw
+        ) or ctx.channel.nsfw:
             await ctx.respond(response["images"][0]["url"])
             return
         if not any(response["has_nsfw_concepts"]):
@@ -581,9 +583,15 @@ YOUR LAWS:
         udata = self.get_udata(self.get_udata_id(message))
         self.udata[self.get_udata_id(message)] = udata
 
-        if udata["settings"]["allowmode"] == "whitelist" and message.channel.id not in udata["list"]:
+        if (
+            udata["settings"]["allowmode"] == "whitelist"
+            and message.channel.id not in udata["list"]
+        ):
             return
-        if udata["settings"]["allowmode"] == "blacklist" and message.channel.id in udata["list"]:
+        if (
+            udata["settings"]["allowmode"] == "blacklist"
+            and message.channel.id in udata["list"]
+        ):
             return
 
         messages = udata["ai"][0]
