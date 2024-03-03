@@ -7,6 +7,7 @@ from config import CONFIG
 from localisation import DEFAULT_LOCALE
 from localisation import localise
 
+from utilities import ignores_allowed_channels
 
 class AdminHelp(commands.Cog, name="adminhelp"):
     author = "googer_"
@@ -111,6 +112,7 @@ class AdminHelp(commands.Cog, name="adminhelp"):
         description_localizations=localise("cog.adminhelp.commands.ahelp.desc"),
     )
     @commands.guild_only()
+    @ignores_allowed_channels()
     @commands.cooldown(1, 120, commands.BucketType.user)
     async def ahelp(
         self,
