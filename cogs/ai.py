@@ -585,12 +585,12 @@ YOUR LAWS:
 
         if (
             udata["settings"]["allowmode"] == "whitelist"
-            and message.channel.id not in udata["list"]
+            and message.channel.id not in udata["settings"]["list"]
         ):
             return
         if (
             udata["settings"]["allowmode"] == "blacklist"
-            and message.channel.id in udata["list"]
+            and message.channel.id in udata["settings"]["list"]
         ):
             return
 
