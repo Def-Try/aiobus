@@ -88,39 +88,42 @@ def reload_cogs(bot):
 
     return unload_fails + load_fails, bot.loaded_cogs, timings
 
+
 invoker = discord_bot.invoke_application_command
 
-async def on_application_command(
-    ctx: commands.Context
-):
+
+async def on_application_command(ctx: commands.Context):
     basic_cog = discord_bot.get_cog("basic")
     if not basic_cog:
-        return # basic cog isn't loaded, which is bad but we can handle that
+        return  # basic cog isn't loaded, which is bad but we can handle that
     if not hasattr(ctx, "guild"):
-        return # we're probably running in DMs, so we'll ignore that case
+        return  # we're probably running in DMs, so we'll ignore that case
     server_cfg = basic_cog.configs[str(ctx.guild.id)]["command_invoke"]
     channel = None
     if isinstance(ctx.channel.type, discord.Thread):
         channel = ctx.channel.parent
     else:
         channel = ctx.channel
-    if server_cfg["mode"] == "blacklist": # server command invokation is in blacklist mode
+    if (
+        server_cfg["mode"] == "blacklist"
+    ):  # server command invokation is in blacklist mode
         if channel.id in server_cfg["channels"]:
             await ctx.respond(
                 localise("generic.error.blacklisted", ctx.interaction.locale),
-                ephemeral=True
+                ephemeral=True,
             )
-            return # channel is blacklisted...
+            return  # channel is blacklisted...
         return await invoker(ctx)
     # server command invokation is in whitelist mode
     if channel.id not in server_cfg["channels"]:
         await ctx.respond(
             localise("generic.error.notwhitelisted", ctx.interaction.locale),
-            ephemeral=True
+            ephemeral=True,
         )
-        return # channel is not whitelisted...
+        return  # channel is not whitelisted...
     return await invoker(ctx)
-        
+
+
 discord_bot.invoke_application_command = on_application_command
 
 
