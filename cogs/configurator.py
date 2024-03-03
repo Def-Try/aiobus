@@ -174,6 +174,11 @@ class Configurator(commands.Cog, name="configurator"):
             choices=['whitelist', 'blacklist']
         ),
     ):
+        if not self.ai_cog:
+            await ctx.respond(
+                localise("cog.configurator.answers.googerai.unavaliable", ctx.interaction.locale)
+            )
+            return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
         self.ai_cog.udata[self.get_udata_id(ctx)] = udata
 
@@ -210,6 +215,11 @@ class Configurator(commands.Cog, name="configurator"):
             )
         ),
     ):
+        if not self.ai_cog:
+            await ctx.respond(
+                localise("cog.configurator.answers.googerai.unavaliable", ctx.interaction.locale)
+            )
+            return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
         self.ai_cog.udata[self.get_udata_id(ctx)] = udata
 
@@ -246,6 +256,11 @@ class Configurator(commands.Cog, name="configurator"):
             )
         ),
     ):
+        if not self.ai_cog:
+            await ctx.respond(
+                localise("cog.configurator.answers.googerai.unavaliable", ctx.interaction.locale)
+            )
+            return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
         self.ai_cog.udata[self.get_udata_id(ctx)] = udata
 
@@ -272,6 +287,11 @@ class Configurator(commands.Cog, name="configurator"):
     )
     @commands.guild_only()
     async def show(self, ctx: discord.ApplicationContext):
+        if not self.ai_cog:
+            await ctx.respond(
+                localise("cog.configurator.answers.googerai.unavaliable", ctx.interaction.locale)
+            )
+            return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
         self.ai_cog.udata[self.get_udata_id(ctx)] = udata
         await ctx.respond(

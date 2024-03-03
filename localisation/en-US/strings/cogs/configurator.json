@@ -103,6 +103,7 @@
                                         "show": "Mode: {mode}\nChannels: {channels}"
                                 },
                                 "googerai": {
+                                        "unavailable": "CONFIGURATION UNAVAILABLE",
                                         "mode_set": "Mode set.",
                                         "channel_added": "Channel added.",
                                         "channel_removed": "Channel removed.",

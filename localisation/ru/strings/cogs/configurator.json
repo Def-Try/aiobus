@@ -103,6 +103,7 @@
                                         "show": "Режим: {mode}\nКаналы: {channels}"
                                 },
                                 "googerai": {
+                                        "unavailable": "КОНФИГУРАЦИЯ НЕДОСТУПНА",
                                         "mode_set": "Режим установлен",
                                         "channel_added": "Канал добавлен.",
                                         "channel_removed": "Канал удалён.",
