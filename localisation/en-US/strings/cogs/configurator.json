@@ -12,6 +12,10 @@
                                         "command_execution": {
                                                 "name": "execution",
                                                 "desc": "Modify behaviour of command execution."
+                                        },
+                                        "googerai": {
+                                                "name": "googerai",
+                                                "desc": "Modify behaviour of googerAI."
                                         }
                                 }
                         },
@@ -51,11 +55,54 @@
                                                 "name": "show",
                                                 "desc": "Show command execution config"
                                         }
+                                },
+                                "googerai": {
+                                        "set_mode": {
+                                                "name": "set_mode",
+                                                "desc": "Set answering mode",
+                                                "options": {
+                                                        "mode": {
+                                                                "name": "mode",
+                                                                "desc": "Answer allowance mode"
+                                                        }
+                                                }
+                                        },
+                                        "add_channel": {
+                                                "name": "add_channel",
+                                                "desc": "Add channel to the list",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "channel",
+                                                                "desc": "Channel to add"
+                                                        }
+                                                }
+                                        },
+                                        "remove_channel": {
+                                                "name": "remove_channel",
+                                                "desc": "Remove channel from the list",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "channel",
+                                                                "desc": "Channel to remove"
+                                                        }
+                                                }
+                                        },
+                                        "show": {
+                                                "name": "show",
+                                                "desc": "Show googerai config"
+                                        }
                                 }
                         },
                         "answers": {
                                 "command_execution": {
                                         "you_dont_want_to_do_this": "You do not want to do this. Trust me.",
+                                        "mode_set": "Mode set.",
+                                        "channel_added": "Channel added.",
+                                        "channel_removed": "Channel removed.",
+                                        "channel_not_in_list": "Channel not in list.",
+                                        "show": "Mode: {mode}\nChannels: {channels}"
+                                },
+                                "googerai": {
                                         "mode_set": "Mode set.",
                                         "channel_added": "Channel added.",
                                         "channel_removed": "Channel removed.",

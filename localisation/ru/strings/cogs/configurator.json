@@ -12,6 +12,10 @@
                                         "command_execution": {
                                                 "name": "выполнение",
                                                 "desc": "Изменить поведение бота при выполнении команд"
+                                        },
+                                        "googerai": {
+                                                "name": "googerai",
+                                                "desc": "Изменить поведение googerAI."
                                         }
                                 }
                         },
@@ -51,11 +55,54 @@
                                                 "name": "показать",
                                                 "desc": "Показать настройки исполнения команд"
                                         }
+                                },
+                                "command_execution": {
+                                        "set_mode": {
+                                                "name": "установить_режим",
+                                                "desc": "Установить режим отвечания",
+                                                "options": {
+                                                        "mode": {
+                                                                "name": "режим",
+                                                                "desc": "Режим отвечания"
+                                                        }
+                                                }
+                                        },
+                                        "add_channel": {
+                                                "name": "добавить_канал",
+                                                "desc": "Добавить канал в список.",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "канал",
+                                                                "desc": "Канал для добавления"
+                                                        }
+                                                }
+                                        },
+                                        "remove_channel": {
+                                                "name": "удалить_канал",
+                                                "desc": "Удалить канал из списка",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "канал",
+                                                                "desc": "Канал для удаления"
+                                                        }
+                                                }
+                                        },
+                                        "show": {
+                                                "name": "показать",
+                                                "desc": "Показать настройки googerAI"
+                                        }
                                 }
                         },
                         "answers": {
                                 "command_execution": {
                                         "you_dont_want_to_do_this": "Ты не хочешь делать этого. Поверь мне.",
+                                        "mode_set": "Режим установлен",
+                                        "channel_added": "Канал добавлен.",
+                                        "channel_removed": "Канал удалён.",
+                                        "channel_not_in_list": "Канал не в списке.",
+                                        "show": "Режим: {mode}\nКаналы: {channels}"
+                                },
+                                "googerai": {
                                         "mode_set": "Режим установлен",
                                         "channel_added": "Канал добавлен.",
                                         "channel_removed": "Канал удалён.",

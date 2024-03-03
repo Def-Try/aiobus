@@ -580,6 +580,12 @@ YOUR LAWS:
 
         udata = self.get_udata(self.get_udata_id(message))
         self.udata[self.get_udata_id(message)] = udata
+
+        if udata["settings"]["allowmode"] == "whitelist" and message.channel.id not in udata["list"]:
+            return
+        if udata["settings"]["allowmode"] == "blacklist" and message.channel.id in udata["list"]:
+            return
+
         messages = udata["ai"][0]
         messages.append(
             {

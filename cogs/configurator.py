@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+from tinydb import Query
+
 from config import CONFIG
 from localisation import localise
 from localisation import DEFAULT_LOCALE
@@ -14,6 +16,7 @@ class Configurator(commands.Cog, name="configurator"):
         self.basic_cog = self.bot.get_cog("basic")
         if not self.basic_cog:
             raise Exception("Configurator cog is not able to work without basic cog loaded!!!!")
+        self.ai_cog = self.bot.get_cog("ai")
 
     cmds = discord.SlashCommandGroup(
         "configurator",
@@ -26,6 +29,12 @@ class Configurator(commands.Cog, name="configurator"):
         "",
         name_localizations=localise("cog.configurator.command_group.sub.command_execution.name"),
         description_localizations=localise("cog.configurator.command_group.sub.command_execution.desc"),
+    )
+    cmdgraicfg = cmds.create_subgroup(
+        "googerai",
+        "",
+        name_localizations=localise("cog.configurator.command_group.sub.googerai.name"),
+        description_localizations=localise("cog.configurator.command_group.sub.googerai.desc"),
     )
 
     @cmdinvkcfg.command(
@@ -142,6 +151,132 @@ class Configurator(commands.Cog, name="configurator"):
         await ctx.respond(
             localise("cog.configurator.answers.command_execution.show", ctx.interaction.locale).format(
                 mode=cfg["mode"], channels=", ".join([f"<#{ch}>" for ch in cfg["channels"]])
+            )
+        )
+
+    @cmdgraicfg.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.configurator.commands.googerai.set_mode.name"),
+        description_localizations=localise("cog.configurator.commands.googerai.set_mode.desc"),
+    )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
+    async def set_mode(self, ctx: discord.ApplicationContext,
+        mode: discord.Option(
+            str,
+            name_localizations=localise("cog.configurator.commands.googerai.set_mode.options.mode.name"),
+            description=localise(
+                "cog.configurator.commands.googerai.set_mode.options.mode.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.configurator.commands.googerai.set_mode.options.mode.desc"
+            ),
+            choices=['whitelist', 'blacklist']
+        ),
+    ):
+        udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
+        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+
+        udata["settings"]["allowmode"] = mode
+
+        self.db.upsert(
+            {
+                "key": str(self.ai_cog.get_udata_id(ctx)),
+                "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
+            },
+            Query().ai_cog.key == self.ai_cog.get_udata_id(ctx),
+        )
+
+        await ctx.respond(
+            localise("cog.configurator.answers.googerai.mode_set", ctx.interaction.locale)
+        )
+
+    @cmdgraicfg.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.configurator.commands.googerai.add_channel.name"),
+        description_localizations=localise("cog.configurator.commands.googerai.add_channel.desc"),
+    )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
+    async def add_channel(self, ctx: discord.ApplicationContext,
+        channel: discord.Option(
+            discord.TextChannel,
+            name_localizations=localise("cog.configurator.commands.googerai.add_channel.options.channel.name"),
+            description=localise(
+                "cog.configurator.commands.googerai.add_channel.options.channel.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.configurator.commands.googerai.add_channel.options.channel.desc"
+            )
+        ),
+    ):
+        udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
+        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+
+        udata["settings"]["list"].append(channel.id)
+        
+        self.db.upsert(
+            {
+                "key": str(self.ai_cog.get_udata_id(ctx)),
+                "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
+            },
+            Query().ai_cog.key == self.ai_cog.get_udata_id(ctx),
+        )
+
+        await ctx.respond(
+            localise("cog.configurator.answers.googerai.channel_added", ctx.interaction.locale)
+        )
+
+    @cmdgraicfg.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.configurator.commands.googerai.remove_channel.name"),
+        description_localizations=localise("cog.configurator.commands.googerai.remove_channel.desc"),
+    )
+    @commands.has_guild_permissions(administrator=True)
+    @commands.guild_only()
+    async def remove_channel(self, ctx: discord.ApplicationContext,
+        channel: discord.Option(
+            discord.TextChannel,
+            name_localizations=localise("cog.configurator.commands.googerai.remove_channel.options.channel.name"),
+            description=localise(
+                "cog.configurator.commands.googerai.remove_channel.options.channel.desc", DEFAULT_LOCALE
+            ),
+            description_localizations=localise(
+                "cog.configurator.commands.googerai.remove_channel.options.channel.desc"
+            )
+        ),
+    ):
+        udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
+        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+
+        udata["settings"]["list"].pop(
+            udata["settings"]["list"].index(channel.id)
+        )
+
+        self.db.upsert(
+            {
+                "key": str(self.ai_cog.get_udata_id(ctx)),
+                "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
+            },
+            Query().ai_cog.key == self.ai_cog.get_udata_id(ctx),
+        )
+
+        await ctx.respond(
+            localise("cog.configurator.answers.googerai.channel_removed", ctx.interaction.locale)
+        )
+
+    @cmdgraicfg.command(
+        guild_ids=CONFIG["g_ids"],
+        name_localizations=localise("cog.configurator.commands.googerai.show.name"),
+        description_localizations=localise("cog.configurator.commands.googerai.show.desc"),
+    )
+    @commands.guild_only()
+    async def show(self, ctx: discord.ApplicationContext):
+        udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
+        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+        await ctx.respond(
+            localise("cog.configurator.answers.googerai.show", ctx.interaction.locale).format(
+                mode=cfg["allowmode"], channels=", ".join([f"<#{ch}>" for ch in cfg["list"]])
             )
         )
 
