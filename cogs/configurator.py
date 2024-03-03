@@ -293,7 +293,7 @@ class Configurator(commands.Cog, name="configurator"):
 
         udata["settings"]["allowmode"] = mode
 
-        self.db.upsert(
+        self.ai_cog.db.upsert(
             {
                 "key": str(self.ai_cog.get_udata_id(ctx)),
                 "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
@@ -348,7 +348,7 @@ class Configurator(commands.Cog, name="configurator"):
 
         udata["settings"]["list"].append(channel.id)
 
-        self.db.upsert(
+        self.ai_cog.db.upsert(
             {
                 "key": str(self.ai_cog.get_udata_id(ctx)),
                 "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
@@ -404,7 +404,7 @@ class Configurator(commands.Cog, name="configurator"):
 
         udata["settings"]["list"].pop(udata["settings"]["list"].index(channel.id))
 
-        self.db.upsert(
+        self.ai_cog.db.upsert(
             {
                 "key": str(self.ai_cog.get_udata_id(ctx)),
                 "data": self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)],
