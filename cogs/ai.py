@@ -217,7 +217,7 @@ YOUR LAWS:
             response = await response.json()
 
         # TODO: отправка файлом, не ссылки
-        if ctx.channel.nsfw:
+        if (isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw) or ctx.channel.nsfw:
             await ctx.respond(response["images"][0]["url"])
             return
         if not any(response["has_nsfw_concepts"]):
