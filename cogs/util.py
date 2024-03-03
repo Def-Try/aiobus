@@ -1,10 +1,11 @@
-import discord
-from discord.ext import commands
 import urllib.parse
 
+import discord
+from discord.ext import commands
+
 from config import CONFIG
-from localisation import localise
 from localisation import DEFAULT_LOCALE
+from localisation import localise
 
 
 class Utils(commands.Cog, name="util"):
@@ -25,12 +26,17 @@ class Utils(commands.Cog, name="util"):
         name_localizations=localise("cog.util.commands.googlethatforyou.name"),
         description_localizations=localise("cog.util.commands.googlethatforyou.desc"),
     )
-    async def cmd(self, ctx: discord.ApplicationContext,
+    async def cmd(
+        self,
+        ctx: discord.ApplicationContext,
         question: discord.Option(
             str,
-            name_localizations=localise("cog.util.commands.googlethatforyou.options.question.name"),
+            name_localizations=localise(
+                "cog.util.commands.googlethatforyou.options.question.name"
+            ),
             description=localise(
-                "cog.util.commands.fgooglethatforyou.options.question.desc", DEFAULT_LOCALE
+                "cog.util.commands.fgooglethatforyou.options.question.desc",
+                DEFAULT_LOCALE,
             ),
             description_localizations=localise(
                 "cog.util.commands.googlethatforyou.options.question.desc"
@@ -38,24 +44,32 @@ class Utils(commands.Cog, name="util"):
         ),
         asker: discord.Option(
             discord.abc.User,
-            name_localizations=localise("cog.util.commands.googlethatforyou.options.asker.name"),
+            name_localizations=localise(
+                "cog.util.commands.googlethatforyou.options.asker.name"
+            ),
             description=localise(
                 "cog.util.commands.fgooglethatforyou.options.asker.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
                 "cog.util.commands.googlethatforyou.options.asker.desc"
             ),
-        )=None
+        ) = None,
     ):
-        question = urllib.parse.quote(question, safe='')
+        question = urllib.parse.quote(question, safe="")
         if asker is None:
             await ctx.respond(
-                localise("cog.util.answers.googlethatforyou.noasker", ctx.interaction.locale).format(link=f"https://googlethatforyou.com/?q={question}")
+                localise(
+                    "cog.util.answers.googlethatforyou.noasker", ctx.interaction.locale
+                ).format(link=f"https://googlethatforyou.com/?q={question}")
             )
             return
         await ctx.respond(
-                localise("cog.util.answers.googlethatforyou.wasker", ctx.interaction.locale).format(link=f"https://googlethatforyou.com/?q={question}", asker=asker.mention)
+            localise(
+                "cog.util.answers.googlethatforyou.wasker", ctx.interaction.locale
+            ).format(
+                link=f"https://googlethatforyou.com/?q={question}", asker=asker.mention
             )
+        )
 
 
 def setup(bot):
