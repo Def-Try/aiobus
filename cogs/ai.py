@@ -578,8 +578,6 @@ YOUR LAWS:
             )
             return
 
-        self.cooldowns[message.guild.id] = 2**31 - 1
-
         udata = self.get_udata(self.get_udata_id(message))
         self.udata[self.get_udata_id(message)] = udata
 
@@ -593,6 +591,8 @@ YOUR LAWS:
             and message.channel.id in udata["settings"]["list"]
         ):
             return
+
+        self.cooldowns[message.guild.id] = 2**31 - 1
 
         messages = udata["ai"][0]
         messages.append(
