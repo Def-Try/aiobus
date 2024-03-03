@@ -180,7 +180,7 @@ class Configurator(commands.Cog, name="configurator"):
             )
             return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
-        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+        self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)] = udata
 
         udata["settings"]["allowmode"] = mode
 
@@ -221,7 +221,7 @@ class Configurator(commands.Cog, name="configurator"):
             )
             return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
-        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+        self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)] = udata
 
         udata["settings"]["list"].append(channel.id)
         
@@ -262,7 +262,7 @@ class Configurator(commands.Cog, name="configurator"):
             )
             return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
-        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+        self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)] = udata
 
         udata["settings"]["list"].pop(
             udata["settings"]["list"].index(channel.id)
@@ -293,7 +293,7 @@ class Configurator(commands.Cog, name="configurator"):
             )
             return
         udata = self.ai_cog.get_udata(self.ai_cog.get_udata_id(ctx))
-        self.ai_cog.udata[self.get_udata_id(ctx)] = udata
+        self.ai_cog.udata[self.ai_cog.get_udata_id(ctx)] = udata
         await ctx.respond(
             localise("cog.configurator.answers.googerai.show", ctx.interaction.locale).format(
                 mode=cfg["allowmode"], channels=", ".join([f"<#{ch}>" for ch in cfg["list"]])
