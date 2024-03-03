@@ -8,6 +8,8 @@ import time
 import discord
 from discord.ext import commands
 from discord.ext import tasks
+from tinydb import Query
+from tinydb import TinyDB
 
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
@@ -108,6 +110,9 @@ class Basic(commands.Cog, name="basic"):
     def __init__(self, bot):
         self.bot = bot
 
+        self.config_db = TinyDB("databases/config.db")
+        self.configs = {}
+
         self.activity.start()
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -134,6 +139,25 @@ class Basic(commands.Cog, name="basic"):
             self.pinginfo += f"commit {commit}"
         except Exception:
             self.pinginfo += "commit unknown"
+
+    @commands.Cog.listener("on_ready")
+    async def complete_init(self):
+        for servercfg in self.config_db:
+            self.configs[servercfg['key']] = servercfg['data']
+        for guild in self.bot.guilds:
+            if str(guild.id) in self.configs: continue
+            self.config_db.insert({"key": str(guild.id), 'data': {"command_invoke": {"mode": "blacklist", "channels": []}}})
+            self.configs[str(guild.id)] = {"command_invoke": {"mode": "blacklist", "channels": []}}
+
+    @commands.Cog.listener("on_guild_join")
+    async def generate_default_config(self, guild):
+        if str(guild.id) in self.configs:
+            return
+        self.config_db.insert({"key": str(guild.id), 'data': {"command_invoke": {"mode": "blacklist", "channels": []}}})
+        self.configs[str(guild.id)] = {"command_invoke": {"mode": "blacklist", "channels": []}}
+
+    async def update_config(self, guild):
+        self.config_db.update(Query().key == str(guild.id), {"key": str(guild.id), 'data': self.configs[str(guild.id)]})
 
     @tasks.loop(seconds=0.5)
     async def listen_ping(self):

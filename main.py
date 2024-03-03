@@ -88,6 +88,41 @@ def reload_cogs(bot):
 
     return unload_fails + load_fails, bot.loaded_cogs, timings
 
+invoker = discord_bot.invoke_application_command
+
+async def on_application_command(
+    ctx: commands.Context
+):
+    basic_cog = discord_bot.get_cog("basic")
+    if not basic_cog:
+        return # basic cog isn't loaded, which is bad but we can handle that
+    if not hasattr(ctx, "guild"):
+        return # we're probably running in DMs, so we'll ignore that case
+    server_cfg = basic_cog.configs[str(ctx.guild.id)]["command_invoke"]
+    channel = None
+    if isinstance(ctx.channel.type, discord.Thread):
+        channel = ctx.channel.parent
+    else:
+        channel = ctx.channel
+    if server_cfg["mode"] == "blacklist": # server command invokation is in blacklist mode
+        if channel.id in server_cfg["channels"]:
+            await ctx.respond(
+                localise("generic.error.blacklisted", ctx.interaction.locale),
+                ephemeral=True
+            )
+            return # channel is blacklisted...
+        return await invoker(ctx)
+    # server command invokation is in whitelist mode
+    if channel.id not in server_cfg["channels"]:
+        await ctx.respond(
+            localise("generic.error.notwhitelisted", ctx.interaction.locale),
+            ephemeral=True
+        )
+        return # channel is not whitelisted...
+    return await invoker(ctx)
+        
+discord_bot.invoke_application_command = on_application_command
+
 
 @discord_bot.event
 async def on_application_command_error(
@@ -111,6 +146,12 @@ async def on_application_command_error(
         await ctx.respond(
             localise("generic.error.nsfw_required", ctx.interaction.locale)
         )
+        return
+    if isinstance(error, discord.InteractionResponded):
+        # happens in one of three situations:
+        # 1. channel was blacklisted from command execution
+        # 2. bot was ran twice, which is bad because DBs will be out of sync
+        # 3. someone fucked up real bad with his cog.
         return
     raise error
 

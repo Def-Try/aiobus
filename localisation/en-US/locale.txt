@@ -10,3 +10,4 @@ cogs/ai.json
 cogs/adminhelp.json
 cogs/nsfw.json
 cogs/util.json
+cogs/configurator.json

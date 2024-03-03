@@ -1,0 +1,68 @@
+{
+        "cog": {
+                "configurator": {
+                        "info": {
+                                "desc": "Configurator cog. Makes you able to configure bot under guild needs.",
+                                "brief": "Configurator"
+                        },
+                        "command_group": {
+                                "name": "configurator",
+                                "desc": "Configure the bot",
+                                "sub": {
+                                        "command_execution": {
+                                                "name": "execution",
+                                                "desc": "Modify behaviour of command execution."
+                                        }
+                                }
+                        },
+                        "commands": {
+                                "command_execution": {
+                                        "set_mode": {
+                                                "name": "set_mode",
+                                                "desc": "Set execution mode",
+                                                "options": {
+                                                        "mode": {
+                                                                "name": "mode",
+                                                                "desc": "Command execution mode"
+                                                        }
+                                                }
+                                        },
+                                        "add_channel": {
+                                                "name": "add_channel",
+                                                "desc": "Add channel to the list",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "channel",
+                                                                "desc": "Channel to add"
+                                                        }
+                                                }
+                                        },
+                                        "remove_channel": {
+                                                "name": "remove_channel",
+                                                "desc": "Remove channel from the list",
+                                                "options": {
+                                                        "channel": {
+                                                                "name": "channel",
+                                                                "desc": "Channel to remove"
+                                                        }
+                                                }
+                                        },
+                                        "show": {
+                                                "name": "show",
+                                                "desc": "Show command execution config"
+                                        }
+                                }
+                        },
+                        "answers": {
+                                "command_execution": {
+                                        "you_dont_want_to_do_this": "You do not want to do this. Trust me.",
+                                        "mode_set": "Mode set.",
+                                        "channel_added": "Channel added.",
+                                        "channel_removed": "Channel removed.",
+                                        "channel_not_in_list": "Channel not in list.",
+                                        "show": "Mode: {mode}\nChannels: {channels}"
+                                }
+                        }
+                }
+        }
+}

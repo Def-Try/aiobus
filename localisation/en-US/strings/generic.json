@@ -7,7 +7,9 @@
                 "error": {
                         "missing_permissions": "Sorry, you are missing next permissions:\n{permissions}",
                         "cooldown": "Cooldown! Retry after {retry_after} seconds.",
-                        "nsfw_required": "NSFW channel required to run that command!"
+                        "nsfw_required": "NSFW channel required to run that command!",
+                        "blacklisted": "This channel is blacklisted from command execution",
+                        "notwhitelisted": "Command execution is not permitted in this channel"
                 }
         },
         "activities": {
