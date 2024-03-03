@@ -173,8 +173,8 @@ class Basic(commands.Cog, name="basic"):
 
     async def update_config(self, guild):
         self.config_db.update(
-            Query().key == str(guild.id),
             {"key": str(guild.id), "data": self.configs[str(guild.id)]},
+            Query().key == str(guild.id)
         )
 
     @tasks.loop(seconds=0.5)
