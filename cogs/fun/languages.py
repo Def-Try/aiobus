@@ -364,7 +364,20 @@ class Skibidilike(Language):
     def initdict(self):
         self.doupper = False
         alphabet = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя"
-        dict_ = ["ски", "шки", "би", "бе", "ди", "де", "ту", "то", "ил", "ул", "ал", "ет"]
+        dict_ = [
+            "ски",
+            "шки",
+            "би",
+            "бе",
+            "ди",
+            "де",
+            "ту",
+            "то",
+            "ил",
+            "ул",
+            "ал",
+            "ет",
+        ]
         pad = math.ceil(math.log(len(alphabet), len(dict_)))
         for i, letter in enumerate(alphabet):
             self.dictionary[letter] = "ски" + "".join(
