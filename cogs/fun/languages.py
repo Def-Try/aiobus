@@ -347,6 +347,35 @@ class Squirrelatin(Language):
             )
 
 
+class Skibidilike(Language):
+    def _tobase(self, b, n):
+        e = n // b
+        q = n % b
+        if n == 0:
+            return "0"
+        if e == 0:
+            return str(q)
+        return self._tobase(b, e) + str(q)
+
+    def tobase(self, b, n, p):
+        cv = self._tobase(b, n)
+        return "0" * max(0, p - len(cv)) + cv
+
+    def initdict(self):
+        self.doupper = False
+        alphabet = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+        dict_ = ["ски", "шки", "би", "бе", "ди", "де", "ту", "то", "ил", "ул", "ал", "ет"]
+        pad = math.ceil(math.log(len(alphabet), len(dict_)))
+        for i, letter in enumerate(alphabet):
+            self.dictionary[letter] = "ски" + "".join(
+                [dict_[int(j)] for j in self.tobase(len(dict_), i, pad)]
+            )
+        for i, letter in enumerate(alphabet.upper()):
+            self.dictionary[letter] = "шки" + "".join(
+                [dict_[int(j)] for j in self.tobase(len(dict_), i, pad)]
+            )
+
+
 class AutoTranslatorFrom:
     def __init__(self, languages_):
         self.languages = languages_.copy()
