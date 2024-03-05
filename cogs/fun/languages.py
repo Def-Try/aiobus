@@ -418,6 +418,7 @@ languages = {
     "squirrelatin": Squirrelatin(),
     "codespeak": Codespeak(),
     "nyatalk": Nyatalk(),
+    "skibidilike": Skibidilike()
 }
 languages["autofrom"] = AutoTranslatorFrom(languages)
 languages["galactic_common"] = Common()
