@@ -1,4 +1,4 @@
-aiohttp==3.8.6
+aiohttp==3.9.4
 colorama==0.4.6
 py-cord==2.5.0
 nekosbest==1.1.12
