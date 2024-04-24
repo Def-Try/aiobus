@@ -1,11 +1,9 @@
 import asyncio
 
-from .core import add_tests
 from .core import Bot
+from .core import User
 from .core import Context
 from .core import discordtest as test
-from .core import importfile
-from .core import run as run_tests
 from cogs import util as _cog
 
 
@@ -30,6 +28,25 @@ def test1():
     loop.run_until_complete(runner())
 
 
-add_tests([test1])
+@test("GTFU w/ asker")
+def test2():
+    bot = Bot()
+    _cog.setup(bot)
+    assert len(bot.cogs) == 1
+    cog = bot.cogs[0]
+    assert cog != None
 
-run_tests()
+    async def runner():
+        ctx = Context()
+        await cog.googleforyou(cog, ctx, "test", User())
+        assert (
+            ctx.content
+            == "Let me google that for you, <@1234567890>...\n[here!](<https://googlethatforyou.com/?q=test>)"
+        )
+
+    # setting up asyncio loop
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(runner())
+
+
+tests = [test1, test2]

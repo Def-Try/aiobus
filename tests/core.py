@@ -5,6 +5,12 @@ from dataclasses import field
 
 
 @dataclass
+class User:
+    id: int = 1234567890
+    mention: str = f"<@{id}>"
+
+
+@dataclass
 class Bot:
     cogs: list = field(default_factory=lambda: [])
 
