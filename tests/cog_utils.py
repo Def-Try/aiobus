@@ -1,9 +1,9 @@
 import asyncio
 
 from .core import Bot
-from .core import User
 from .core import Context
 from .core import discordtest as test
+from .core import User
 from cogs import util as _cog
 
 
