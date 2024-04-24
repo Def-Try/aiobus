@@ -26,7 +26,7 @@ class Utils(commands.Cog, name="util"):
         name_localizations=localise("cog.util.commands.googlethatforyou.name"),
         description_localizations=localise("cog.util.commands.googlethatforyou.desc"),
     )
-    async def cmd(
+    async def googleforyou(
         self,
         ctx: discord.ApplicationContext,
         question: discord.Option(
