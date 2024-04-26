@@ -58,7 +58,7 @@ def test3():
 
         ctx = Context()
         await cog.help(ctx, cog="basic")
-	    base(ctx)
+        base(ctx)
         del ctx
 
     # setting up asyncio loop
