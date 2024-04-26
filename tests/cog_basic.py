@@ -9,6 +9,7 @@ from cogs import basic as _cog
 bot = Bot()
 cog = None
 
+
 @test("basic cog pre init")
 def test1():
     global cog
@@ -17,7 +18,7 @@ def test1():
     cog = bot.cogs[list(bot.cogs.items())[0][0]]
     assert cog != None
     for cmd in cog.get_commands():
-         cmd.cog = cog
+        cmd.cog = cog
 
 
 @test("basic cog complete init")
@@ -63,5 +64,6 @@ def test3():
     # setting up asyncio loop
     loop = asyncio.get_event_loop()
     loop.run_until_complete(runner())
+
 
 tests = [test1, test2, test3]
