@@ -12,7 +12,7 @@ def test1():
     bot = Bot()
     _cog.setup(bot)
     assert len(bot.cogs) == 1
-    cog = bot.cogs[0]
+    cog = bot.cogs[list(bot.cogs.items())[0][0]]
     assert cog != None
 
     async def runner():
@@ -33,7 +33,7 @@ def test2():
     bot = Bot()
     _cog.setup(bot)
     assert len(bot.cogs) == 1
-    cog = bot.cogs[0]
+    cog = bot.cogs[list(bot.cogs.items())[0][0]]
     assert cog != None
 
     async def runner():

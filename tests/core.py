@@ -11,11 +11,19 @@ class User:
 
 
 @dataclass
+class Guild:
+    id: int = 1
+
+
+@dataclass
 class Bot:
-    cogs: list = field(default_factory=lambda: [])
+    cogs: dict = field(default_factory=lambda: {})
+    guilds: list = field(default_factory=lambda: [Guild(1), Guild(2)])
+    user: User = field(default_factory=lambda: User(0))
+    ready: bool = False
 
     def add_cog(self, cog):
-        self.cogs.append(cog)
+        self.cogs[cog.qualified_name] = cog
 
 
 @dataclass
@@ -26,10 +34,19 @@ class Interaction:
 @dataclass
 class Context:
     content: str = ""
+    embeds: list = field(default_factory=lambda: [])
+    ephemeral: bool = False
     interaction: Interaction = field(default_factory=lambda: Interaction())
 
-    async def respond(self, content: str):
+    async def respond(self, content: str = None, *, embeds: list = None, ephemeral: bool = False, embed = None):
         self.content = content
+        if embeds:
+            self.embeds = embeds
+        elif embed:
+            self.embeds = [embed]
+        else:
+            self.embeds = []
+        self.ephemeral = ephemeral
 
 
 def parametrized(dec):
