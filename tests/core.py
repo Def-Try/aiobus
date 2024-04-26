@@ -38,7 +38,14 @@ class Context:
     ephemeral: bool = False
     interaction: Interaction = field(default_factory=lambda: Interaction())
 
-    async def respond(self, content: str = None, *, embeds: list = None, ephemeral: bool = False, embed = None):
+    async def respond(
+        self,
+        content: str = None,
+        *,
+        embeds: list = None,
+        ephemeral: bool = False,
+        embed=None,
+    ):
         self.content = content
         if embeds:
             self.embeds = embeds
