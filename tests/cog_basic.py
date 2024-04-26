@@ -39,18 +39,26 @@ def test3():
     assert cog != None
 
     async def runner():
+        def base(ctx):
+            assert ctx.ephemeral == True
+            assert len(ctx.embeds) > 0
+            embed = ctx.embeds[0]
+            assert embed.title == "Bot Help"
+
         ctx = Context()
         await cog.help(ctx)
-        assert ctx.ephemeral == True
-        assert len(ctx.embeds) > 0
+        base(ctx)
+        del ctx
+
         ctx = Context()
         await cog.help(ctx, command="ping")
-        assert ctx.ephemeral == True
-        assert len(ctx.embeds) > 0
+        base(ctx)
+        del ctx
+
         ctx = Context()
         await cog.help(ctx, cog="basic")
-        assert ctx.ephemeral == True
-        assert len(ctx.embeds) > 0
+	    base(ctx)
+        del ctx
 
     # setting up asyncio loop
     loop = asyncio.get_event_loop()
