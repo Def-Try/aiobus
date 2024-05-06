@@ -21,6 +21,7 @@ class Bot:
     guilds: list = field(default_factory=lambda: [Guild(1), Guild(2)])
     user: User = field(default_factory=lambda: User(0))
     ready: bool = False
+    latency: float = 1000
 
     def add_cog(self, cog):
         self.cogs[cog.qualified_name] = cog

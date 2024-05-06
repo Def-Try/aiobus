@@ -65,5 +65,20 @@ def test3():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(runner())
 
+@test("ping command")
+def test4():
+    global cog
+    assert cog != None
+    async def runner():
+        ctx = Context()
+        await cog.ping(ctx)
+        assert ctx.ephemeral == False
+        assert len(ctx.embeds) > 0
+        del ctx
 
-tests = [test1, test2, test3]
+    # setting up asyncio loop
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(runner())
+
+
+tests = [test1, test2, test3, test4]

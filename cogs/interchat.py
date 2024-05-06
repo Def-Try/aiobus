@@ -128,10 +128,17 @@ class Interchat(commands.Cog, name="interchat"):
             if tunnel["in"] == fromch and not ignore_already_started:
                 return False
 
-        if not whookless and not outwhook:
-            outwhook = await fromch.create_webhook(name="Outgoing interchat tunnel")
-        if not whookless and not inwhook:
-            inwhook = await toch.create_webhook(name="Incoming interchat tunnel")
+        try:
+            if not whookless and not outwhook:
+                outwhook = await fromch.create_webhook(name="Outgoing interchat tunnel")
+        except:
+            whookless = True
+        try:
+            if not whookless and not inwhook:
+                inwhook = await toch.create_webhook(name="Incoming interchat tunnel")
+        except:
+            whookless = True
+            await outwhook.delete()
 
         self.tunnels.append(
             {
