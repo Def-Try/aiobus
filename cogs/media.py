@@ -109,9 +109,9 @@ class Media(commands.Cog, name="media"):
         locale = ctx.interaction.locale
         if category not in categories:
             await ctx.respond(
-                localise(
-                    "cog.media.answers.findgif.invalid_category", locale
-                ).format(categories=", ".join(categories))
+                localise("cog.media.answers.findgif.invalid_category", locale).format(
+                    categories=", ".join(categories)
+                )
             )
             return
         result = await nekosbest_client.get_image(category, 1)
@@ -165,9 +165,7 @@ class Media(commands.Cog, name="media"):
         ) = None,
         image: discord.Option(
             discord.Attachment,
-            name_localizations=localise(
-                "cog.media.commands.petpet.options.image.name"
-            ),
+            name_localizations=localise("cog.media.commands.petpet.options.image.name"),
             description=localise(
                 "cog.media.commands.petpet.options.image.desc", DEFAULT_LOCALE
             ),
