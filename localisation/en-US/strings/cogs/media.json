@@ -1,6 +1,6 @@
 {
         "cog": {
-                "gif_related": {
+                "media": {
                         "info": {
                                 "desc": "Cog that provides commands that are related to gifs in any way.",
                                 "brief": "Commands related to gifs"

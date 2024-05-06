@@ -72,22 +72,22 @@ async def download_file(session, url):
         return {"error": e, "data": ""}
 
 
-class GifRelated(commands.Cog, name="gif_related"):
+class Media(commands.Cog, name="media"):
     author = "googer_"
 
     def __init__(self, bot):
         self.bot = bot
 
     gif_cmds = discord.SlashCommandGroup(
-        "gif",
-        name_localizations=localise("cog.gif_related.command_group.name"),
-        description_localizations=localise("cog.gif_related.command_group.desc"),
+        "media",
+        name_localizations=localise("cog.media.command_group.name"),
+        description_localizations=localise("cog.media.command_group.desc"),
     )
 
     @gif_cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gif_related.commands.findgif.name"),
-        description_localizations=localise("cog.gif_related.commands.findgif.desc"),
+        name_localizations=localise("cog.media.commands.findgif.name"),
+        description_localizations=localise("cog.media.commands.findgif.desc"),
     )
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def findgif(
@@ -96,13 +96,13 @@ class GifRelated(commands.Cog, name="gif_related"):
         category: discord.Option(
             str,
             name_localizations=localise(
-                "cog.gif_related.commands.findgif.options.category.name"
+                "cog.media.commands.findgif.options.category.name"
             ),
             description=localise(
-                "cog.gif_related.commands.findgif.options.category.desc", DEFAULT_LOCALE
+                "cog.media.commands.findgif.options.category.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gif_related.commands.findgif.options.category.desc"
+                "cog.media.commands.findgif.options.category.desc"
             ),
         ),
     ):
@@ -110,13 +110,13 @@ class GifRelated(commands.Cog, name="gif_related"):
         if category not in categories:
             await ctx.respond(
                 localise(
-                    "cog.gif_related.answers.findgif.invalid_category", locale
+                    "cog.media.answers.findgif.invalid_category", locale
                 ).format(categories=", ".join(categories))
             )
             return
         result = await nekosbest_client.get_image(category, 1)
         embed = discord.Embed(
-            title=localise("cog.gif_related.answers.findgif.title", locale),
+            title=localise("cog.media.answers.findgif.title", locale),
             color=discord.Colour.blurple(),
         )
         embed.set_image(url=result.url)
@@ -124,25 +124,28 @@ class GifRelated(commands.Cog, name="gif_related"):
 
     @gif_cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gif_related.commands.shiggy.name"),
-        description_localizations=localise("cog.gif_related.commands.shiggy.desc"),
+        name_localizations=localise("cog.media.commands.shiggy.name"),
+        description_localizations=localise("cog.media.commands.shiggy.desc"),
     )
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def shiggy(self, ctx: discord.ApplicationContext):
         loop = asyncio.get_event_loop()
         con = aiohttp.TCPConnector(limit=10)
+
+        await ctx.response.defer()
+
         async with aiohttp.ClientSession(loop=loop, connector=con) as session:
             status = await download_file(session, "https://shiggy.fun/api/v3/random")
             if status["error"]:
-                await ctx.respond(status["error"])
+                await ctx.followup.send(status["error"])
                 return
             with io.BytesIO(status["data"]) as fp:
-                await ctx.respond(file=discord.File(fp, "shiggy.png"))
+                await ctx.followup.send(file=discord.File(fp, "shiggy.png"))
 
     @gif_cmds.command(
         guild_ids=CONFIG["g_ids"],
-        name_localizations=localise("cog.gif_related.commands.petpet.name"),
-        description_localizations=localise("cog.gif_related.commands.petpet.desc"),
+        name_localizations=localise("cog.media.commands.petpet.name"),
+        description_localizations=localise("cog.media.commands.petpet.desc"),
     )
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def petpet(
@@ -151,25 +154,25 @@ class GifRelated(commands.Cog, name="gif_related"):
         member: discord.Option(
             discord.User,
             name_localizations=localise(
-                "cog.gif_related.commands.petpet.options.member.name"
+                "cog.media.commands.petpet.options.member.name"
             ),
             description=localise(
-                "cog.gif_related.commands.petpet.options.member.desc", DEFAULT_LOCALE
+                "cog.media.commands.petpet.options.member.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gif_related.commands.petpet.options.member.desc"
+                "cog.media.commands.petpet.options.member.desc"
             ),
         ) = None,
         image: discord.Option(
             discord.Attachment,
             name_localizations=localise(
-                "cog.gif_related.commands.petpet.options.image.name"
+                "cog.media.commands.petpet.options.image.name"
             ),
             description=localise(
-                "cog.gif_related.commands.petpet.options.image.desc", DEFAULT_LOCALE
+                "cog.media.commands.petpet.options.image.desc", DEFAULT_LOCALE
             ),
             description_localizations=localise(
-                "cog.gif_related.commands.petpet.options.image.desc"
+                "cog.media.commands.petpet.options.image.desc"
             ),
         ) = None,
     ):
@@ -185,18 +188,20 @@ class GifRelated(commands.Cog, name="gif_related"):
             img = await ctx.author.display_avatar.read()
             name = ctx.author.name
 
+        await ctx.response.defer()
+
         source = io.BytesIO(img)
         dest = io.BytesIO()
         try:
             petpetgif.make(source, dest)
         except Exception:
-            await ctx.respond(
-                localise("cog.gif_related.answers.petpet.fail", DEFAULT_LOCALE)
+            await ctx.followup.send(
+                localise("cog.media.answers.petpet.fail", DEFAULT_LOCALE)
             )
             return
         dest.seek(0)
-        await ctx.respond(file=discord.File(dest, filename=f"{name}-petpet.gif"))
+        await ctx.followup.send(file=discord.File(dest, filename=f"{name}-petpet.gif"))
 
 
 def setup(bot):
-    bot.add_cog(GifRelated(bot))
+    bot.add_cog(Media(bot))

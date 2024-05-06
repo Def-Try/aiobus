@@ -1,6 +1,6 @@
 generic.json
 cogs/actions-commands.json
-cogs/gif-related.json
+cogs/media.json
 cogs/basic.json
 cogs/interchat.json
 cogs/starboard.json
