@@ -2,12 +2,12 @@
         "cog": {
                 "media": {
                         "info": {
-                                "desc": "Cog that provides commands that are related to gifs in any way.",
-                                "brief": "Commands related to gifs"
+                                "desc": "Cog that provides commands that are related to media files in any way.",
+                                "brief": "Commands related to media"
                         },
                         "command_group": {
-                                "name": "gif",
-                                "desc": "Slash-commands that are related to gifs in any way."
+                                "name": "media",
+                                "desc": "Slash-commands that are related to medias in any way."
                         },
                         "commands": {
                                 "findgif": {
