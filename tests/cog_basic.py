@@ -65,10 +65,12 @@ def test3():
     loop = asyncio.get_event_loop()
     loop.run_until_complete(runner())
 
+
 @test("ping command")
 def test4():
     global cog
     assert cog != None
+
     async def runner():
         ctx = Context()
         await cog.ping(ctx)
