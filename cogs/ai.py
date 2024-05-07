@@ -12,6 +12,7 @@ from config import CONFIG
 from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
+from utilities import download_file
 
 
 class AICog(commands.Cog, name="ai"):
