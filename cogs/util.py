@@ -1,6 +1,6 @@
 import urllib.parse
-import aiohttp
 
+import aiohttp
 import discord
 from discord.ext import commands
 
@@ -124,16 +124,33 @@ class Utils(commands.Cog, name="util"):
         data = {}
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get("https://clients5.google.com/translate_a/t", timeout=5, params={"client": "dict-chrome-ex", "dt": "t", "tl": target, "sl": source, "q": text}) as response:
+                async with session.get(
+                    "https://clients5.google.com/translate_a/t",
+                    timeout=5,
+                    params={
+                        "client": "dict-chrome-ex",
+                        "dt": "t",
+                        "tl": target,
+                        "sl": source,
+                        "q": text,
+                    },
+                ) as response:
                     data = await response.json()
         except TimeoutError:
-            await ctx.followup.send(localise("cog.util.answers.translate.error", ctx.interaction.locale))
+            await ctx.followup.send(
+                localise("cog.util.answers.translate.error", ctx.interaction.locale)
+            )
             return
         except Exception as e:
-            await ctx.followup.send(localise("cog.util.answers.translate.error", ctx.interaction.locale))
+            await ctx.followup.send(
+                localise("cog.util.answers.translate.error", ctx.interaction.locale)
+            )
             return
-        await ctx.followup.send(localise("cog.util.answers.translate.translated", ctx.interaction.locale).format(target=target, source=data[0][1], translated=data[0][0]))
-            
+        await ctx.followup.send(
+            localise(
+                "cog.util.answers.translate.translated", ctx.interaction.locale
+            ).format(target=target, source=data[0][1], translated=data[0][0])
+        )
 
 
 def setup(bot):
