@@ -149,7 +149,8 @@ class Utils(commands.Cog, name="util"):
         await ctx.followup.send(
             localise(
                 "cog.util.answers.translate.translated", ctx.interaction.locale
-            ).format(target=target, source=data[0][1], translated=data[0][0])
+            ).format(target=target, source=data[0][1], translated=data[0][0]),
+            allowed_mentions=discord.AllowedMentions.none()
         )
 
 
