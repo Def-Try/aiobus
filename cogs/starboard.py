@@ -144,6 +144,9 @@ class Starboard(commands.Cog, name="starboard"):
         else:
             star_amount = stars[0].count
         for server_starboard in starboards:
+            if str(message.id) in [i[1] for i in server_starboard["messages"]]:
+                return
+        for server_starboard in starboards:
             if (
                 star_amount < server_starboard["limit"]
                 and str(message.id) not in server_starboard["messages"].keys()
