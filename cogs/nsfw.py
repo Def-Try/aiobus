@@ -1,7 +1,7 @@
-import random
-import os
-import urllib
 import io
+import os
+import random
+import urllib
 
 import aiohttp
 import discord
@@ -165,7 +165,12 @@ class NSFW(commands.Cog, name="nsfw"):
                 await ctx.followup.send(status["error"])
                 return
             dest = io.BytesIO(status["data"])
-            file = discord.File(dest, filename=os.path.basename(urllib.parse.urlparse(_provider.get_img_url(post)).path))
+            file = discord.File(
+                dest,
+                filename=os.path.basename(
+                    urllib.parse.urlparse(_provider.get_img_url(post)).path
+                ),
+            )
             await ctx.followup.send(file=file)
 
     @cmds.command(
@@ -219,7 +224,12 @@ class NSFW(commands.Cog, name="nsfw"):
                 if status["error"]:
                     continue
                 dest = io.BytesIO(status["data"])
-                file = discord.File(dest, filename=os.path.basename(urllib.parse.urlparse(_provider.get_img_url(post)).path))
+                file = discord.File(
+                    dest,
+                    filename=os.path.basename(
+                        urllib.parse.urlparse(_provider.get_img_url(post)).path
+                    ),
+                )
                 files.append(file)
 
         await ctx.followup.send(files=files)
