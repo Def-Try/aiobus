@@ -72,7 +72,7 @@ NC = "\033[0m"
 
 
 @parametrized
-def discordtest(_callable, name ):
+def discordtest(_callable, name):
     def wrapper(*args, **kwargs):
         print(f"Running {name}... ", end="")
         try:
@@ -91,10 +91,15 @@ def discordtest(_callable, name ):
 __tests = []
 
 # pylint: disable=global-statement
+
+
 def add_tests(tests):
     global __tests
     __tests += tests
+
+
 # pylint: enable=global-statement
+
 
 def run():
     fails = []
