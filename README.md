@@ -73,4 +73,3 @@ Current list of "cogs" (modules):
 
 * moderation cog. with temp mutes/bans/etc
 * update starboard. fix bot starboarding it's starboard messages, make it more configurable
-* change name of cog gif_related.py to something else.
