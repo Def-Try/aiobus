@@ -10,6 +10,7 @@ from petpetgif import petpet as petpetgif
 from config import CONFIG
 from localisation import DEFAULT_LOCALE
 from localisation import localise
+from utilities import download_file
 
 nekosbest_client = Client()
 
@@ -59,17 +60,6 @@ categories = [
     "peck",
     "yawn",
 ]
-
-
-async def download_file(session, url):
-    try:
-        async with session.get(url) as remotefile:
-            if remotefile.status == 200:
-                data = await remotefile.read()
-                return {"error": "", "data": data}
-            return {"error": remotefile.status, "data": ""}
-    except Exception as e:
-        return {"error": e, "data": ""}
 
 
 class Media(commands.Cog, name="media"):
