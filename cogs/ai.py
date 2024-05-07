@@ -1,5 +1,6 @@
 import json
 import time
+import io
 
 import aiohttp
 import discord
