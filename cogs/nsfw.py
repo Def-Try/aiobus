@@ -1,4 +1,7 @@
+import io
+import os
 import random
+import urllib
 
 import aiohttp
 import discord
@@ -8,6 +11,17 @@ from config import CONFIG
 from config import TOKENS
 from localisation import DEFAULT_LOCALE
 from localisation import localise
+
+
+async def download_file(session, url):
+    try:
+        async with session.get(url) as remotefile:
+            if remotefile.status == 200:
+                data = await remotefile.read()
+                return {"error": "", "data": data}
+            return {"error": remotefile.status, "data": ""}
+    except Exception as e:
+        return {"error": e, "data": ""}
 
 
 class Provider:
@@ -132,18 +146,32 @@ class NSFW(commands.Cog, name="nsfw"):
             choices=list(providers.keys()),
         ) = "rule34",
     ):
+        await ctx.response.defer()
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
         _posts = await _provider.get_posts(_tags)
         if len(_posts) < 1:
-            await ctx.respond(
+            await ctx.followup.send(
                 localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale)
             )
             return
         post = {}
         while _provider.get_img_url(post) is None:
             post = random.choice(_posts)
-        await ctx.respond(_provider.get_img_url(post))
+
+        async with aiohttp.ClientSession() as session:
+            status = await download_file(session, _provider.get_img_url(post))
+            if status["error"]:
+                await ctx.followup.send(status["error"])
+                return
+            dest = io.BytesIO(status["data"])
+            file = discord.File(
+                dest,
+                filename=os.path.basename(
+                    urllib.parse.urlparse(_provider.get_img_url(post)).path
+                ),
+            )
+            await ctx.followup.send(file=file)
 
     @cmds.command(
         guild_ids=CONFIG["g_ids"],
@@ -179,14 +207,32 @@ class NSFW(commands.Cog, name="nsfw"):
     ):
         _provider = providers.get(provider)
         _tags = [tag.strip() for tag in tags.split(",")]
+
+        await ctx.response.defer()
+
         _posts = await _provider.get_posts(_tags)
         if len(_posts) < 1:
-            await ctx.respond(
+            await ctx.followup.send(
                 localise("cog.nsfw.answers.zero_returned", ctx.interaction.locale)
             )
             return
         posts = [random.choice(_posts) for _ in range(min(len(_posts), 10))]
-        await ctx.respond("\n".join([_provider.get_img_url(post) for post in posts]))
+        files = []
+        async with aiohttp.ClientSession() as session:
+            for post in posts:
+                status = await download_file(session, _provider.get_img_url(post))
+                if status["error"]:
+                    continue
+                dest = io.BytesIO(status["data"])
+                file = discord.File(
+                    dest,
+                    filename=os.path.basename(
+                        urllib.parse.urlparse(_provider.get_img_url(post)).path
+                    ),
+                )
+                files.append(file)
+
+        await ctx.followup.send(files=files)
 
 
 def setup(bot):

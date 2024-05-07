@@ -8,8 +8,6 @@ from localisation import localise
 
 nekosbest_client = Client()
 
-portals_awaiting = {}
-
 # users banned entirely from this cog commands, basically
 # turely_159 / UID 781110424783290388: spams them a bunch. does not know when to stop.
 actions_bans = [

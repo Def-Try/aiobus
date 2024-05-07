@@ -23,12 +23,34 @@
                                                         "desc": "Searching because someone else asked?"
                                                 }
                                         }
+                                },
+                                "translate": {
+                                        "name": "translate",
+                                        "desc": "Translate text. Powered by Google Translate.",
+                                        "options": {
+                                                "text": {
+                                                        "name": "text",
+                                                        "desc": "Text to translate"
+                                                },
+                                                "target": {
+                                                        "name": "target",
+                                                        "desc": "Target language. Should be a supported ISO 639 language code."
+                                                },
+                                                "source": {
+                                                        "name": "source",
+                                                        "desc": "Target language. Should be a supported ISO 639 language code, or 'auto' for autodetection."
+                                                }
+                                        }
                                 }
                         },
                         "answers": {
                                 "googlethatforyou": {
                                         "noasker": "Let me google that for you...\n[here!](<{link}>)",
                                         "wasker": "Let me google that for you, {asker}...\n[here!](<{link}>)"
+                                },
+                                "translate": {
+                                        "translated": "Translated `{source}` to `{target}`:\n```{translated}```",
+                                        "error": "An error occured while getting translation..."
                                 }
                         }
                 }

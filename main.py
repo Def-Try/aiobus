@@ -93,6 +93,31 @@ invoker = discord_bot.invoke_application_command
 
 
 async def on_application_command(ctx: commands.Context):
+    potentials = []
+    for _, cog in discord_bot.cogs.items():
+        for command in cog.walk_commands():
+            try:
+                if command.qualified_id != ctx.command.qualified_id:
+                    continue
+            except:
+                continue
+            potentials.append(command)
+
+    def construct_name(data):
+        command = data["name"]
+        if len(data["options"]) == 1 and data["options"][0]["type"] == 1:
+            command += " " + construct_name(data["options"][0])
+        return command
+
+    command_name = construct_name(ctx.interaction.data)
+    command = None
+    for potential in potentials:
+        if potential.qualified_name != command_name:
+            continue
+        command = potential
+        break
+    ctx.res_command = command
+
     basic_cog = discord_bot.get_cog("basic")
     if not basic_cog:
         # basic cog isn't loaded, which is bad but we can handle that
@@ -100,7 +125,10 @@ async def on_application_command(ctx: commands.Context):
     if not hasattr(ctx, "guild"):
         # we're probably running in DMs, so we'll ignore that case
         return await invoker(ctx)
-    if hasattr(ctx.command, "ignores_allowance") and ctx.command.ignores_allowance:
+    if (
+        hasattr(ctx.res_command, "ignores_allowance")
+        and ctx.res_command.ignores_allowance
+    ):
         # command wants to ignore these limits so we dont try to stop it
         return await invoker(ctx)
     server_cfg = basic_cog.configs[str(ctx.guild.id)]["command_invoke"]
@@ -130,6 +158,11 @@ async def on_application_command(ctx: commands.Context):
 
 
 discord_bot.invoke_application_command = on_application_command
+
+
+@discord_bot.event
+async def before_identify_hook(shard_id, *, initial=False):
+    pass
 
 
 @discord_bot.event

@@ -129,12 +129,10 @@ class Media(commands.Cog, name="media"):
     )
     @commands.cooldown(10, 30, commands.BucketType.user)
     async def shiggy(self, ctx: discord.ApplicationContext):
-        loop = asyncio.get_event_loop()
-        con = aiohttp.TCPConnector(limit=10)
 
         await ctx.response.defer()
 
-        async with aiohttp.ClientSession(loop=loop, connector=con) as session:
+        async with aiohttp.ClientSession() as session:
             status = await download_file(session, "https://shiggy.fun/api/v3/random")
             if status["error"]:
                 await ctx.followup.send(status["error"])
