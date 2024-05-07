@@ -31,31 +31,42 @@ need.
 # Cogs
 
 Current list of "cogs" (modules):
-* basic.py - Core cog.
+* basic.py - Core cog.<br>
   Provides basic functionality like /help or /ping
-* fun - "fun" commands cog.
-  Any commands that I was not sure to make another cog for.
-* actions_commands.py - Actions cog.
+  
+* fun - "fun" commands cog.<br>
+  Any fun commands that I was not sure to make another cog for.
+  
+* actions_commands.py - Actions cog.<br>
   One of the first cogs that have been written.
   Simple "send embed with gif" commands
-* adminhelp.py - Adminhelp.
+  
+* adminhelp.py - Adminhelp.<br>
   Simple ans instant modmail with integration with INTERCHAT
-* interchat.py - Interchat.
+  
+* interchat.py - Interchat.<br>
   Communication between two channels. Can link DM to a channel,
   VC channel to a chat, etc, you've got the idea.
-* gif_related.py - Gif related.
-  Any commands related to images or gifs.
-  TODO: change name
-* gpt.py - GPT Chat.
+  
+* media.py - Media related.<br>
+  Commands that are in any way related to media files.
+  
+* gpt.py - GPT Chat.<br>
   Makes so that when someone @pings a bot it will answer to
   the message with GPT AI. Includes a fairly simple prompt
   to make it follow certain laws. A few lawsets available.
-* starboard.py - Starboard.
+  
+* starboard.py - Starboard.<br>
   Simple starboard manager. Put enough stars on a message and
-  ot will be sent to a cool channel.
-* nsfw.py - NSFW commands.
+  it will be sent to a cool channel.
+  
+* nsfw.py - NSFW commands.<br>
   Simple cog that gives commands that search for NSFW content
   on rule34 or danbooru.
+  
+* util.py - Utility commands.<br>
+  Commands that don't deserve another cog but could be useful
+  by themselves.
 
 
 # TODO
