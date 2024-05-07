@@ -3,7 +3,7 @@ import core
 # use discordtest decorator to set test name
 
 
-@core.discordtest("Example test")
+@core.discordtest(name="Example test")
 def test1():
     pass
 
@@ -18,15 +18,15 @@ def no_dec_test():
 # if exception gets raised in test, it will be treated as failed
 
 
-@core.discordtest("Exception test")
+@core.discordtest(name="Exception test")
 def test3():
     def inner():
-        raise Exception("i'm a bad test >:3") from ValueError("nyaa")
+        raise SyntaxError("i'm a bad test >:3") from ValueError("nyaa")
 
     inner()
 
 
-@core.discordtest("Real exception test")
+@core.discordtest(name="Real exception test")
 def test4():
     x = 0
     return 1 / x
