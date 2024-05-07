@@ -1,5 +1,4 @@
 import linecache
-import traceback
 from dataclasses import dataclass
 from dataclasses import field
 
@@ -37,7 +36,7 @@ class Context:
     content: str = ""
     embeds: list = field(default_factory=lambda: [])
     ephemeral: bool = False
-    interaction: Interaction = field(default_factory=lambda: Interaction())
+    interaction: Interaction = field(default_factory=Interaction)
 
     async def respond(
         self,
@@ -67,29 +66,21 @@ def parametrized(dec):
     return layer
 
 
-def importfile(file):
-    with open(file, "r") as f:
-        g = {}
-        exec(f.read(), g)
-    del g["__builtins__"]
-    return g
-
-
-green = "\033[32m"
-red = "\033[31m"
-nc = "\033[0m"
+GREEN = "\033[32m"
+RED = "\033[31m"
+NC = "\033[0m"
 
 
 @parametrized
-def discordtest(callable, name):
+def discordtest(_callable, name ):
     def wrapper(*args, **kwargs):
         print(f"Running {name}... ", end="")
         try:
-            _ = callable(*args, **kwargs)
-            print(f"[ {green}OK{nc} ]")
+            _ = _callable(*args, **kwargs)
+            print(f"[ {GREEN}OK{NC} ]")
             return True, _
         except Exception as e:
-            print(f"[{red}FAIL{nc}]")
+            print(f"[{RED}FAIL{NC}]")
             return False, e
 
     wrapper.test = True
@@ -99,11 +90,11 @@ def discordtest(callable, name):
 
 __tests = []
 
-
+# pylint: disable=global-statement
 def add_tests(tests):
     global __tests
     __tests += tests
-
+# pylint: enable=global-statement
 
 def run():
     fails = []
@@ -117,18 +108,18 @@ def run():
             print(f"Running {test.__name__}... ", end="")
             try:
                 test()
-                print(f"[ {green}OK{nc} ]")
+                print(f"[ {GREEN}OK{NC} ]")
             except Exception as e:
-                print(f"[{red}FAIL{nc}]")
+                print(f"[{RED}FAIL{NC}]")
                 fails.append([test.__name__, e])
     if len(fails) == 0:
-        print(f"[ {green}ALL TESTS OK{nc} ]")
+        print(f"[ {GREEN}ALL TESTS OK{NC} ]")
         return
-    print(f"[ {red}{len(fails)} TEST{'s' if len(fails) % 10 != 1 else ''} FAILED{nc} ]")
+    print(f"[ {RED}{len(fails)} TEST{'s' if len(fails) % 10 != 1 else ''} FAILED{NC} ]")
     print("-" * 25)
     print("What went wrong (most deep call first):")
     for fail in fails:
-        print(f"[ {red}{fail[0]}{nc} ]")
+        print(f"[ {RED}{fail[0]}{NC} ]")
         tb = fail[1].__traceback__
         e = fail[1]
         lfile = ""
@@ -167,6 +158,6 @@ def run():
 
             print(f"{line-1:4d}  |" + linecache.getline(file, line - 1).rstrip())
             print(
-                f"{line:4d} {red}>{nc}|" + linecache.getline(file, line).rstrip() + nc
+                f"{line:4d} {RED}>{NC}|" + linecache.getline(file, line).rstrip() + NC
             )
             print(f"{line+1:4d}  |" + linecache.getline(file, line + 1).rstrip())
