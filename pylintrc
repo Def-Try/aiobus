@@ -129,6 +129,7 @@ disable=raw-checker-failed,
         broad-exception-caught,
         wrong-import-order,
         too-many-instance-attributes,
+        too-many-return-statements,
 enable=
 
 [METHOD_ARGS]

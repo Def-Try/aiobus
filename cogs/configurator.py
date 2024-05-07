@@ -14,7 +14,7 @@ class Configurator(commands.Cog, name="configurator"):
         self.bot = bot
         self.basic_cog = self.bot.get_cog("basic")
         if not self.basic_cog:
-            raise Exception(
+            raise ImportError(
                 "Configurator cog is not able to work without basic cog loaded!!!!"
             )
         self.ai_cog = self.bot.get_cog("ai")
@@ -187,9 +187,6 @@ class Configurator(commands.Cog, name="configurator"):
             ),
         ),
     ):
-        text_channels_amount = len(
-            [c for c in ctx.guild.channels if isinstance(c, discord.TextChannel)]
-        )
         mode = self.basic_cog.configs[str(ctx.guild.id)]["command_invoke"]["mode"]
         if (
             mode == "whitelist"
@@ -262,7 +259,7 @@ class Configurator(commands.Cog, name="configurator"):
     )
     @commands.has_guild_permissions(administrator=True)
     @commands.guild_only()
-    async def set_mode(
+    async def set_mode_gai(
         self,
         ctx: discord.ApplicationContext,
         mode: discord.Option(
@@ -318,7 +315,7 @@ class Configurator(commands.Cog, name="configurator"):
     )
     @commands.has_guild_permissions(administrator=True)
     @commands.guild_only()
-    async def add_channel(
+    async def add_channel_gai(
         self,
         ctx: discord.ApplicationContext,
         channel: discord.Option(
@@ -374,7 +371,7 @@ class Configurator(commands.Cog, name="configurator"):
     )
     @commands.has_guild_permissions(administrator=True)
     @commands.guild_only()
-    async def remove_channel(
+    async def remove_channel_gai(
         self,
         ctx: discord.ApplicationContext,
         channel: discord.Option(
@@ -427,7 +424,7 @@ class Configurator(commands.Cog, name="configurator"):
         ),
     )
     @commands.guild_only()
-    async def show(self, ctx: discord.ApplicationContext):
+    async def show_gai(self, ctx: discord.ApplicationContext):
         if not self.ai_cog:
             await ctx.respond(
                 localise(

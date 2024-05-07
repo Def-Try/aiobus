@@ -141,7 +141,7 @@ class Utils(commands.Cog, name="util"):
                 localise("cog.util.answers.translate.error", ctx.interaction.locale)
             )
             return
-        except Exception as e:
+        except Exception:
             await ctx.followup.send(
                 localise("cog.util.answers.translate.error", ctx.interaction.locale)
             )

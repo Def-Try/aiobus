@@ -205,6 +205,8 @@ YOUR LAWS:
             ),
         ),
     ):
+        await ctx.response.defer()
+
         async with aiohttp.ClientSession() as session:
             response = await session.post(
                 url="https://fal.run/fal-ai/fast-lightning-sdxl",
@@ -215,17 +217,19 @@ YOUR LAWS:
                 data=json.dumps({"prompt": prompt, "enable_safety_checker": True}),
             )
             response = await response.json()
-
-        # TODO: отправка файлом, не ссылки
+        
         if (
             isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw
-        ) or ctx.channel.nsfw:
-            await ctx.respond(response["images"][0]["url"])
+        ) or ctx.channel.nsfw or not any(response["has_nsfw_concepts"]):
+            async with aiohttp.ClientSession() as session:
+                status = await download_file(session, response["images"][0]["url"])
+                if status["error"]:
+                    await ctx.followup.send(status["error"])
+                    return
+                with io.BytesIO(status["data"]) as fp:
+                    await ctx.followup.send(file=discord.File(fp, "generated.jpeg"))
             return
-        if not any(response["has_nsfw_concepts"]):
-            await ctx.respond(response["images"][0]["url"])
-            return
-        await ctx.respond(
+        await ctx.followup.send(
             localise("cog.ai.answers.draw.nsfw_detected", ctx.interaction.locale)
         )
 
@@ -426,9 +430,7 @@ YOUR LAWS:
         )
 
         await ctx.respond(
-            localise("cog.ai.answers.context.rollback", ctx.interaction.locale).format(
-                lawset=lawset
-            )
+            localise("cog.ai.answers.context.rollback", ctx.interaction.locale)
         )
 
     @cmds.command(
@@ -518,9 +520,11 @@ YOUR LAWS:
                 localise("cog.ai.answers.context.empty", ctx.interaction.locale)
             )
             return
+        # pylint: disable=consider-using-generator
         while sum([len(v["content"]) + len(v["role"]) for v in messages]) > 2000 - 100:
             messages = messages[:-1]
             skipped += 1
+        # pylint: enable=consider-using-generator
         if messages == []:
             await ctx.respond(
                 localise("cog.ai.answers.context.too_long", ctx.interaction.locale)

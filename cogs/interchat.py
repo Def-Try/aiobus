@@ -131,12 +131,12 @@ class Interchat(commands.Cog, name="interchat"):
         try:
             if not whookless and not outwhook:
                 outwhook = await fromch.create_webhook(name="Outgoing interchat tunnel")
-        except:
+        except Exception:
             whookless = True
         try:
             if not whookless and not inwhook:
                 inwhook = await toch.create_webhook(name="Incoming interchat tunnel")
-        except:
+        except Exception:
             whookless = True
             await outwhook.delete()
 
