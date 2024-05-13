@@ -63,8 +63,8 @@ jobs:
         commit_author: googer <googer@mindurka.fun>
         create_branch: true
     - name: Create pull request
-      run: gh pr create -B main -H auto-reformat \
-           --title 'Merge reformatted code into base' \
+      run: gh pr create -B main -H auto-reformat
+           --title 'Merge reformatted code into base'
            --body 'Created by Github action'; true
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
