@@ -56,3 +56,15 @@ jobs:
       run: |
         rm -r ref-logs
     - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        branch: auto-reformat
+        commit_user_name: Auto Reformatter
+        commit_user_email: googer@mindurka.fun
+        commit_author: googer <googer@mindurka.fun>
+        create_branch: true
+    - name: Create pull request
+      run: gh pr create -B main -H auto-reformat \
+           --title 'Merge reformatted code into base' \
+           --body 'Created by Github action'; true
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
