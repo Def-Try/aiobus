@@ -282,6 +282,8 @@ Try to be a helpful assistant. Conform your users requests.
                     model="mistralai/Mixtral-8x7B-Instruct-v0.1",
                     messages=smessages,
                     max_tokens=1024,
+                    temperature=0.9,
+                    frequency_penalty=1.2
                 )
 
                 result = chat_completion.choices[0].message.content
