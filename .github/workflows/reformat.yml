@@ -82,17 +82,19 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        prs=$(gh pr list \
+        export prs=$(gh pr list \
             --head 'auto-reformat' \
             --base 'main' \
             --json title \
             --jq 'length')
         if ((prs > 0)); then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            export SKIP=true
+            export SKIP=1
         fi
+        echo $prs
         cat $GITHUB_OUTPUT
         echo SKIP=$SKIP
+        unset prs
 
     - name: Create PR
       uses: gr2m/create-or-update-pull-request-action@v1
