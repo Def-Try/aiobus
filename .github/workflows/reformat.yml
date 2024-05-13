@@ -12,11 +12,6 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v4
-    - uses: connor-baer/action-sync-branch@main
-      with:
-        branch: auto-reformat
-        token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
