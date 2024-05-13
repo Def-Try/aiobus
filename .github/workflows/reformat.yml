@@ -69,6 +69,9 @@ jobs:
         create_branch: true
         skip_dirty_check: false
         skip_fetch: false
+    - uses: actions/checkout@v3
+      with:
+        ref: auto-reformat
     - uses: gr2m/create-or-update-pull-request-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
