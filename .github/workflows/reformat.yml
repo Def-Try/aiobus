@@ -70,11 +70,10 @@ jobs:
         skip_dirty_check: false
         skip_fetch: false
     - uses: actions/checkout@v3
-      with:
-        ref: auto-reformat
     - uses: peter-evans/create-pull-request@v6
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         title: "Auto reformat PR"
         body: "PR made by reformat workflow. Merge when needed."
+        branch: auto-reformat
