@@ -12,8 +12,6 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
-      with:
-        ref: ${{ github.head_ref }}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -77,5 +75,4 @@ jobs:
       with:
         title: "Auto reformat PR"
         body: "PR made by reformat workflow. Merge when needed."
-        branch: "auto-reformat"
         update-pull-request-title-and-body: false
