@@ -20,6 +20,7 @@ jobs:
         branch: auto-reformat
         token: ${{ secrets.GITHUB_TOKEN }}
         force: true
+      continue-on-error: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
