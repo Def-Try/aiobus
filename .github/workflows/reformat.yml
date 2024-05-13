@@ -5,6 +5,8 @@ on:
     branches-ignore:
       - dependabot/*
       - auto-reformat
+    branches:
+      - main
 
 jobs:
   reformat:
@@ -90,11 +92,14 @@ jobs:
             --jq 'length')
         if ((prs > 0)); then
             echo "skip=true" >> "$GITHUB_OUTPUT"
+            export SKIP=true
         fi
+        cat $GITHUB_OUTPUT
+        echo SKIP=$SKIP
 
     - name: Create PR
       uses: gr2m/create-or-update-pull-request-action@v1
-      if: '!steps.check.outputs.skip'
+      if: '!steps.check.outputs.skip || !env.SKIP'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
