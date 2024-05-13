@@ -160,9 +160,13 @@ async def on_application_command(ctx: commands.Context):
 discord_bot.invoke_application_command = on_application_command
 
 # pylint: disable=unused-argument
+
+
 @discord_bot.event
 async def before_identify_hook(shard_id, *, initial=False):
     pass
+
+
 # pylint: enable=unused-argument
 
 

@@ -1,7 +1,7 @@
+import datetime
+import io
 import json
 import time
-import io
-import datetime
 
 import aiohttp
 import discord
@@ -100,8 +100,10 @@ Try to be a helpful assistant. Conform your users requests.
             response = await response.json()
 
         if (
-            isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw
-        ) or ctx.channel.nsfw or not any(response["has_nsfw_concepts"]):
+            (isinstance(ctx.channel, discord.Thread) and ctx.channel.parent.nsfw)
+            or ctx.channel.nsfw
+            or not any(response["has_nsfw_concepts"])
+        ):
             async with aiohttp.ClientSession() as session:
                 status = await download_file(session, response["images"][0]["url"])
                 if status["error"]:
@@ -273,7 +275,9 @@ Try to be a helpful assistant. Conform your users requests.
             }
         )
         smessages = list(messages)
-        smessages[0]["content"] = smessages[0]["content"].format(datetime.datetime.now().strftime("%d.%m.%Y %H:%M"))
+        smessages[0]["content"] = smessages[0]["content"].format(
+            datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+        )
         async with message.channel.typing():
             result = "Something went terribly wrong."
             fail = False
@@ -283,7 +287,7 @@ Try to be a helpful assistant. Conform your users requests.
                     messages=smessages,
                     max_tokens=1024,
                     temperature=0.9,
-                    frequency_penalty=1.2
+                    frequency_penalty=1.2,
                 )
 
                 result = chat_completion.choices[0].message.content
@@ -305,7 +309,7 @@ Try to be a helpful assistant. Conform your users requests.
         self.cooldowns[message.guild.id] = time.time() + 10
 
         if len(result) > 900:
-            for i in [result[i:i+900] for i in range(0, len(result), 900)]:
+            for i in [result[i : i + 900] for i in range(0, len(result), 900)]:
                 await message.reply(i, allowed_mentions=discord.AllowedMentions.none())
             return
 
