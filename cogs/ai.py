@@ -618,7 +618,7 @@ YOUR LAWS:
                 chat_completion = await self.openai.chat.completions.create(
                     model="mistralai/Mixtral-8x7B-Instruct-v0.1",
                     messages=smessages,
-                    max_tokens=200,
+                    max_tokens=1024,
                 )
 
                 result = chat_completion.choices[0].message.content
@@ -638,6 +638,11 @@ YOUR LAWS:
         )
 
         self.cooldowns[message.guild.id] = time.time() + 10
+
+        if len(result) > 900:
+            for i in [line[i:i+900] for i in range(0, len(result), 900)]:
+                await message.reply(i, allowed_mentions=discord.AllowedMentions.none())
+            return
 
         await message.reply(result, allowed_mentions=discord.AllowedMentions.none())
 
