@@ -71,9 +71,11 @@ jobs:
         create_branch: true
         skip_dirty_check: false
         skip_fetch: false
-    - name: Create pull request
-      run: gh pr create -B main -H auto-reformat
-           --title 'Merge reformatted code into base'
-           --body 'Created by Github action'; true
+    - uses: gr2m/create-or-update-pull-request-action@v1
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        title: "Auto reformat PR"
+        body: "PR made by reformat workflow. Merge when needed."
+        branch: "auto-reformat"
+        update-pull-request-title-and-body: false
