@@ -62,6 +62,7 @@ jobs:
         title: "Auto reformat PR"
         body: "PR made by reformat workflow."
         branch: auto-reformat
+        base: main
         delete-branch: true
         committer: googer <googer@mindurka.fun>
         commit-message: Apply automatic reformatting
