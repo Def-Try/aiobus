@@ -12,6 +12,11 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
+    - uses: connor-baer/action-sync-branch@main
+      with:
+        branch: auto-reformat
+        token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -55,21 +60,6 @@ jobs:
     - name: Remove log files
       run: |
         rm -r ref-logs
-    - uses: connor-baer/action-sync-branch@main
-      with:
-        branch: auto-reformat
-        token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        branch: auto-reformat
-        commit_user_name: Auto Reformatter
-        commit_user_email: googer@mindurka.fun
-        commit_author: googer <googer@mindurka.fun>
-        create_branch: true
-        skip_dirty_check: false
-        skip_fetch: false
-    - uses: actions/checkout@v3
     - uses: peter-evans/create-pull-request@v6
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,3 +67,5 @@ jobs:
         title: "Auto reformat PR"
         body: "PR made by reformat workflow. Merge when needed."
         branch: auto-reformat
+        committer: googer <googer@mindurka.fun>
+        commit-message: Apply automatic reformatting
