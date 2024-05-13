@@ -68,6 +68,20 @@ jobs:
     - name: Remove log files
       run: |
         rm -r ref-logs
+    - name: Check if PR exists
+      id: check
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        prs=$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head 'auto-reformat' \
+            --base 'main' \
+            --json title \
+            --jq 'length')
+        if ((prs > 0)); then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+        fi
     - uses: gr2m/create-or-update-pull-request-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
