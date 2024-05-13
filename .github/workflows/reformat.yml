@@ -57,6 +57,11 @@ jobs:
     - name: Remove log files
       run: |
         rm -r ref-logs
+    - uses: connor-baer/action-sync-branch@main
+      with:
+        branch: auto-reformat
+        token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         branch: auto-reformat
