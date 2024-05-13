@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: connor-baer/action-sync-branch@main
       with:
         branch: auto-reformat
@@ -67,5 +67,6 @@ jobs:
         title: "Auto reformat PR"
         body: "PR made by reformat workflow. Merge when needed."
         branch: auto-reformat
+        delete-branch: true
         committer: googer <googer@mindurka.fun>
         commit-message: Apply automatic reformatting
