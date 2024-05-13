@@ -15,6 +15,11 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ssh-key: ${{ secrets.Action_WRITE_Access_Key }}
+    - uses: connor-baer/action-sync-branch@main
+      with:
+        branch: auto-reformat
+        token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -58,12 +63,18 @@ jobs:
     - name: Remove log files
       run: |
         rm -r ref-logs
-    - uses: peter-evans/create-pull-request@v6
+    - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        title: "Auto reformat PR"
-        body: "PR made by reformat workflow."
         branch: auto-reformat
-        base: main
-        delete-branch: true
-        committer: googer <googer@mindurka.fun>
-        commit-message: Apply automatic reformatting
+        commit_user_name: Auto Reformatter
+        commit_user_email: googer@mindurka.fun
+        commit_author: googer <googer@mindurka.fun>
+        create_branch: true
+        skip_dirty_check: false
+        skip_fetch: false
+    - name: Create pull request
+      run: gh pr create -B main -H auto-reformat
+           --title 'Merge reformatted code into base'
+           --body 'Created by Github action'; true
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
