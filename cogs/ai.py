@@ -273,7 +273,7 @@ Try to be a helpful assistant. Conform your users requests.
             }
         )
         smessages = list(messages)
-        smessages[0]["content"] = smessages[0]["content"].format(datetime.now().strftime("%d.%m.%Y %H:%M"))
+        smessages[0]["content"] = smessages[0]["content"].format(datetime.datetime.now().strftime("%d.%m.%Y %H:%M"))
         async with message.channel.typing():
             result = "Something went terribly wrong."
             fail = False
