@@ -240,7 +240,7 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.change_laws.name"),
         description_localizations=localise("cog.ai.commands.change_laws.desc"),
     )
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_messages=True)
     @commands.guild_only()
     async def change_law(
         self,
@@ -347,7 +347,7 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.upload_lawset.name"),
         description_localizations=localise("cog.ai.commands.upload_lawset.desc"),
     )
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_messages=True)
     @commands.guild_only()
     async def upload_lawset(
         self,
@@ -411,7 +411,7 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.rollback.name"),
         description_localizations=localise("cog.ai.commands.rollback.desc"),
     )
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_messages=True)
     @commands.guild_only()
     async def rollback(
         self,
@@ -483,7 +483,7 @@ YOUR LAWS:
         name_localizations=localise("cog.ai.commands.reset_messages.name"),
         description_localizations=localise("cog.ai.commands.reset_messages.desc"),
     )
-    @commands.has_guild_permissions(administrator=True)
+    @commands.has_guild_permissions(manage_messages=True)
     @commands.guild_only()
     async def reset_messages(self, ctx: discord.ApplicationContext):
         udata = self.get_udata(self.get_udata_id(ctx))
