@@ -19,11 +19,10 @@ jobs:
       with:
         ssh-key: ${{ secrets.Action_WRITE_Access_Key }}
 
-    - uses: connor-baer/action-sync-branch@main
+    - uses: remarkablemark/sync-branch@v1
       with:
-        branch: auto-reformat
-        token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
+        base: auto-reformat
+        head: main
       continue-on-error: true
 
     - name: Set up Python ${{ matrix.python-version }}
