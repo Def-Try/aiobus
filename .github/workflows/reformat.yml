@@ -79,8 +79,8 @@ jobs:
 
     - name: Get changes
       run: |
-        echo "CHANGES=$(git diff "origin/main..origin/auto-reformat" --stat)" >> $GITHUB_ENV
-        git diff "origin/main..origin/auto-reformat" --stat
+        echo "CHANGES=$(git diff "main..auto-reformat" --stat)" >> $GITHUB_ENV
+        git diff "main..auto-reformat" --stat
 
     - name: Create or update PR
       uses: gr2m/create-or-update-pull-request-action@v1
