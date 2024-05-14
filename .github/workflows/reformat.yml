@@ -78,7 +78,7 @@ jobs:
 
     - name: Get changes
       run: |
-        echo "CHANGES=$(git diff \"origin/main..origin/auto-reformat\" --stat)" >> $GITHUB_ENV
+        echo "CHANGES=$(git diff "origin/main..origin/auto-reformat" --stat)" >> $GITHUB_ENV
         git diff "origin/main..origin/auto-reformat" --stat
 
     - name: Create or update PR
