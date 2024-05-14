@@ -18,6 +18,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ssh-key: ${{ secrets.Action_WRITE_Access_Key }}
+        fetch-depth: 0
 
     - uses: remarkablemark/sync-branch@v1
       with:
