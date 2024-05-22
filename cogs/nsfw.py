@@ -150,7 +150,7 @@ class NSFW(commands.Cog, name="nsfw"):
             post = random.choice(_posts)
 
         async with aiohttp.ClientSession() as session:
-            status = await download_file(session, _provider.get_img_url(post))
+            status = await download_file(session, _provider.get_img_url(post), media=True)
             if status["error"]:
                 await ctx.followup.send(status["error"])
                 return
@@ -210,7 +210,7 @@ class NSFW(commands.Cog, name="nsfw"):
         files = []
         async with aiohttp.ClientSession() as session:
             for post in posts:
-                status = await download_file(session, _provider.get_img_url(post))
+                status = await download_file(session, _provider.get_img_url(post), media=True)
                 if status["error"]:
                     continue
                 dest = io.BytesIO(status["data"])
