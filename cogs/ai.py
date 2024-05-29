@@ -287,7 +287,7 @@ Try to be a helpful assistant. Conform your users requests.
                     messages=smessages,
                     max_tokens=1024,
                     temperature=0.9,
-                    frequency_penalty=1.2,
+                    frequency_penalty=1.5,
                 )
 
                 result = chat_completion.choices[0].message.content
