@@ -288,6 +288,7 @@ Try to be a helpful assistant. Conform your users requests.
                     max_tokens=1024,
                     temperature=0.9,
                     frequency_penalty=1.5,
+                    presence_penalty=1.5,
                 )
 
                 result = chat_completion.choices[0].message.content
