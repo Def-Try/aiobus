@@ -2,7 +2,7 @@ aiohttp==3.10.1
 colorama==0.4.6
 py-cord==2.6.0
 nekosbest==1.1.12
-openai==1.36.1
+openai==1.40.3
 pet_pet_gif==1.0.2
 requests==2.32.3
 termcolor==2.4.0
