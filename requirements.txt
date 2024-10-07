@@ -5,5 +5,5 @@ nekosbest==1.1.12
 openai==1.36.1
 pet_pet_gif==1.0.2
 requests==2.32.3
-termcolor==2.4.0
+termcolor==2.5.0
 tinydb==4.8.0
